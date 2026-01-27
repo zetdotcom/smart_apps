@@ -1,0 +1,2284 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Smart Apps Research | From Hypothesis to Solution</title>
+        <script src="https://cdn.tailwindcss.com"></script>
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+        />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+            rel="stylesheet"
+        />
+        <script>
+            tailwind.config = {
+                theme: {
+                    extend: {
+                        colors: {
+                            moss: {
+                                950: "#0D1A12",
+                                900: "#1A3324",
+                                800: "#2C5530",
+                                700: "#3D7340",
+                            },
+                            copper: {
+                                400: "#B8734A",
+                                500: "#9C5F32",
+                                600: "#7D4C28",
+                            },
+                            sage: {
+                                300: "#A3C4A9",
+                                400: "#76A880",
+                                500: "#5A8C63",
+                                50: "#E1EADF",
+                            },
+                            cream: {
+                                100: "#E8E5DF",
+                                50: "#F2EFE9",
+                            },
+                        },
+                        fontFamily: {
+                            sans: ["Inter", "system-ui", "sans-serif"],
+                        },
+                        boxShadow: {
+                            "soft-studio":
+                                "0 25px 50px -12px rgba(26, 51, 36, 0.15), 0 12px 24px -8px rgba(26, 51, 36, 0.1)",
+                            ceramic:
+                                "0 4px 14px -2px rgba(26, 51, 36, 0.08), 0 2px 6px -1px rgba(26, 51, 36, 0.04)",
+                            "inner-light":
+                                "inset 0 1px 0 0 rgba(255, 255, 255, 0.05)",
+                        },
+                        backgroundImage: {
+                            "deep-canopy":
+                                "linear-gradient(135deg, #1A3324 0%, #2C5530 100%)",
+                            "organic-mist":
+                                "linear-gradient(180deg, #F2EFE9 0%, #E1EADF 100%)",
+                        },
+                    },
+                },
+            };
+        </script>
+        <style>
+            body {
+                font-family: "Inter", system-ui, sans-serif;
+                background: linear-gradient(180deg, #f2efe9 0%, #e1eadf 100%);
+                background-attachment: fixed;
+                color: #1a3324;
+                line-height: 1.6;
+            }
+
+            .tech-panel {
+                background: linear-gradient(135deg, #1a3324 0%, #2c5530 100%);
+                box-shadow: 0 25px 50px -12px rgba(26, 51, 36, 0.25);
+                position: relative;
+            }
+
+            .glass-panel {
+                background: rgba(255, 255, 255, 0.7);
+                backdrop-filter: blur(20px);
+                border: 1px solid rgba(255, 255, 255, 0.8);
+                box-shadow: 0 4px 14px -2px rgba(26, 51, 36, 0.08);
+            }
+
+            .ceramic-btn {
+                background: linear-gradient(135deg, #1a3324 0%, #2c5530 100%);
+                color: #f2efe9;
+                box-shadow: 0 4px 14px -2px rgba(26, 51, 36, 0.3);
+                transition: all 0.3s ease;
+            }
+
+            .ceramic-btn:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 8px 20px -4px rgba(26, 51, 36, 0.4);
+            }
+
+            .action-btn {
+                background: linear-gradient(135deg, #1a3324 0%, #2c5530 100%);
+                color: #f2efe9;
+                box-shadow: 0 4px 14px -2px rgba(26, 51, 36, 0.3);
+                transition: all 0.3s ease;
+            }
+
+            .action-btn:hover {
+                transform: translateY(-1px);
+                box-shadow: 0 8px 20px -4px rgba(26, 51, 36, 0.4);
+            }
+
+            .chart-container {
+                position: relative;
+                height: 250px;
+                width: 100%;
+            }
+
+            .cite-badge {
+                display: inline-block;
+                padding: 4px 12px;
+                border-radius: 20px;
+                font-size: 10px;
+                font-weight: 600;
+                text-transform: uppercase;
+                letter-spacing: 0.5px;
+                margin-bottom: 12px;
+            }
+
+            .cite-tech {
+                background: rgba(118, 168, 128, 0.2);
+                color: #76a880;
+                border: 1px solid rgba(118, 168, 128, 0.3);
+            }
+
+            .cite-glass {
+                background: rgba(26, 51, 36, 0.1);
+                color: #1a3324;
+                border: 1px solid rgba(26, 51, 36, 0.2);
+            }
+
+            .sim-input {
+                background: rgba(13, 26, 18, 0.5);
+                border: 1px solid rgba(255, 255, 255, 0.1);
+                color: #f2efe9;
+            }
+
+            .sim-input:focus {
+                border-color: rgba(118, 168, 128, 0.5);
+                outline: none;
+            }
+
+            .pulse-active {
+                animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+            }
+
+            .click-ripple {
+                position: absolute;
+                border-radius: 50%;
+                background: rgba(118, 168, 128, 0.4);
+                transform: scale(0);
+                animation: ripple 0.6s linear;
+                pointer-events: none;
+            }
+
+            @keyframes ripple {
+                to {
+                    transform: scale(4);
+                    opacity: 0;
+                }
+            }
+
+            @keyframes pulse {
+                0%,
+                100% {
+                    opacity: 1;
+                }
+                50% {
+                    opacity: 0.5;
+                }
+            }
+
+            .section-divider {
+                height: 1px;
+                background: linear-gradient(
+                    90deg,
+                    transparent,
+                    rgba(26, 51, 36, 0.2),
+                    transparent
+                );
+                margin: 80px 0;
+            }
+
+            .stat-highlight {
+                font-size: 3rem;
+                font-weight: 300;
+                line-height: 1;
+            }
+
+            .nav-link {
+                transition: all 0.2s ease;
+            }
+
+            .nav-link:hover {
+                color: #1a3324;
+            }
+
+            .layers-graphic {
+                display: flex;
+                flex-direction: column;
+                gap: 8px;
+                width: 100%;
+            }
+
+            .layer {
+                padding: 20px;
+                border-radius: 12px;
+                text-align: center;
+                font-weight: 600;
+                font-size: 0.9rem;
+            }
+
+            .layer-base {
+                background: rgba(26, 51, 36, 0.2);
+                color: #1a3324;
+            }
+
+            .layer-smart {
+                background: linear-gradient(135deg, #1a3324 0%, #2c5530 100%);
+                color: #f2efe9;
+                box-shadow: 0 8px 20px rgba(26, 51, 36, 0.3);
+            }
+
+            .benefit-tag {
+                display: inline-block;
+                background: rgba(118, 168, 128, 0.2);
+                color: #5a8c63;
+                padding: 4px 12px;
+                border-radius: 20px;
+                font-size: 0.75rem;
+                font-weight: 600;
+                margin-top: 10px;
+            }
+
+            .chat-bubble {
+                padding: 20px;
+                border-radius: 16px;
+                max-width: 80%;
+            }
+
+            .user-bubble {
+                background: #f2efe9;
+                border: 1px solid rgba(26, 51, 36, 0.1);
+                margin-left: auto;
+            }
+
+            .ai-bubble {
+                background: linear-gradient(135deg, #1a3324 0%, #2c5530 100%);
+                color: #f2efe9;
+            }
+        </style>
+    </head>
+    <body class="antialiased selection:bg-sage-400 selection:text-white">
+        <!-- Page Navigation -->
+        <div class="w-full bg-moss-900 border-b border-moss-800">
+            <div
+                class="max-w-7xl mx-auto px-6 h-12 flex items-center justify-center gap-2"
+            >
+                <a
+                    href="smart_apps2.html"
+                    class="px-4 py-2 text-sm font-medium rounded-lg text-cream-50/70 hover:text-cream-50 hover:bg-moss-800 transition-colors"
+                >
+                    Overview
+                </a>
+                <a
+                    href="final_research.html"
+                    class="px-4 py-2 text-sm font-medium rounded-lg bg-sage-400 text-moss-900"
+                >
+                    Full Research
+                </a>
+                <a
+                    href="summary_final_research.html"
+                    class="px-4 py-2 text-sm font-medium rounded-lg text-cream-50/70 hover:text-cream-50 hover:bg-moss-800 transition-colors"
+                >
+                    Executive Summary
+                </a>
+                <a
+                    href="infographic.html"
+                    class="px-4 py-2 text-sm font-medium rounded-lg text-cream-50/70 hover:text-cream-50 hover:bg-moss-800 transition-colors"
+                >
+                    Infographic
+                </a>
+            </div>
+        </div>
+
+        <!-- Navigation -->
+        <nav class="sticky top-0 z-50 glass-panel border-b border-white/30">
+            <div
+                class="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between"
+            >
+                <div class="flex items-center gap-3">
+                    <div
+                        class="w-10 h-10 rounded-full bg-gradient-to-br from-moss-800 to-moss-900 flex items-center justify-center text-cream-50 font-bold text-sm shadow-lg"
+                    >
+                        <i class="fa-solid fa-microchip"></i>
+                    </div>
+                    <span
+                        class="text-moss-900 font-semibold tracking-wide text-sm"
+                    >
+                        Smart Apps Research
+                        <span class="opacity-40">|</span> Complete Analysis
+                    </span>
+                </div>
+                <div class="hidden md:flex space-x-1 text-sm">
+                    <a
+                        href="#paradigm"
+                        class="nav-link px-4 py-2 text-moss-900/60 hover:text-moss-900 font-medium"
+                        >Paradigm</a
+                    >
+                    <a
+                        href="#problem"
+                        class="nav-link px-4 py-2 text-moss-900/60 hover:text-moss-900"
+                        >Problem</a
+                    >
+                    <a
+                        href="#research"
+                        class="nav-link px-4 py-2 text-moss-900/60 hover:text-moss-900"
+                        >Research</a
+                    >
+                    <a
+                        href="#data"
+                        class="nav-link px-4 py-2 text-moss-900/60 hover:text-moss-900"
+                        >Data</a
+                    >
+                    <a
+                        href="#solution"
+                        class="nav-link px-4 py-2 text-moss-900/60 hover:text-moss-900"
+                        >Solution</a
+                    >
+                </div>
+            </div>
+        </nav>
+
+        <main class="max-w-7xl mx-auto px-6 py-16 space-y-24">
+            <!-- SECTION 1: THE PARADIGM SHIFT (HYPOTHESIS) -->
+            <section
+                id="paradigm"
+                class="text-center max-w-5xl mx-auto space-y-10 scroll-mt-24"
+            >
+                <div
+                    class="inline-flex items-center px-4 py-2 rounded-full bg-sage-50 border border-sage-400/30 text-moss-900 text-xs font-bold tracking-widest uppercase"
+                >
+                    Research Synthesis 2023-2026 &bull; NN/g &bull; Microsoft
+                    &bull; Ink &amp; Switch
+                </div>
+
+                <h1
+                    class="text-5xl md:text-7xl font-light text-moss-900 leading-tight tracking-tight"
+                >
+                    The First New UI Paradigm<br />
+                    <span
+                        class="text-transparent bg-clip-text bg-gradient-to-r from-moss-800 to-sage-400 font-normal"
+                        >in 60 Years</span
+                    >
+                </h1>
+
+                <p
+                    class="text-xl text-moss-900/70 leading-relaxed max-w-3xl mx-auto font-light"
+                >
+                    We are witnessing a fundamental shift from
+                    <strong class="text-moss-900 font-medium"
+                        >Command-Based Interaction</strong
+                    >
+                    (Do this, then click that) to
+                    <strong class="text-moss-900 font-medium"
+                        >Intent-Based Interaction</strong
+                    >
+                    (Here is the result I want). Current apps are static
+                    factories. Future apps are liquid.<br /><br />
+                    But this shift creates a new usability crisis:
+                    <strong class="text-copper-500 font-medium"
+                        >The Affordance Gap</strong
+                    >.
+                </p>
+
+                <!-- Evolution Timeline -->
+                <div
+                    class="grid grid-cols-1 md:grid-cols-3 gap-6 text-left mt-16"
+                >
+                    <!-- 1980s -->
+                    <div class="glass-panel rounded-2xl p-8 opacity-60">
+                        <div
+                            class="text-copper-500 font-bold text-xs uppercase tracking-widest mb-4"
+                        >
+                            1980s
+                        </div>
+                        <h3 class="text-xl font-medium text-moss-900 mb-3">
+                            Command Line
+                        </h3>
+                        <p class="text-sm text-moss-900/60 font-light">
+                            High friction. Users had to learn the machine's
+                            language to operate software. Total Recall required.
+                        </p>
+                    </div>
+
+                    <!-- 2000s -->
+                    <div class="glass-panel rounded-2xl p-8 opacity-80">
+                        <div
+                            class="text-sage-500 font-bold text-xs uppercase tracking-widest mb-4"
+                        >
+                            2000s
+                        </div>
+                        <h3 class="text-xl font-medium text-moss-900 mb-3">
+                            Graphical UI
+                        </h3>
+                        <p class="text-sm text-moss-900/60 font-light">
+                            Static menus and buttons. Users forced to memorize
+                            rigid paths. Total Recognition. "Don't Make Me
+                            Think."
+                        </p>
+                        <div class="font-mono text-xs text-copper-500 mt-4">
+                            Menu &rarr; Settings &rarr; Profile &rarr; Edit
+                        </div>
+                    </div>
+
+                    <!-- 2026 -->
+                    <div
+                        class="tech-panel rounded-2xl p-8 relative overflow-hidden"
+                    >
+                        <div
+                            class="absolute -right-10 -top-10 w-32 h-32 bg-sage-400/20 rounded-full blur-3xl"
+                        ></div>
+                        <div
+                            class="text-sage-400 font-bold text-xs uppercase tracking-widest mb-4"
+                        >
+                            2026
+                        </div>
+                        <h3 class="text-xl font-medium text-cream-50 mb-3">
+                            Smart Apps
+                        </h3>
+                        <p class="text-sm text-cream-50/70 font-light mb-4">
+                            <strong class="text-cream-50">Intent-Based:</strong>
+                            The interface adapts to the user, not the other way
+                            around.
+                        </p>
+                        <div class="space-y-2 text-xs text-cream-50/60">
+                            <div class="flex items-center gap-2">
+                                <i
+                                    class="fa-solid fa-wand-magic-sparkles text-sage-400"
+                                ></i>
+                                Generative UI
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <i
+                                    class="fa-solid fa-compass text-sage-400"
+                                ></i>
+                                Smart Navigation
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <i class="fa-solid fa-rocket text-sage-400"></i>
+                                App Control
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <div class="section-divider"></div>
+
+            <!-- SECTION 2: THE PROBLEM -->
+            <section id="problem" class="scroll-mt-24">
+                <div class="text-center mb-16">
+                    <div
+                        class="text-copper-500 font-bold text-xs uppercase tracking-widest mb-4"
+                    >
+                        The Challenge
+                    </div>
+                    <h2
+                        class="text-4xl md:text-5xl font-light text-moss-900 mb-6"
+                    >
+                        The Affordance Gap
+                    </h2>
+                    <p
+                        class="text-xl text-moss-900/60 font-light max-w-2xl mx-auto"
+                    >
+                        An analysis of the
+                        <strong class="text-moss-900"
+                            >"Articulation Barrier"</strong
+                        >
+                        in AI interfaces versus the
+                        <strong class="text-moss-900">"Click Fatigue"</strong>
+                        of traditional hierarchies.
+                    </p>
+                </div>
+
+                <!-- Key Stats -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-16">
+                    <div class="tech-panel rounded-3xl p-8">
+                        <div class="stat-highlight text-sage-400 mb-2">37%</div>
+                        <div class="h-px w-12 bg-sage-400/50 mb-4"></div>
+                        <h3 class="font-medium text-cream-50 text-lg mb-2">
+                            Faster Execution
+                        </h3>
+                        <p class="text-sm text-cream-50/60 font-light">
+                            Speed gain for information retrieval tasks using
+                            GenUI vs traditional click paths.
+                        </p>
+                    </div>
+
+                    <div class="tech-panel rounded-3xl p-8">
+                        <div class="stat-highlight text-copper-500 mb-2">
+                            +19%
+                        </div>
+                        <div class="h-px w-12 bg-copper-500/50 mb-4"></div>
+                        <h3 class="font-medium text-cream-50 text-lg mb-2">
+                            Error Risk
+                        </h3>
+                        <p class="text-sm text-cream-50/60 font-light">
+                            Increase in incorrect outcomes when users over-rely
+                            on AI intent without verification.
+                        </p>
+                    </div>
+
+                    <div
+                        class="tech-panel rounded-3xl p-8 relative overflow-hidden"
+                    >
+                        <div
+                            class="absolute -right-10 -top-10 w-32 h-32 bg-sage-400/10 rounded-full blur-3xl"
+                        ></div>
+                        <div class="stat-highlight text-cream-50 mb-2">
+                            Hybrid
+                        </div>
+                        <div class="h-px w-12 bg-cream-50/50 mb-4"></div>
+                        <h3 class="font-medium text-cream-50 text-lg mb-2">
+                            Optimal Model
+                        </h3>
+                        <p class="text-sm text-cream-50/60 font-light">
+                            "Prompt Augmentation" outperforms pure text entry by
+                            reducing cognitive load.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Problem Deep Dive -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div class="glass-panel p-10 rounded-3xl">
+                        <div
+                            class="text-copper-500 font-bold tracking-widest text-[10px] mb-4 uppercase"
+                        >
+                            The Usability Gap
+                        </div>
+                        <h3 class="text-3xl font-light text-moss-900 mb-6">
+                            Why Menus Survive
+                        </h3>
+                        <p
+                            class="text-moss-900/70 leading-relaxed font-light mb-6"
+                        >
+                            In a GUI, features are
+                            <strong class="text-moss-900 font-medium"
+                                >visible affordances</strong
+                            >. You know you can "Save" because you see a
+                            button.<br /><br />
+                            In an Intent UI (AI), features are invisible. This
+                            creates the
+                            <strong class="text-copper-500"
+                                >Affordance Crisis</strong
+                            >. If the user doesn't know <em>what</em> to ask
+                            for, the system's power is inaccessible.
+                        </p>
+                    </div>
+
+                    <div class="glass-panel p-10 rounded-3xl">
+                        <div
+                            class="text-sage-500 font-bold tracking-widest text-[10px] mb-4 uppercase"
+                        >
+                            Core Concept
+                        </div>
+                        <h3 class="text-3xl font-light text-moss-900 mb-6">
+                            The "Gulf of Envisioning"
+                        </h3>
+                        <p
+                            class="text-moss-900/70 leading-relaxed font-light mb-6"
+                        >
+                            Unlike the old "Gulf of Execution" (how do I do
+                            it?), Generative UI creates a new barrier:<br />
+                            <em class="text-moss-900 font-normal"
+                                >"I don't know what this system is capable of
+                                understanding."</em
+                            >
+                        </p>
+                        <div
+                            class="p-4 bg-white/50 rounded-xl border border-white/60"
+                        >
+                            <div class="flex gap-3 items-start">
+                                <span class="text-xl">&#9889;</span>
+                                <p class="text-sm text-moss-900/80 font-light">
+                                    <strong>The "Blank Page" Paralysis:</strong>
+                                    Users often stare at the blinking cursor,
+                                    overwhelmed by infinite possibility but
+                                    lacking specific vocabulary.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <div class="section-divider"></div>
+
+            <!-- SECTION 3: THE RESEARCH - 5 CORE SHIFTS -->
+            <section id="research" class="scroll-mt-24">
+                <div class="text-center mb-16">
+                    <div
+                        class="text-sage-500 font-bold text-xs uppercase tracking-widest mb-4"
+                    >
+                        Deep Dive
+                    </div>
+                    <h2
+                        class="text-4xl md:text-5xl font-light text-moss-900 mb-6"
+                    >
+                        5 Core Shifts in Interaction Design
+                    </h2>
+                    <p
+                        class="text-xl text-moss-900/60 font-light max-w-2xl mx-auto"
+                    >
+                        Selected insights from NN/g, Ink &amp; Switch, Microsoft
+                        Research, and Harvard Business School.
+                    </p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <!-- Shift 1: Malleable Software -->
+                    <div
+                        class="tech-panel p-10 rounded-3xl md:col-span-2 flex flex-col md:flex-row gap-8 items-center"
+                    >
+                        <div class="flex-1">
+                            <span class="cite-badge cite-tech"
+                                >Ink &amp; Switch (2024)</span
+                            >
+                            <h3 class="text-3xl font-light text-cream-50 mb-4">
+                                1. Malleable Software (The "Liquid" UI)
+                            </h3>
+                            <p
+                                class="text-cream-50/70 leading-relaxed font-light mb-6"
+                            >
+                                Today, software is rigid. If you want a chart,
+                                but the app only has a list view, you are stuck.
+                                <strong class="text-cream-50"
+                                    >Malleable Software</strong
+                                >
+                                proposes that the UI should be generated
+                                <em>at runtime</em> based on user intent. If you
+                                ask for a "Sales Dashboard," the AI shouldn't
+                                just retrieve data—it should write the code to
+                                render the dashboard layout instantly. The
+                                interface <em>is</em> the response.
+                            </p>
+                            <div
+                                class="flex gap-4 text-xs font-mono text-sage-400"
+                            >
+                                <span
+                                    class="border border-sage-400/30 px-3 py-1 rounded"
+                                    >Static: Pre-defined Views</span
+                                >
+                                <span class="text-cream-50/30">&rarr;</span>
+                                <span
+                                    class="border border-sage-400/30 px-3 py-1 rounded bg-sage-400/10"
+                                    >Liquid: Generated Views</span
+                                >
+                            </div>
+                        </div>
+                        <div
+                            class="w-full md:w-1/4 aspect-square bg-moss-950/30 rounded-2xl border border-white/5 flex items-center justify-center relative overflow-hidden"
+                        >
+                            <div
+                                class="absolute inset-0 bg-gradient-to-br from-sage-400/20 to-transparent"
+                            ></div>
+                            <div class="text-center z-10">
+                                <div class="text-4xl mb-2">&#128167;</div>
+                                <div
+                                    class="text-xs text-cream-50/60 uppercase tracking-widest"
+                                >
+                                    ephemeral<br />components
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Shift 2: Sandwich Workflow -->
+                    <div class="glass-panel p-8 rounded-3xl">
+                        <span class="cite-badge cite-glass"
+                            >Harvard Business School (2023)</span
+                        >
+                        <h3 class="text-2xl font-medium text-moss-900 mb-4">
+                            2. The "Sandwich" Workflow
+                        </h3>
+                        <p
+                            class="text-moss-900/70 leading-relaxed font-light text-sm"
+                        >
+                            Users reject full automation ("Set it and forget
+                            it") for high-stakes tasks. They prefer a
+                            "Sandwich":<br /><br />
+                            <strong>1. Top Slice (Human):</strong> Sets
+                            context/strategy.<br />
+                            <strong>2. Meat (AI):</strong> Generates the
+                            draft/execution.<br />
+                            <strong>3. Bottom Slice (Human):</strong> Verifies
+                            and refines.<br /><br />
+                            UI must support this verification loop, not hide it.
+                        </p>
+                    </div>
+
+                    <!-- Shift 3: Inverse IA -->
+                    <div
+                        class="tech-panel p-8 rounded-3xl relative overflow-hidden"
+                    >
+                        <div
+                            class="absolute top-0 right-0 w-32 h-32 bg-copper-500/10 rounded-full blur-2xl"
+                        ></div>
+                        <span class="cite-badge cite-tech"
+                            >Nielsen Norman Group (2024)</span
+                        >
+                        <h3 class="text-2xl font-medium text-cream-50 mb-4">
+                            3. Inverse Information Architecture
+                        </h3>
+                        <p
+                            class="text-cream-50/70 leading-relaxed font-light text-sm"
+                        >
+                            Standard IA is "Go to Folder &rarr; Find File."
+                            Inverse IA is "I have the File, show me the
+                            Context."<br /><br />
+                            AI flips the navigation model. You start with the
+                            destination (the specific insight or document found
+                            via Intent) and the system must dynamically
+                            reconstruct the "Breadcrumbs" to show you where you
+                            are.
+                        </p>
+                    </div>
+
+                    <!-- Shift 4: Latency Trade-off -->
+                    <div class="glass-panel p-8 rounded-3xl">
+                        <span class="cite-badge cite-glass"
+                            >Microsoft Future of Work (2024)</span
+                        >
+                        <h3 class="text-2xl font-medium text-moss-900 mb-4">
+                            4. The Latency/Fidelity Trade-off
+                        </h3>
+                        <p
+                            class="text-moss-900/70 leading-relaxed font-light text-sm"
+                        >
+                            Users perceive "fast and dumb" (Standard GUI) as
+                            reliable, and "slow and smart" (AI) as a utility.<br /><br />
+                            <strong>The Threshold:</strong> If an AI interaction
+                            takes &gt;1s, it must provide &gt;10x the value of a
+                            click. For simple navigation, 0.1s latency is
+                            mandatory. AI cannot replace navigation until it is
+                            instant.
+                        </p>
+                    </div>
+
+                    <!-- Shift 5: Contextual Chips -->
+                    <div
+                        class="tech-panel p-8 rounded-3xl relative overflow-hidden"
+                    >
+                        <div
+                            class="absolute bottom-0 left-0 w-32 h-32 bg-sage-400/10 rounded-full blur-2xl"
+                        ></div>
+                        <span class="cite-badge cite-tech"
+                            >Android Design / Material 3 (2025)</span
+                        >
+                        <h3 class="text-2xl font-medium text-cream-50 mb-4">
+                            5. Suggestibility &amp; "Empty States"
+                        </h3>
+                        <p
+                            class="text-cream-50/70 leading-relaxed font-light text-sm"
+                        >
+                            The biggest barrier to Intent UI is "What can I
+                            say?" The blank text box causes anxiety.<br /><br />
+                            The solution is
+                            <strong class="text-cream-50"
+                                >Contextual Chips</strong
+                            >—dynamic, situation-aware buttons that suggest
+                            intents based on what is currently on screen. It
+                            bridges the gap between Recognition (GUI) and Recall
+                            (AI).
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <div class="section-divider"></div>
+
+            <!-- SECTION 4: SIMULATION LAB -->
+            <section id="simulation" class="scroll-mt-24">
+                <div
+                    class="flex flex-col md:flex-row justify-between items-end mb-10 pb-6 border-b border-moss-900/10"
+                >
+                    <div>
+                        <div
+                            class="text-copper-500 font-bold text-xs uppercase tracking-widest mb-2"
+                        >
+                            Interactive Lab
+                        </div>
+                        <h2 class="text-3xl font-medium text-moss-900">
+                            The Articulation Barrier
+                        </h2>
+                        <p class="text-moss-900/60 mt-2 max-w-xl font-light">
+                            Experience the friction of "knowing what to say" vs.
+                            the effort of "finding where to click."
+                        </p>
+                    </div>
+                    <button
+                        id="run-sim-btn"
+                        onclick="runSimulation()"
+                        class="action-btn px-8 py-3 rounded-full font-medium text-sm tracking-wide mt-4 md:mt-0"
+                    >
+                        &#9654; Run Comparison Protocol
+                    </button>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    <!-- Paradigm A: Intent (AI) -->
+                    <div
+                        class="tech-panel rounded-3xl p-1 overflow-hidden relative h-[500px] flex flex-col"
+                    >
+                        <div
+                            class="bg-black/20 p-5 flex justify-between items-center border-b border-white/5 backdrop-blur-sm"
+                        >
+                            <div>
+                                <h3
+                                    class="text-sage-400 font-medium text-lg flex items-center gap-2"
+                                >
+                                    <span
+                                        id="ai-indicator"
+                                        class="w-1.5 h-1.5 bg-sage-400 rounded-full"
+                                    ></span>
+                                    Intent-Based (AI)
+                                </h3>
+                                <p
+                                    class="text-[10px] text-cream-50/40 uppercase tracking-widest mt-1"
+                                >
+                                    Generative UI / LLM
+                                </p>
+                            </div>
+                            <div class="text-right">
+                                <div
+                                    class="text-[10px] text-cream-50/40 uppercase tracking-widest"
+                                >
+                                    Friction
+                                </div>
+                                <div
+                                    class="text-xs font-medium text-copper-500"
+                                >
+                                    Articulation
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="flex-1 p-6 flex flex-col relative">
+                            <div
+                                id="sim-prompt-area"
+                                class="flex-1 space-y-4 overflow-y-auto mb-4 text-sm text-cream-50/50"
+                            >
+                                <div class="flex gap-3 opacity-40">
+                                    <div
+                                        class="w-6 h-6 rounded-full bg-cream-50/10 flex-shrink-0"
+                                    ></div>
+                                    <div
+                                        class="p-2 rounded bg-white/5 text-xs italic"
+                                    >
+                                        System awaiting intent specification...
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="relative z-10">
+                                <div
+                                    class="flex items-center gap-3 bg-moss-950/50 border border-white/10 rounded-xl p-3"
+                                >
+                                    <span class="text-sage-400">&#10148;</span>
+                                    <span
+                                        id="sim-prompt-input"
+                                        class="font-mono text-sm text-cream-50"
+                                    ></span>
+                                    <span
+                                        class="w-2 h-4 bg-sage-400/50 animate-pulse"
+                                    ></span>
+                                </div>
+                            </div>
+
+                            <div
+                                id="ai-thinking"
+                                class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center opacity-0 transition-opacity duration-300"
+                            >
+                                <div
+                                    class="text-xs text-sage-400 font-mono mb-2 uppercase tracking-widest"
+                                >
+                                    Generating UI...
+                                </div>
+                                <div class="flex justify-center gap-1">
+                                    <div
+                                        class="w-1.5 h-1.5 bg-sage-400 rounded-full animate-bounce"
+                                    ></div>
+                                    <div
+                                        class="w-1.5 h-1.5 bg-sage-400 rounded-full animate-bounce"
+                                        style="animation-delay: 0.1s"
+                                    ></div>
+                                    <div
+                                        class="w-1.5 h-1.5 bg-sage-400 rounded-full animate-bounce"
+                                        style="animation-delay: 0.2s"
+                                    ></div>
+                                </div>
+                            </div>
+
+                            <div class="absolute top-6 left-6">
+                                <div
+                                    class="text-[10px] text-cream-50/30 uppercase tracking-widest"
+                                >
+                                    Elapsed
+                                </div>
+                                <div
+                                    id="ai-timer"
+                                    class="font-mono font-medium text-sage-400 text-2xl"
+                                >
+                                    0.0s
+                                </div>
+                            </div>
+
+                            <div
+                                id="sim-prompt-success"
+                                class="absolute inset-0 bg-moss-900/95 backdrop-blur-sm flex flex-col items-center justify-center z-20 opacity-0 pointer-events-none transition-opacity duration-500"
+                            >
+                                <div
+                                    class="w-16 h-16 rounded-full border border-sage-400/30 flex items-center justify-center mb-4"
+                                >
+                                    <span class="text-2xl">&#10024;</span>
+                                </div>
+                                <div class="text-xl font-medium text-sage-400">
+                                    Intent Resolved
+                                </div>
+                                <div class="text-sm text-cream-50/60 mt-2">
+                                    Action executed successfully.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Paradigm B: Command (GUI) -->
+                    <div
+                        class="tech-panel rounded-3xl p-1 overflow-hidden relative h-[500px] flex flex-col"
+                    >
+                        <div
+                            class="bg-black/20 p-5 flex justify-between items-center border-b border-white/5 backdrop-blur-sm"
+                        >
+                            <div>
+                                <h3
+                                    class="text-cream-50 font-medium text-lg flex items-center gap-2"
+                                >
+                                    <span
+                                        class="w-1.5 h-1.5 bg-cream-50/50 rounded-full"
+                                    ></span>
+                                    Command-Based (GUI)
+                                </h3>
+                                <p
+                                    class="text-[10px] text-cream-50/40 uppercase tracking-widest mt-1"
+                                >
+                                    Hierarchical Navigation
+                                </p>
+                            </div>
+                            <div class="text-right">
+                                <div
+                                    class="text-[10px] text-cream-50/40 uppercase tracking-widest"
+                                >
+                                    Friction
+                                </div>
+                                <div
+                                    class="text-xs font-medium text-cream-50/60"
+                                >
+                                    Navigation Depth
+                                </div>
+                            </div>
+                        </div>
+
+                        <div
+                            class="flex-1 bg-[#F2EFE9] relative overflow-hidden"
+                            id="nav-container"
+                        >
+                            <div
+                                id="gui-screen-home"
+                                class="absolute inset-0 p-6 grid grid-cols-2 gap-4 content-start"
+                            >
+                                <div
+                                    class="col-span-2 h-12 bg-white rounded-xl shadow-ceramic border border-white flex items-center px-4 justify-between mb-2"
+                                >
+                                    <div
+                                        class="w-4 h-4 rounded bg-moss-900/10"
+                                    ></div>
+                                    <div
+                                        class="w-20 h-2 rounded bg-moss-900/10"
+                                    ></div>
+                                </div>
+                                <div
+                                    id="btn-reports"
+                                    class="aspect-square bg-white rounded-2xl shadow-ceramic border border-white flex flex-col items-center justify-center gap-2 cursor-pointer hover:bg-sage-50 transition-colors group"
+                                >
+                                    <div
+                                        class="w-10 h-10 rounded-full bg-moss-900/5 group-hover:bg-sage-400/20 flex items-center justify-center text-moss-900"
+                                    >
+                                        &#128202;
+                                    </div>
+                                    <div
+                                        class="text-xs font-medium text-moss-900/60"
+                                    >
+                                        Reports
+                                    </div>
+                                </div>
+                                <div
+                                    class="aspect-square bg-white rounded-2xl shadow-ceramic border border-white opacity-50 flex flex-col items-center justify-center gap-2"
+                                >
+                                    <div
+                                        class="w-10 h-10 rounded-full bg-moss-900/5"
+                                    ></div>
+                                    <div
+                                        class="w-12 h-2 bg-moss-900/5 rounded"
+                                    ></div>
+                                </div>
+                            </div>
+
+                            <div
+                                id="gui-screen-reports"
+                                class="absolute inset-0 bg-[#F2EFE9] hidden flex-col"
+                            >
+                                <div
+                                    class="h-14 bg-white/50 backdrop-blur border-b border-moss-900/5 flex items-center px-6 gap-2 text-xs text-moss-900/40"
+                                >
+                                    <span>Home</span>
+                                    <span class="text-moss-900/20">/</span>
+                                    <span class="font-medium text-moss-900"
+                                        >Reports</span
+                                    >
+                                </div>
+                                <div class="p-6 space-y-3">
+                                    <div
+                                        id="btn-q3"
+                                        class="p-4 bg-white rounded-xl shadow-ceramic border border-white flex justify-between items-center cursor-pointer hover:bg-sage-50 transition-colors"
+                                    >
+                                        <span
+                                            class="text-sm font-medium text-moss-900"
+                                            >Q3 Sales Report</span
+                                        >
+                                        <span class="text-sage-400"
+                                            >&rarr;</span
+                                        >
+                                    </div>
+                                    <div
+                                        class="p-4 bg-white rounded-xl shadow-sm border border-white/50 opacity-50"
+                                    >
+                                        <span class="text-sm text-moss-900/40"
+                                            >Q2 Financials</span
+                                        >
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div
+                                id="gui-screen-final"
+                                class="absolute inset-0 bg-[#F2EFE9] hidden flex-col items-center justify-center"
+                            >
+                                <div
+                                    class="w-16 h-16 rounded-full bg-sage-400/20 flex items-center justify-center mb-2"
+                                >
+                                    <span class="text-2xl">&#128205;</span>
+                                </div>
+                                <div class="text-moss-900 font-medium">
+                                    Found via Navigation
+                                </div>
+                                <div class="text-xs text-moss-900/50 mt-1">
+                                    Time: <span id="gui-final-time">0.0s</span>
+                                </div>
+                            </div>
+
+                            <div
+                                id="sim-mouse"
+                                class="absolute w-5 h-5 bg-moss-900 rounded-full border border-white shadow-xl opacity-0 pointer-events-none transition-all duration-500 z-50 flex items-center justify-center"
+                                style="top: 50%; left: 50%"
+                            >
+                                <div
+                                    class="w-1 h-1 bg-white rounded-full"
+                                ></div>
+                            </div>
+
+                            <div
+                                class="absolute bottom-6 right-6 z-40 bg-moss-900/5 px-4 py-2 rounded-full backdrop-blur border border-moss-900/5"
+                            >
+                                <span
+                                    class="text-[10px] text-moss-900/40 uppercase tracking-widest mr-2"
+                                    >Nav Time</span
+                                >
+                                <span
+                                    id="gui-timer"
+                                    class="font-mono font-bold text-moss-900 text-lg"
+                                    >0.0s</span
+                                >
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 2-Second Rule -->
+                <div class="mt-12 glass-panel p-8 rounded-3xl">
+                    <div class="flex flex-col md:flex-row gap-8 items-center">
+                        <div class="flex-1">
+                            <h3 class="text-2xl font-medium text-moss-900 mb-4">
+                                The "2-Second Rule"
+                            </h3>
+                            <p
+                                class="text-moss-900/70 font-light leading-relaxed"
+                            >
+                                If articulating a prompt takes longer than
+                                clicking a button (approx 2s), users revert to
+                                GUI. AI is reserved for "Ambitious Tasks" where
+                                manual effort is &gt;10s.
+                            </p>
+                        </div>
+                        <div class="w-full md:w-1/2">
+                            <div
+                                class="w-full bg-moss-900/5 h-3 rounded-full overflow-hidden mb-2"
+                            >
+                                <div
+                                    class="w-1/4 h-full bg-sage-400 rounded-full"
+                                ></div>
+                            </div>
+                            <div
+                                class="flex justify-between text-xs text-moss-900/40 uppercase tracking-widest"
+                            >
+                                <span>Nav Click (0.2s)</span>
+                                <span>Prompt Typing (3.0s)</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <div class="section-divider"></div>
+
+            <!-- SECTION 5: QUANTITATIVE DATA -->
+            <section id="data" class="scroll-mt-24">
+                <div class="text-center mb-16">
+                    <div
+                        class="text-sage-500 font-bold text-xs uppercase tracking-widest mb-4"
+                    >
+                        Evidence
+                    </div>
+                    <h2
+                        class="text-4xl md:text-5xl font-light text-moss-900 mb-6"
+                    >
+                        2025 Performance Metrics
+                    </h2>
+                    <p
+                        class="text-xl text-moss-900/60 font-light max-w-2xl mx-auto"
+                    >
+                        Data synthesized from Microsoft New Future of Work,
+                        Baymard Institute &amp; NN/g.
+                    </p>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
+                    <div class="tech-panel rounded-3xl p-8">
+                        <h3 class="text-cream-50 font-medium mb-1">
+                            Latency Tolerance Thresholds
+                        </h3>
+                        <p class="text-xs text-cream-50/40 mb-6">
+                            Users wait longer for AI, but drop-off is steep.
+                        </p>
+                        <div class="chart-container">
+                            <canvas id="latencyChart"></canvas>
+                        </div>
+                    </div>
+
+                    <div class="tech-panel rounded-3xl p-8">
+                        <h3 class="text-cream-50 font-medium mb-1">
+                            The "Ambitious Task" Paradox
+                        </h3>
+                        <p class="text-xs text-cream-50/40 mb-6">
+                            AI excels at complex tasks, fails at trivial ones.
+                        </p>
+                        <div class="chart-container">
+                            <canvas id="taskChart"></canvas>
+                        </div>
+                    </div>
+
+                    <div class="tech-panel rounded-3xl p-8">
+                        <h3 class="text-cream-50 font-medium mb-1">
+                            Task Completion Time
+                        </h3>
+                        <p class="text-xs text-cream-50/40 mb-6">
+                            Includes cognitive &amp; system latency.
+                        </p>
+                        <div class="chart-container">
+                            <canvas id="timeChart"></canvas>
+                        </div>
+                        <div
+                            class="mt-4 p-4 rounded-xl bg-copper-500/10 border border-copper-500/20"
+                        >
+                            <p class="text-xs text-copper-500 leading-relaxed">
+                                <strong class="block mb-1"
+                                    >The "Processing" Tax:</strong
+                                >
+                                While input is fast, AI processing latency
+                                (3-5s) erodes speed advantages for simple tasks.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="tech-panel rounded-3xl p-8">
+                        <h3 class="text-cream-50 font-medium mb-1">
+                            Preference by Task Complexity
+                        </h3>
+                        <p class="text-xs text-cream-50/40 mb-6">
+                            Users revert to GUI for simple tasks.
+                        </p>
+                        <div class="chart-container">
+                            <canvas id="adoptionChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Implementation Matrix -->
+                <div
+                    class="bg-white rounded-3xl shadow-soft-studio border border-moss-900/5 overflow-hidden"
+                >
+                    <div class="p-6 border-b border-moss-900/10 text-center">
+                        <h3 class="text-2xl font-medium text-moss-900">
+                            The 2026 Implementation Matrix
+                        </h3>
+                    </div>
+                    <div
+                        class="grid grid-cols-1 md:grid-cols-3 divide-y md:divide-y-0 md:divide-x divide-moss-900/10"
+                    >
+                        <div class="p-8 hover:bg-sage-50/50 transition-colors">
+                            <div
+                                class="text-[10px] font-bold text-copper-500 uppercase tracking-widest mb-3"
+                            >
+                                Trivial / Navigational
+                            </div>
+                            <div class="text-lg font-medium text-moss-900 mb-2">
+                                Use Standard GUI
+                            </div>
+                            <p class="text-sm text-moss-900/60 leading-relaxed">
+                                "Go to Settings."<br />AI is overkill. Latency
+                                (2s) is unacceptable for a 200ms action.
+                            </p>
+                        </div>
+                        <div
+                            class="p-8 hover:bg-sage-50/50 transition-colors bg-moss-900/5"
+                        >
+                            <div
+                                class="text-[10px] font-bold text-moss-900/40 uppercase tracking-widest mb-3"
+                            >
+                                Exploratory / Unknown
+                            </div>
+                            <div class="text-lg font-medium text-moss-900 mb-2">
+                                Use Hybrid
+                            </div>
+                            <p class="text-sm text-moss-900/60 leading-relaxed">
+                                "How do I change privacy?"<br />AI suggests the
+                                path, or provides a deep link.
+                            </p>
+                        </div>
+                        <div
+                            class="p-8 hover:bg-sage-50/50 transition-colors relative overflow-hidden"
+                        >
+                            <div
+                                class="absolute top-0 left-0 w-1 h-full bg-sage-400"
+                            ></div>
+                            <div
+                                class="text-[10px] font-bold text-sage-500 uppercase tracking-widest mb-3"
+                            >
+                                Ambitious / Batch
+                            </div>
+                            <div class="text-lg font-medium text-moss-900 mb-2">
+                                Use Intent (AI)
+                            </div>
+                            <p class="text-sm text-moss-900/60 leading-relaxed">
+                                "Summarize Q3 reports and email them."<br />Impossible
+                                with GUI alone. AI is 10x faster.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <div class="section-divider"></div>
+
+            <!-- SECTION 6: THE SOLUTION - SMART APPS -->
+            <section id="solution" class="scroll-mt-24">
+                <div class="text-center mb-16">
+                    <div
+                        class="text-sage-500 font-bold text-xs uppercase tracking-widest mb-4"
+                    >
+                        The Solution
+                    </div>
+                    <h2
+                        class="text-4xl md:text-5xl font-light text-moss-900 mb-6"
+                    >
+                        Smart Apps
+                    </h2>
+                    <p
+                        class="text-xl text-moss-900/60 font-light max-w-2xl mx-auto"
+                    >
+                        Leveraging Edge AI and FunctionGemma for Zero-Latency,
+                        Privacy-First Integration.
+                    </p>
+                </div>
+
+                <!-- The Opportunity -->
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-16">
+                    <div class="glass-panel p-10 rounded-3xl">
+                        <h3
+                            class="text-copper-500 font-bold text-sm uppercase tracking-widest mb-4"
+                        >
+                            The Problem
+                        </h3>
+                        <p
+                            class="text-moss-900/70 leading-relaxed font-light text-lg mb-6"
+                        >
+                            Clients have massive, complex applications suffering
+                            from
+                            <strong class="text-moss-900"
+                                >"Feature Creep."</strong
+                            >
+                            Users are overwhelmed by menus and navigation trees.
+                        </p>
+                        <h3
+                            class="text-sage-500 font-bold text-sm uppercase tracking-widest mb-4 mt-8"
+                        >
+                            The Solution
+                        </h3>
+                        <p class="text-moss-900 font-medium text-lg mb-4">
+                            We do not need to rebuild apps from scratch.
+                        </p>
+                        <p class="text-moss-900/70 leading-relaxed font-light">
+                            We add an intelligent
+                            <strong class="text-moss-900">"Smart Layer"</strong>
+                            on top of existing codebases.
+                        </p>
+                    </div>
+
+                    <div
+                        class="tech-panel p-10 rounded-3xl flex flex-col justify-center"
+                    >
+                        <div class="layers-graphic mb-8">
+                            <div class="layer layer-smart">
+                                SMART LAYER (AI)
+                            </div>
+                            <div
+                                class="layer layer-base"
+                                style="
+                                    background: rgba(255, 255, 255, 0.1);
+                                    color: #f2efe9;
+                                "
+                            >
+                                LEGACY APP (Base)
+                            </div>
+                        </div>
+                        <h3 class="text-cream-50 font-medium text-xl mb-4">
+                            The Result
+                        </h3>
+                        <ul class="text-cream-50/70 space-y-2 text-sm">
+                            <li class="flex items-start gap-2">
+                                <span class="text-sage-400">&#10003;</span> The
+                                app acts as an
+                                <strong class="text-cream-50">agent</strong>.
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <span class="text-sage-400">&#10003;</span>
+                                Complex workflows become simple conversation
+                                streams.
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <span class="text-sage-400">&#10003;</span>
+                                Preserve existing investment while adding
+                                futuristic capabilities.
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Technology: FunctionGemma -->
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-16">
+                    <div class="glass-panel p-10 rounded-3xl">
+                        <div class="flex items-center gap-4 mb-6">
+                            <div
+                                class="w-14 h-14 rounded-2xl bg-gradient-to-br from-moss-800 to-moss-900 flex items-center justify-center text-cream-50 text-2xl shadow-lg"
+                            >
+                                <i class="fa-solid fa-microchip"></i>
+                            </div>
+                            <div>
+                                <h3 class="text-xl font-medium text-moss-900">
+                                    The Engine: FunctionGemma
+                                </h3>
+                                <p
+                                    class="text-xs text-moss-900/50 uppercase tracking-widest"
+                                >
+                                    270M Parameter Model
+                                </p>
+                            </div>
+                        </div>
+                        <p
+                            class="text-moss-900/70 leading-relaxed font-light mb-6"
+                        >
+                            <strong class="text-moss-900"
+                                >Specialized AI:</strong
+                            >
+                            Optimized for action and structure, not just chat.
+                        </p>
+                        <div class="border-t border-moss-900/10 pt-6 mt-6">
+                            <h4
+                                class="text-sage-500 font-bold text-xs uppercase tracking-widest mb-4"
+                            >
+                                Deployment Flexibility
+                            </h4>
+                            <ul class="text-sm text-moss-900/70 space-y-2">
+                                <li>
+                                    <strong class="text-moss-900"
+                                        >On-Device:</strong
+                                    >
+                                    Zero latency, runs on phone/laptop.
+                                </li>
+                                <li>
+                                    <strong class="text-moss-900"
+                                        >Client Server:</strong
+                                    >
+                                    Hosted on private infrastructure.
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="border-t border-moss-900/10 pt-6 mt-6">
+                            <h4
+                                class="text-sage-500 font-bold text-xs uppercase tracking-widest mb-4"
+                            >
+                                Technical Specs
+                            </h4>
+                            <ul class="text-sm text-moss-900/70 space-y-2">
+                                <li>
+                                    <strong class="text-moss-900"
+                                        >Footprint:</strong
+                                    >
+                                    ~300MB model file
+                                </li>
+                                <li>
+                                    <strong class="text-moss-900"
+                                        >Memory:</strong
+                                    >
+                                    ~500MB RAM target for on-device inference
+                                </li>
+                                <li>
+                                    <strong class="text-moss-900"
+                                        >Accuracy:</strong
+                                    >
+                                    ~85% task success on evaluation suite
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="glass-panel p-10 rounded-3xl">
+                        <h3 class="text-xl font-medium text-moss-900 mb-6">
+                            The Architecture
+                        </h3>
+                        <p
+                            class="text-moss-900/70 leading-relaxed font-light mb-4"
+                        >
+                            <strong class="text-moss-900"
+                                >Big Players Standards:</strong
+                            >
+                            Google A2UI, Vercel json-render, Thesys — built for
+                            Cloud LLMs.
+                        </p>
+                        <p
+                            class="text-moss-900/70 leading-relaxed font-light mb-6"
+                        >
+                            <strong class="text-moss-900">Our Solution:</strong>
+                            Lightweight protocol tailored for Small Language
+                            Models (SLMs) and function calling.
+                        </p>
+                        <div
+                            class="bg-moss-900/5 p-4 rounded-xl font-mono text-sm text-moss-900/80 mb-6"
+                        >
+                            Natural Language
+                            <span class="text-sage-500">&rarr;</span> Function
+                            call
+                            <span class="text-sage-500">&rarr;</span> Action
+                        </div>
+                        <div
+                            class="p-4 bg-sage-50 rounded-xl border border-sage-400/20"
+                        >
+                            <p class="text-sm text-moss-900">
+                                <strong>Safety:</strong> AI strictly fills forms
+                                for approved components.
+                                <span class="text-sage-500 font-medium"
+                                    >Never writes raw code.</span
+                                >
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Business Benefits -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-16">
+                    <div class="glass-panel p-8 rounded-3xl text-center">
+                        <div
+                            class="w-16 h-16 rounded-2xl bg-moss-900/5 flex items-center justify-center mx-auto mb-4"
+                        >
+                            <i
+                                class="fa-solid fa-shield-halved text-2xl text-moss-900"
+                            ></i>
+                        </div>
+                        <h3 class="text-lg font-medium text-moss-900 mb-2">
+                            Data Sovereignty
+                        </h3>
+                        <p class="text-sm text-moss-900/60 font-light">
+                            <strong class="text-moss-900">GDPR Ready.</strong>
+                            Data never needs to leave the browser or private
+                            network.
+                        </p>
+                    </div>
+
+                    <div class="glass-panel p-8 rounded-3xl text-center">
+                        <div
+                            class="w-16 h-16 rounded-2xl bg-moss-900/5 flex items-center justify-center mx-auto mb-4"
+                        >
+                            <i
+                                class="fa-solid fa-bolt text-2xl text-moss-900"
+                            ></i>
+                        </div>
+                        <h3 class="text-lg font-medium text-moss-900 mb-2">
+                            Reliability
+                        </h3>
+                        <p class="text-sm text-moss-900/60 font-light">
+                            <strong class="text-moss-900"
+                                >Offline Capable.</strong
+                            >
+                            Works in subways, airplanes. Zero Latency
+                            (&lt;200ms).
+                        </p>
+                    </div>
+
+                    <div class="glass-panel p-8 rounded-3xl text-center">
+                        <div
+                            class="w-16 h-16 rounded-2xl bg-moss-900/5 flex items-center justify-center mx-auto mb-4"
+                        >
+                            <i
+                                class="fa-solid fa-coins text-2xl text-moss-900"
+                            ></i>
+                        </div>
+                        <h3 class="text-lg font-medium text-moss-900 mb-2">
+                            Cost Advantage
+                        </h3>
+                        <p class="text-sm text-moss-900/60 font-light">
+                            <strong class="text-moss-900"
+                                >Lowers cloud costs</strong
+                            >
+                            by offloading compute to the edge.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Use Cases -->
+                <div class="mb-16">
+                    <h3
+                        class="text-2xl font-medium text-moss-900 text-center mb-10"
+                    >
+                        The "Smart Layer" in Action
+                    </h3>
+
+                    <div class="space-y-6">
+                        <div
+                            class="flex flex-col md:flex-row gap-4 items-stretch"
+                        >
+                            <div class="chat-bubble user-bubble flex-1">
+                                <div
+                                    class="font-bold mb-2 text-copper-500 text-sm"
+                                >
+                                    User
+                                </div>
+                                "I need to update my billing address."
+                            </div>
+                            <div class="chat-bubble ai-bubble flex-1">
+                                <h4 class="text-sage-400 font-medium mb-2">
+                                    Scenario A: Smart Navigation
+                                </h4>
+                                <p class="text-cream-50/80 text-sm">
+                                    AI identifies intent &rarr; Deep links
+                                    directly to
+                                    <strong class="text-cream-50"
+                                        >BillingForm</strong
+                                    >
+                                    view.
+                                </p>
+                                <span class="benefit-tag">Saves 5+ clicks</span>
+                            </div>
+                        </div>
+
+                        <div
+                            class="flex flex-col md:flex-row gap-4 items-stretch"
+                        >
+                            <div class="chat-bubble user-bubble flex-1">
+                                <div
+                                    class="font-bold mb-2 text-copper-500 text-sm"
+                                >
+                                    User
+                                </div>
+                                "How does my spending look this week vs last
+                                week?"
+                            </div>
+                            <div class="chat-bubble ai-bubble flex-1">
+                                <h4 class="text-sage-400 font-medium mb-2">
+                                    Scenario B: Generative UI
+                                </h4>
+                                <p class="text-cream-50/80 text-sm">
+                                    AI sends component type with props &rarr;
+                                    App renders what is needed.
+                                </p>
+                                <span class="benefit-tag"
+                                    >Instant Reporting</span
+                                >
+                            </div>
+                        </div>
+
+                        <div
+                            class="flex flex-col md:flex-row gap-4 items-stretch"
+                        >
+                            <div class="chat-bubble user-bubble flex-1">
+                                <div
+                                    class="font-bold mb-2 text-copper-500 text-sm"
+                                >
+                                    User
+                                </div>
+                                "Create a meeting with John on Monday at 9 AM."
+                            </div>
+                            <div class="chat-bubble ai-bubble flex-1">
+                                <h4 class="text-sage-400 font-medium mb-2">
+                                    Scenario C: App Control
+                                </h4>
+                                <p class="text-cream-50/80 text-sm">
+                                    AI parses details &rarr; Calls Calendar API
+                                    &rarr; Shows confirmation card.
+                                </p>
+                                <span class="benefit-tag">Task in seconds</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Real-World Examples -->
+                <div class="mb-16">
+                    <h3
+                        class="text-2xl font-medium text-moss-900 text-center mb-10"
+                    >
+                        Real-World UI Examples (Concept)
+                    </h3>
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                        <figure class="glass-panel rounded-3xl overflow-hidden">
+                            <img
+                                src="./bank_usecae.png"
+                                alt="Bank app dashboard with Smart Layer"
+                                class="w-full h-auto"
+                            />
+                            <figcaption
+                                class="p-6 text-center text-sm text-moss-900/70"
+                            >
+                                <strong class="text-moss-900">Banking:</strong>
+                                A single intent prompt replaces deep navigation.
+                            </figcaption>
+                        </figure>
+                        <figure class="glass-panel rounded-3xl overflow-hidden">
+                            <img
+                                src="./gov_usecase.png"
+                                alt="Government portal with intent prompt"
+                                class="w-full h-auto"
+                            />
+                            <figcaption
+                                class="p-6 text-center text-sm text-moss-900/70"
+                            >
+                                <strong class="text-moss-900"
+                                    >Government:</strong
+                                >
+                                UI assembled from approved components, guided by
+                                intent.
+                            </figcaption>
+                        </figure>
+                    </div>
+                </div>
+
+                <!-- External Resources -->
+                <div class="glass-panel p-8 rounded-3xl mb-16">
+                    <h3
+                        class="text-xl font-medium text-moss-900 mb-6 text-center"
+                    >
+                        Resources &amp; Demos
+                    </h3>
+                    <div class="flex flex-wrap justify-center gap-4">
+                        <a
+                            href="https://www.youtube.com/clip/UgkxWZPhDf-lo4gV7dRnPOxskjDA0dT7FAO4"
+                            target="_blank"
+                            class="ceramic-btn px-6 py-3 rounded-full text-sm font-medium"
+                        >
+                            <i class="fa-brands fa-youtube mr-2"></i>
+                            FunctionGemma Demo
+                        </a>
+                        <a
+                            href="https://youtube.com/clip/UgkxN6XBJYLM5HD9SfC6kcXT4vcPh4y99eJ7?si=0-46f0bwLKpSvLZk"
+                            target="_blank"
+                            class="ceramic-btn px-6 py-3 rounded-full text-sm font-medium"
+                        >
+                            <i class="fa-brands fa-youtube mr-2"></i> Gen UI
+                            Chatbot
+                        </a>
+                        <a
+                            href="https://www.linkedin.com/posts/michal-zadarnowski_functiongemma-edgeai-frontendarchitecture-activity-7409556691790430208-ruor"
+                            target="_blank"
+                            class="ceramic-btn px-6 py-3 rounded-full text-sm font-medium"
+                        >
+                            <i class="fa-brands fa-linkedin mr-2"></i> Smart
+                            Apps Post
+                        </a>
+                    </div>
+                </div>
+            </section>
+
+            <div class="section-divider"></div>
+
+            <!-- SECTION 7: THE VERDICT -->
+            <section id="verdict" class="scroll-mt-24 pb-20">
+                <div class="text-center mb-16">
+                    <div
+                        class="text-sage-500 font-bold text-xs uppercase tracking-widest mb-4"
+                    >
+                        The Verdict
+                    </div>
+                    <h2
+                        class="text-4xl md:text-5xl font-light text-moss-900 mb-6"
+                    >
+                        Hybrid Interfaces Win
+                    </h2>
+                </div>
+
+                <div
+                    class="grid grid-cols-1 md:grid-cols-3 gap-0 rounded-3xl overflow-hidden shadow-soft-studio border border-white/20 mb-16"
+                >
+                    <div class="glass-panel p-10 border-r border-white/20">
+                        <h3
+                            class="text-xs font-bold text-moss-900/40 uppercase tracking-widest mb-6"
+                        >
+                            Routine Tasks
+                        </h3>
+                        <div class="text-sage-500 font-medium text-xl mb-3">
+                            Generative Intent
+                        </div>
+                        <p class="text-sm text-moss-900/60 mb-6 font-light">
+                            "Remind me to call John."
+                        </p>
+                        <ul class="text-xs text-moss-900/70 space-y-3">
+                            <li class="flex items-center gap-2">
+                                <span
+                                    class="w-1.5 h-1.5 rounded-full bg-sage-400"
+                                ></span>
+                                3x Faster Execution
+                            </li>
+                            <li class="flex items-center gap-2">
+                                <span
+                                    class="w-1.5 h-1.5 rounded-full bg-sage-400"
+                                ></span>
+                                Zero Interaction Friction
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="tech-panel p-10 relative">
+                        <div
+                            class="absolute top-0 left-0 w-full h-1 bg-sage-400"
+                        ></div>
+                        <h3
+                            class="text-xs font-bold text-cream-50/40 uppercase tracking-widest mb-6"
+                        >
+                            Complex Discovery
+                        </h3>
+                        <div class="text-cream-50 font-medium text-xl mb-3">
+                            Hybrid Augmentation
+                        </div>
+                        <p class="text-sm text-cream-50/60 mb-6 font-light">
+                            "Show sales..."
+                            <span class="text-sage-400">[AI Suggests Q1]</span>
+                        </p>
+                        <ul class="text-xs text-cream-50/70 space-y-3">
+                            <li class="flex items-center gap-2">
+                                <span
+                                    class="w-1.5 h-1.5 rounded-full bg-sage-400"
+                                ></span>
+                                Low Articulation Barrier
+                            </li>
+                            <li class="flex items-center gap-2">
+                                <span
+                                    class="w-1.5 h-1.5 rounded-full bg-sage-400"
+                                ></span>
+                                Verifiable Output
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="glass-panel p-10 border-l border-white/20">
+                        <h3
+                            class="text-xs font-bold text-moss-900/40 uppercase tracking-widest mb-6"
+                        >
+                            Safety Critical
+                        </h3>
+                        <div class="text-moss-900 font-medium text-xl mb-3">
+                            Explicit Navigation
+                        </div>
+                        <p class="text-sm text-moss-900/60 mb-6 font-light">
+                            Payments, Deletion, Settings
+                        </p>
+                        <ul class="text-xs text-moss-900/70 space-y-3">
+                            <li class="flex items-center gap-2">
+                                <span
+                                    class="w-1.5 h-1.5 rounded-full bg-sage-400"
+                                ></span>
+                                100% Predictable
+                            </li>
+                            <li class="flex items-center gap-2">
+                                <span
+                                    class="w-1.5 h-1.5 rounded-full bg-sage-400"
+                                ></span>
+                                Zero Hallucination Risk
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Footer -->
+            <footer class="border-t border-moss-900/10 pt-10 pb-20 text-center">
+                <p
+                    class="text-xs text-moss-900/40 uppercase tracking-widest mb-2"
+                >
+                    Sources
+                </p>
+                <p class="text-xs text-moss-900/60 mb-4">
+                    <a
+                        href="https://www.nngroup.com/articles/ai-paradigm/"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="hover:text-moss-900 underline"
+                        >Jakob Nielsen (NN/g) - AI: The First New UI Paradigm in
+                        60 Years (2023)</a
+                    >
+                    &bull;
+                    <a
+                        href="https://www.microsoft.com/en-us/research/wp-content/uploads/2025/12/New-Future-Of-Work-Report-2025.pdf"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="hover:text-moss-900 underline"
+                        >Microsoft Research - New Future of Work Report 2025
+                        (LLMs and Work)</a
+                    >
+                    &bull;
+                    <a
+                        href="https://www.hbs.edu/faculty/Pages/item.aspx?num=64700"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="hover:text-moss-900 underline"
+                        >Harvard Business School - Navigating the Jagged
+                        Technological Frontier (2023)</a
+                    >
+                    &bull;
+                    <a
+                        href="https://www.geoffreylitt.com/2023/03/25/llm-end-user-programming.html"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="hover:text-moss-900 underline"
+                        >Geoffrey Litt (Ink &amp; Switch) - Malleable Software
+                        in the Age of LLMs (2023)</a
+                    >
+                    &bull;
+                    <a
+                        href="https://m3.material.io/"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="hover:text-moss-900 underline"
+                        >Google Material Design 3 - AI Design Guidelines</a
+                    >
+                </p>
+                <p class="text-xs text-moss-900/40">
+                    <a
+                        href="https://www.linkedin.com/in/michal-zadarnowski/"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="hover:text-moss-900"
+                        >Michal Zadarnowski</a
+                    >
+                    | Jan 2026 | Digital Strategy
+                </p>
+            </footer>
+        </main>
+
+        <!-- JavaScript -->
+        <script>
+            let simRunning = false;
+
+            function runSimulation() {
+                if (simRunning) return;
+                simRunning = true;
+
+                const btn = document.getElementById("run-sim-btn");
+                btn.disabled = true;
+                btn.style.opacity = "0.6";
+
+                resetSimulation();
+                runAISequence();
+                runGUISequence();
+            }
+
+            function resetSimulation() {
+                document.getElementById("sim-prompt-input").textContent = "";
+                document.getElementById("ai-timer").textContent = "0.0s";
+                document.getElementById("ai-thinking").style.opacity = "0";
+                document.getElementById("sim-prompt-success").style.opacity =
+                    "0";
+                document
+                    .getElementById("ai-indicator")
+                    .classList.remove("animate-pulse");
+
+                document.getElementById("gui-screen-home").style.display =
+                    "grid";
+                document.getElementById("gui-screen-reports").style.display =
+                    "none";
+                document.getElementById("gui-screen-final").style.display =
+                    "none";
+                document.getElementById("sim-mouse").style.opacity = "0";
+                document.getElementById("gui-timer").textContent = "0.0s";
+            }
+
+            function runAISequence() {
+                const input = document.getElementById("sim-prompt-input");
+                const timer = document.getElementById("ai-timer");
+                const targetText = "Show me the Q3 Sales Report";
+                const startTime = Date.now();
+                let idx = 0;
+
+                document
+                    .getElementById("ai-indicator")
+                    .classList.add("animate-pulse");
+
+                const timerInterval = setInterval(() => {
+                    const elapsed = ((Date.now() - startTime) / 1000).toFixed(
+                        1,
+                    );
+                    timer.textContent = elapsed + "s";
+                }, 100);
+
+                const typeInterval = setInterval(() => {
+                    if (idx < targetText.length) {
+                        input.textContent += targetText[idx];
+                        idx++;
+                    } else {
+                        clearInterval(typeInterval);
+
+                        setTimeout(() => {
+                            document.getElementById(
+                                "ai-thinking",
+                            ).style.opacity = "1";
+
+                            setTimeout(() => {
+                                document.getElementById(
+                                    "ai-thinking",
+                                ).style.opacity = "0";
+                                document.getElementById(
+                                    "sim-prompt-success",
+                                ).style.opacity = "1";
+                                clearInterval(timerInterval);
+
+                                setTimeout(() => {
+                                    simRunning = false;
+                                    document.getElementById(
+                                        "run-sim-btn",
+                                    ).disabled = false;
+                                    document.getElementById(
+                                        "run-sim-btn",
+                                    ).style.opacity = "1";
+                                }, 1000);
+                            }, 2000);
+                        }, 500);
+                    }
+                }, 80);
+            }
+
+            function runGUISequence() {
+                const container = document.getElementById("nav-container");
+                const mouse = document.getElementById("sim-mouse");
+                const timer = document.getElementById("gui-timer");
+                const startTime = Date.now();
+
+                mouse.style.opacity = "1";
+
+                const timerInterval = setInterval(() => {
+                    const elapsed = ((Date.now() - startTime) / 1000).toFixed(
+                        1,
+                    );
+                    timer.textContent = elapsed + "s";
+                }, 100);
+
+                const sequence = [
+                    { target: "btn-reports", delay: 800 },
+                    {
+                        target: "btn-q3",
+                        delay: 1500,
+                        showScreen: "gui-screen-reports",
+                        hideScreen: "gui-screen-home",
+                    },
+                    {
+                        target: null,
+                        delay: 2200,
+                        showScreen: "gui-screen-final",
+                        hideScreen: "gui-screen-reports",
+                    },
+                ];
+
+                sequence.forEach((step, index) => {
+                    setTimeout(() => {
+                        if (step.hideScreen) {
+                            document.getElementById(
+                                step.hideScreen,
+                            ).style.display = "none";
+                        }
+                        if (step.showScreen) {
+                            document.getElementById(
+                                step.showScreen,
+                            ).style.display = "flex";
+                        }
+
+                        if (step.target) {
+                            const target = document.getElementById(step.target);
+                            if (target) {
+                                const rect = target.getBoundingClientRect();
+                                const containerRect =
+                                    container.getBoundingClientRect();
+                                mouse.style.top =
+                                    rect.top -
+                                    containerRect.top +
+                                    rect.height / 2 +
+                                    "px";
+                                mouse.style.left =
+                                    rect.left -
+                                    containerRect.left +
+                                    rect.width / 2 +
+                                    "px";
+                            }
+                        }
+
+                        if (index === sequence.length - 1) {
+                            clearInterval(timerInterval);
+                            document.getElementById(
+                                "gui-final-time",
+                            ).textContent = timer.textContent;
+                            mouse.style.opacity = "0";
+                        }
+                    }, step.delay);
+                });
+            }
+
+            document.addEventListener("DOMContentLoaded", function () {
+                const chartColors = {
+                    sage: "#76A880",
+                    copper: "#9C5F32",
+                    cream: "#F2EFE9",
+                    moss: "#1A3324",
+                    sageTrans: "rgba(118, 168, 128, 0.3)",
+                    copperTrans: "rgba(156, 95, 50, 0.3)",
+                };
+
+                new Chart(document.getElementById("latencyChart"), {
+                    type: "line",
+                    data: {
+                        labels: ["0.5s", "1s", "2s", "3s", "5s", "10s"],
+                        datasets: [
+                            {
+                                label: "GUI Tolerance",
+                                data: [95, 85, 50, 20, 5, 2],
+                                borderColor: chartColors.sage,
+                                backgroundColor: chartColors.sageTrans,
+                                tension: 0.4,
+                                fill: true,
+                            },
+                            {
+                                label: "AI Tolerance",
+                                data: [98, 95, 90, 80, 60, 30],
+                                borderColor: chartColors.copper,
+                                backgroundColor: chartColors.copperTrans,
+                                tension: 0.4,
+                                fill: true,
+                            },
+                        ],
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                position: "bottom",
+                                labels: { color: chartColors.cream },
+                            },
+                        },
+                        scales: {
+                            y: {
+                                title: {
+                                    display: true,
+                                    text: "User Retention %",
+                                    color: chartColors.cream,
+                                },
+                                grid: { color: "rgba(255,255,255,0.1)" },
+                                ticks: { color: chartColors.cream },
+                            },
+                            x: {
+                                grid: { display: false },
+                                ticks: { color: chartColors.cream },
+                            },
+                        },
+                    },
+                });
+
+                new Chart(document.getElementById("taskChart"), {
+                    type: "bar",
+                    data: {
+                        labels: [
+                            "Simple Nav",
+                            "Form Fill",
+                            "Data Query",
+                            "Multi-Step",
+                            "Batch Ops",
+                        ],
+                        datasets: [
+                            {
+                                label: "GUI Success",
+                                data: [98, 92, 75, 60, 30],
+                                backgroundColor: chartColors.sage,
+                                borderRadius: 6,
+                            },
+                            {
+                                label: "AI Success",
+                                data: [70, 85, 92, 88, 95],
+                                backgroundColor: chartColors.copper,
+                                borderRadius: 6,
+                            },
+                        ],
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                position: "bottom",
+                                labels: { color: chartColors.cream },
+                            },
+                        },
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                max: 100,
+                                grid: { color: "rgba(255,255,255,0.1)" },
+                                ticks: { color: chartColors.cream },
+                            },
+                            x: {
+                                grid: { display: false },
+                                ticks: { color: chartColors.cream },
+                            },
+                        },
+                    },
+                });
+
+                new Chart(document.getElementById("timeChart"), {
+                    type: "bar",
+                    data: {
+                        labels: ["Simple", "Medium", "Complex"],
+                        datasets: [
+                            {
+                                label: "Input Time",
+                                data: [0.5, 2, 4],
+                                backgroundColor: chartColors.sage,
+                                stack: "Stack 0",
+                                borderRadius: 4,
+                            },
+                            {
+                                label: "Processing",
+                                data: [0.1, 0.2, 0.5],
+                                backgroundColor: "rgba(118, 168, 128, 0.5)",
+                                stack: "Stack 0",
+                                borderRadius: 4,
+                            },
+                            {
+                                label: "AI Processing",
+                                data: [2, 3, 4],
+                                backgroundColor: chartColors.copper,
+                                stack: "Stack 1",
+                                borderRadius: 4,
+                            },
+                        ],
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                position: "bottom",
+                                labels: { color: chartColors.cream },
+                            },
+                        },
+                        scales: {
+                            y: {
+                                stacked: true,
+                                grid: { color: "rgba(255,255,255,0.1)" },
+                                ticks: { color: chartColors.cream },
+                            },
+                            x: {
+                                stacked: true,
+                                grid: { display: false },
+                                ticks: { color: chartColors.cream },
+                            },
+                        },
+                    },
+                });
+
+                new Chart(document.getElementById("adoptionChart"), {
+                    type: "radar",
+                    data: {
+                        labels: [
+                            "Speed",
+                            "Accuracy",
+                            "Discoverability",
+                            "Learning Curve",
+                            "Satisfaction",
+                            "Trust",
+                        ],
+                        datasets: [
+                            {
+                                label: "GUI",
+                                data: [60, 95, 80, 90, 70, 95],
+                                backgroundColor: "rgba(118, 168, 128, 0.3)",
+                                borderColor: chartColors.sage,
+                                pointBackgroundColor: chartColors.sage,
+                            },
+                            {
+                                label: "AI Intent",
+                                data: [90, 75, 40, 50, 85, 60],
+                                backgroundColor: "rgba(156, 95, 50, 0.3)",
+                                borderColor: chartColors.copper,
+                                pointBackgroundColor: chartColors.copper,
+                            },
+                        ],
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        scales: {
+                            r: {
+                                angleLines: { color: "rgba(255,255,255,0.1)" },
+                                grid: { color: "rgba(255,255,255,0.1)" },
+                                pointLabels: {
+                                    color: chartColors.cream,
+                                    font: { size: 10 },
+                                },
+                                ticks: { display: false },
+                            },
+                        },
+                        plugins: {
+                            legend: {
+                                position: "bottom",
+                                labels: { color: chartColors.cream },
+                            },
+                        },
+                    },
+                });
+            });
+        </script>
+    </body>
+</html>

@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Smart Apps | Infographic</title>
+        <link
+            href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+            rel="stylesheet"
+        />
+        <style>
+            * {
+                box-sizing: border-box;
+                margin: 0;
+                padding: 0;
+            }
+
+            body {
+                font-family: "Inter", system-ui, sans-serif;
+                background: linear-gradient(180deg, #f2efe9 0%, #e1eadf 100%);
+                background-attachment: fixed;
+                color: #1a3324;
+                min-height: 100vh;
+            }
+
+            /* Page Navigation */
+            .page-nav {
+                width: 100%;
+                background: #1a3324;
+                border-bottom: 1px solid #2c5530;
+            }
+
+            .page-nav-inner {
+                max-width: 1200px;
+                margin: 0 auto;
+                padding: 0 20px;
+                height: 48px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                gap: 8px;
+            }
+
+            .page-nav a {
+                padding: 8px 16px;
+                font-size: 0.875rem;
+                font-weight: 500;
+                border-radius: 8px;
+                text-decoration: none;
+                transition: all 0.2s;
+            }
+
+            .page-nav a.active {
+                background: #76a880;
+                color: #1a3324;
+            }
+
+            .page-nav a:not(.active) {
+                color: rgba(255, 255, 255, 0.7);
+            }
+
+            .page-nav a:not(.active):hover {
+                color: #fff;
+                background: #2c5530;
+            }
+
+            /* Main Content */
+            main {
+                max-width: 1400px;
+                margin: 0 auto;
+                padding: 40px 20px;
+                text-align: center;
+            }
+
+            h1 {
+                font-size: 2rem;
+                font-weight: 300;
+                color: #1a3324;
+                margin-bottom: 30px;
+            }
+
+            .infographic-container {
+                background: rgba(255, 255, 255, 0.7);
+                backdrop-filter: blur(20px);
+                border: 1px solid rgba(255, 255, 255, 0.8);
+                border-radius: 20px;
+                padding: 20px;
+                box-shadow: 0 25px 50px -12px rgba(26, 51, 36, 0.15);
+            }
+
+            .infographic-container img {
+                max-width: 100%;
+                height: auto;
+                border-radius: 12px;
+            }
+
+            footer {
+                text-align: center;
+                padding: 30px 20px;
+                font-size: 0.75rem;
+                color: rgba(26, 51, 36, 0.5);
+            }
+        </style>
+    </head>
+    <body>
+        <!-- Page Navigation -->
+        <nav class="page-nav">
+            <div class="page-nav-inner">
+                <a href="smart_apps2.html">Overview</a>
+                <a href="final_research.html">Full Research</a>
+                <a href="summary_final_research.html">Executive Summary</a>
+                <a href="infographic.html" class="active">Infographic</a>
+            </div>
+        </nav>
+
+        <main>
+            <h1>From Clicks to Intent: How AI is Reshaping User Experience</h1>
+            <div class="infographic-container">
+                <img
+                    src="ui_future_infographic.png"
+                    alt="Infographic showing the evolution from clicks to intent-based interaction - three paradigms of human-computer interaction and the future of AI-driven UX design"
+                />
+            </div>
+        </main>
+
+        <footer>
+            <p>Michal Zadarnowski | Jan 2026 | Digital Strategy</p>
+        </footer>
+    </body>
+</html>

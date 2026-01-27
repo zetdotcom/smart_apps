@@ -1,0 +1,1322 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Generative Intent vs. Navigation | 2026 Research</title>
+        <script src="https://cdn.tailwindcss.com"></script>
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <link
+            href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap"
+            rel="stylesheet"
+        />
+
+        <script>
+            tailwind.config = {
+                theme: {
+                    extend: {
+                        colors: {
+                            moss: {
+                                900: "#1A3324", // Deep Moss (Primary Anchor)
+                                800: "#2C5530", // Forest Green (Gradient End)
+                            },
+                            copper: {
+                                500: "#9C5F32", // Burnished Copper (Bad/Secondary)
+                            },
+                            sage: {
+                                400: "#76A880", // Crisp Sage (Good/Highlight)
+                                50: "#E1EADF", // Pale Sage (Bg Bottom)
+                            },
+                            cream: {
+                                100: "#F2EFE9", // Warm Cream (Bg Top)
+                                50: "#EFEFEF", // Text on Dark
+                            },
+                        },
+                        fontFamily: {
+                            sans: ["Outfit", "sans-serif"],
+                        },
+                        boxShadow: {
+                            "soft-studio":
+                                "0 20px 40px -10px rgba(26, 51, 36, 0.15)",
+                            ceramic:
+                                "0 4px 6px -1px rgba(26, 51, 36, 0.1), 0 2px 4px -1px rgba(26, 51, 36, 0.06)",
+                            "inner-light":
+                                "inset 0 2px 4px 0 rgba(255, 255, 255, 0.1)",
+                        },
+                    },
+                },
+            };
+        </script>
+
+        <style>
+            /* --- Atmospheric Background --- */
+            body {
+                background: linear-gradient(
+                    to bottom,
+                    #f2efe9 0%,
+                    #e1eadf 100%
+                );
+                color: #1a3324;
+                min-height: 100vh;
+            }
+
+            /* --- Container Gradient: Deep Canopy --- */
+            .tech-panel {
+                background: linear-gradient(135deg, #1a3324 0%, #2c5530 100%);
+                color: #efefef;
+                border: 1px solid rgba(255, 255, 255, 0.05);
+                box-shadow: 0 20px 40px -10px rgba(26, 51, 36, 0.3);
+            }
+
+            /* --- Glass Material (Light) --- */
+            .glass-panel {
+                background: rgba(242, 239, 233, 0.6);
+                backdrop-filter: blur(16px);
+                -webkit-backdrop-filter: blur(16px);
+                border: 1px solid rgba(255, 255, 255, 0.4);
+                box-shadow: 0 4px 30px rgba(0, 0, 0, 0.05);
+            }
+
+            /* --- Ceramic/Matte Objects --- */
+            .ceramic-btn {
+                background: linear-gradient(145deg, #76a880, #6a9a73);
+                box-shadow:
+                    5px 5px 10px #d1d9cf,
+                    -5px -5px 10px #ffffff;
+                border: none;
+                transition: all 0.3s ease;
+            }
+            .ceramic-btn:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 10px 20px rgba(118, 168, 128, 0.3);
+            }
+
+            .ceramic-icon {
+                background: #f2efe9;
+                box-shadow:
+                    inset 2px 2px 5px rgba(26, 51, 36, 0.1),
+                    inset -2px -2px 5px rgba(255, 255, 255, 0.8);
+                border-radius: 50%;
+            }
+
+            /* --- Chart Containers --- */
+            .chart-container {
+                position: relative;
+                width: 100%;
+                height: 320px;
+            }
+
+            /* --- Simulation Specifics --- */
+            .sim-input {
+                background: rgba(242, 239, 233, 0.1);
+                border: 1px solid rgba(242, 239, 233, 0.2);
+                color: #efefef;
+            }
+            .sim-input:focus {
+                background: rgba(242, 239, 233, 0.15);
+                border-color: #76a880;
+                outline: none;
+            }
+
+            /* Animations */
+            @keyframes pulse-sage {
+                0% {
+                    box-shadow: 0 0 0 0 rgba(118, 168, 128, 0.7);
+                }
+                70% {
+                    box-shadow: 0 0 0 10px rgba(118, 168, 128, 0);
+                }
+                100% {
+                    box-shadow: 0 0 0 0 rgba(118, 168, 128, 0);
+                }
+            }
+            .animate-pulse-sage {
+                animation: pulse-sage 2s infinite;
+            }
+
+            .click-circle {
+                position: absolute;
+                width: 24px;
+                height: 24px;
+                border-radius: 50%;
+                background: rgba(118, 168, 128, 0.4);
+                border: 2px solid #76a880;
+                transform: scale(0);
+                pointer-events: none;
+                z-index: 50;
+            }
+            .click-animate {
+                animation: click-pulse 0.5s ease-out forwards;
+            }
+            @keyframes click-pulse {
+                0% {
+                    transform: scale(0);
+                    opacity: 1;
+                }
+                50% {
+                    transform: scale(1.5);
+                    opacity: 0.6;
+                }
+                100% {
+                    transform: scale(2.5);
+                    opacity: 0;
+                }
+            }
+
+            /* Custom Scrollbar for dark panels */
+            .tech-scroll::-webkit-scrollbar {
+                width: 6px;
+            }
+            .tech-scroll::-webkit-scrollbar-track {
+                background: rgba(255, 255, 255, 0.05);
+            }
+            .tech-scroll::-webkit-scrollbar-thumb {
+                background: rgba(255, 255, 255, 0.2);
+                border-radius: 3px;
+            }
+            .tech-scroll::-webkit-scrollbar-thumb:hover {
+                background: rgba(255, 255, 255, 0.3);
+            }
+
+            .tooltip-text {
+                background-color: #1a3324;
+                color: #f2efe9;
+                box-shadow: 0 10px 25px -5px rgba(26, 51, 36, 0.4);
+            }
+            .tooltip-text::after {
+                border-color: #1a3324 transparent transparent transparent;
+            }
+        </style>
+
+        <!-- Placeholder: Palette -->
+        <!-- Chosen Palette: Deep Moss (#1A3324), Burnished Copper (#9C5F32), Crisp Sage (#76A880), Warm Cream (#F2EFE9) -->
+        <!-- Application Structure Plan:
+         - Preserving the 2026 Research structure.
+         - Applying 'Deep Canopy' gradient to all high-value data containers (Stats, Sim, Charts).
+         - Applying 'Organic' styling to typography and layout.
+         - 'Bad' states (latency/errors) mapped to Copper. 'Good' states (speed/nav) mapped to Sage.
+    -->
+        <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    </head>
+    <body class="antialiased selection:bg-sage-400 selection:text-moss-900">
+        <!-- Header -->
+        <header class="sticky top-0 z-50 glass-panel border-b border-white/20">
+            <div class="max-w-7xl mx-auto px-6 lg:px-8">
+                <div class="flex justify-between items-center h-20">
+                    <div class="flex items-center gap-4">
+                        <!-- Ceramic Icon -->
+                        <div
+                            class="w-10 h-10 ceramic-icon flex items-center justify-center text-moss-900 font-bold text-lg shadow-inner"
+                        >
+                            R
+                        </div>
+                        <span
+                            class="font-medium text-moss-900 tracking-wide text-sm md:text-base"
+                            >HCI Research 2026</span
+                        >
+                    </div>
+                    <nav class="hidden md:flex space-x-2">
+                        <button
+                            onclick="document.getElementById('simulation').scrollIntoView({behavior: 'smooth'})"
+                            class="px-4 py-2 text-sm font-medium text-moss-900/70 hover:text-moss-900 transition-colors"
+                        >
+                            Simulation Lab
+                        </button>
+                        <button
+                            onclick="document.getElementById('data').scrollIntoView({behavior: 'smooth'})"
+                            class="px-4 py-2 text-sm font-medium text-moss-900/70 hover:text-moss-900 transition-colors"
+                        >
+                            Metrics
+                        </button>
+                        <button
+                            onclick="document.getElementById('verdict').scrollIntoView({behavior: 'smooth'})"
+                            class="px-4 py-2 text-sm font-medium text-sage-400 font-bold hover:text-sage-500 transition-colors"
+                        >
+                            Future Verdict
+                        </button>
+                    </nav>
+                </div>
+            </div>
+        </header>
+
+        <main class="max-w-7xl mx-auto px-6 lg:px-8 py-16 space-y-24">
+            <!-- Executive Summary -->
+            <section class="text-center max-w-5xl mx-auto space-y-10">
+                <div
+                    class="inline-flex items-center px-4 py-1.5 rounded-full bg-sage-50 border border-sage-400/30 text-moss-900 text-xs font-semibold tracking-widest uppercase"
+                >
+                    New Future of Work Report Data
+                </div>
+                <h1
+                    class="text-5xl md:text-7xl font-light text-moss-900 leading-tight tracking-tight"
+                >
+                    Generative Intent <br />
+                    <span
+                        class="font-thin italic text-4xl md:text-6xl text-copper-500/80"
+                        >&</span
+                    >
+                    Explicit Navigation
+                </h1>
+                <p
+                    class="text-xl text-moss-900/70 leading-relaxed max-w-2xl mx-auto font-light"
+                >
+                    An analysis of the
+                    <strong class="text-moss-900 font-medium"
+                        >"Articulation Barrier"</strong
+                    >
+                    in AI interfaces versus the
+                    <strong class="text-moss-900 font-medium"
+                        >"Click Fatigue"</strong
+                    >
+                    of traditional hierarchies.
+                </p>
+
+                <!-- Key Stats: Deep Canopy Panels -->
+                <div
+                    class="grid grid-cols-1 md:grid-cols-3 gap-6 text-left mt-12"
+                >
+                    <!-- Card 1 -->
+                    <div
+                        class="tech-panel rounded-3xl p-8 transition-transform hover:-translate-y-1"
+                    >
+                        <div class="text-sage-400 font-medium text-4xl mb-2">
+                            37%
+                        </div>
+                        <div class="h-px w-12 bg-sage-400/50 mb-4"></div>
+                        <h3 class="font-medium text-cream-50 text-lg mb-2">
+                            Faster Execution
+                        </h3>
+                        <p class="text-sm text-cream-50/60 font-light">
+                            Speed gain for information retrieval tasks using
+                            GenUI vs traditional click paths.
+                        </p>
+                    </div>
+
+                    <!-- Card 2 -->
+                    <div
+                        class="tech-panel rounded-3xl p-8 transition-transform hover:-translate-y-1"
+                    >
+                        <div class="text-copper-500 font-medium text-4xl mb-2">
+                            +19%
+                        </div>
+                        <div class="h-px w-12 bg-copper-500/50 mb-4"></div>
+                        <h3 class="font-medium text-cream-50 text-lg mb-2">
+                            Error Risk
+                        </h3>
+                        <p class="text-sm text-cream-50/60 font-light">
+                            Increase in incorrect outcomes when users over-rely
+                            on AI intent without verification.
+                        </p>
+                    </div>
+
+                    <!-- Card 3 -->
+                    <div
+                        class="tech-panel rounded-3xl p-8 transition-transform hover:-translate-y-1 relative overflow-hidden"
+                    >
+                        <div
+                            class="absolute -right-10 -top-10 w-40 h-40 bg-sage-400/10 rounded-full blur-3xl"
+                        ></div>
+                        <div class="text-cream-50 font-medium text-4xl mb-2">
+                            Hybrid
+                        </div>
+                        <div class="h-px w-12 bg-cream-50/50 mb-4"></div>
+                        <h3 class="font-medium text-cream-50 text-lg mb-2">
+                            Optimal Model
+                        </h3>
+                        <p class="text-sm text-cream-50/60 font-light">
+                            "Prompt Augmentation" outperforms pure text entry by
+                            reducing cognitive load.
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Simulation Section -->
+            <section id="simulation" class="scroll-mt-32">
+                <div
+                    class="flex flex-col md:flex-row justify-between items-end mb-10 pb-6 border-b border-moss-900/10"
+                >
+                    <div>
+                        <h2 class="text-3xl font-medium text-moss-900">
+                            The Articulation Barrier Lab
+                        </h2>
+                        <p class="text-moss-900/60 mt-2 max-w-xl font-light">
+                            Experience the friction of "knowing what to say" vs.
+                            the effort of "finding where to click."
+                        </p>
+                    </div>
+                    <div class="mt-6 md:mt-0">
+                        <button
+                            id="run-sim-btn"
+                            class="group relative px-8 py-3 rounded-full bg-moss-900 text-cream-50 font-medium shadow-soft-studio transition-all hover:bg-moss-800"
+                        >
+                            <span class="relative z-10 flex items-center gap-2">
+                                <span>▶ Initiate Protocol</span>
+                            </span>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    <!-- Idea 1: Generative Intent (Deep Tech Panel) -->
+                    <div
+                        class="tech-panel rounded-3xl p-1 relative overflow-hidden flex flex-col h-[500px]"
+                    >
+                        <!-- Header -->
+                        <div
+                            class="px-6 py-5 border-b border-white/10 flex justify-between items-center bg-black/10"
+                        >
+                            <div>
+                                <h3
+                                    class="font-medium text-sage-400 flex items-center gap-2 text-lg"
+                                >
+                                    <span
+                                        class="w-2 h-2 rounded-full bg-sage-400 animate-pulse"
+                                    ></span>
+                                    Generative Intent
+                                </h3>
+                                <p
+                                    class="text-xs text-cream-50/40 mt-1 uppercase tracking-wider"
+                                >
+                                    Natural Language Interface
+                                </p>
+                            </div>
+                            <div class="text-right">
+                                <div
+                                    class="text-[10px] text-cream-50/40 uppercase tracking-widest font-bold"
+                                >
+                                    Friction Factor
+                                </div>
+                                <div
+                                    class="text-xs font-medium text-copper-500"
+                                >
+                                    Articulation
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Content -->
+                        <div
+                            class="flex-1 p-6 relative flex flex-col justify-end"
+                        >
+                            <!-- History Area -->
+                            <div
+                                id="sim-prompt-area"
+                                class="tech-scroll space-y-4 mb-6 text-sm text-cream-50/60 overflow-y-auto max-h-60"
+                            >
+                                <div class="flex items-center gap-3 opacity-30">
+                                    <div
+                                        class="w-1 h-1 rounded-full bg-cream-50"
+                                    ></div>
+                                    <span class="font-light italic"
+                                        >System ready. Awaiting intent...</span
+                                    >
+                                </div>
+                            </div>
+
+                            <!-- Input Field -->
+                            <div class="relative group">
+                                <div
+                                    class="w-full pl-4 pr-12 py-4 sim-input rounded-xl font-mono text-sm flex items-center"
+                                >
+                                    <span class="text-sage-400 mr-3">➜</span>
+                                    <span
+                                        id="sim-prompt-input"
+                                        class="text-cream-50"
+                                    ></span>
+                                    <span
+                                        class="inline-block w-1.5 h-4 bg-sage-400/50 ml-1 animate-pulse"
+                                    ></span>
+                                </div>
+                            </div>
+
+                            <!-- Latency Visualization -->
+                            <div
+                                id="ai-processing"
+                                class="absolute top-6 right-6 opacity-0 transition-opacity duration-300"
+                            >
+                                <div class="flex items-center gap-2">
+                                    <span
+                                        class="text-xs text-cream-50/40 font-mono"
+                                        >NEURAL PROCESSING</span
+                                    >
+                                    <div class="flex gap-1">
+                                        <div
+                                            class="w-1 h-1 bg-sage-400 rounded-full animate-bounce"
+                                        ></div>
+                                        <div
+                                            class="w-1 h-1 bg-sage-400 rounded-full animate-bounce delay-75"
+                                        ></div>
+                                        <div
+                                            class="w-1 h-1 bg-sage-400 rounded-full animate-bounce delay-150"
+                                        ></div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Timer Overlay -->
+                            <div class="absolute top-6 left-6">
+                                <div
+                                    class="text-[10px] text-cream-50/30 uppercase tracking-widest"
+                                >
+                                    Elapsed Time
+                                </div>
+                                <div
+                                    id="prompt-timer"
+                                    class="font-mono font-medium text-sage-400 text-2xl"
+                                >
+                                    0.0s
+                                </div>
+                            </div>
+
+                            <!-- Success State -->
+                            <div
+                                id="sim-prompt-success"
+                                class="absolute inset-0 bg-moss-900/95 backdrop-blur-sm flex flex-col items-center justify-center z-20 opacity-0 pointer-events-none transition-opacity duration-500"
+                            >
+                                <div
+                                    class="w-16 h-16 rounded-full border border-sage-400/30 flex items-center justify-center mb-4 shadow-[0_0_30px_rgba(118,168,128,0.2)]"
+                                >
+                                    <span class="text-2xl">✨</span>
+                                </div>
+                                <div class="text-xl font-medium text-sage-400">
+                                    Intent Resolved
+                                </div>
+                                <div
+                                    class="text-sm text-cream-50/60 mt-2 font-light"
+                                >
+                                    Action executed successfully.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Idea 2: Explicit Navigation (Tech Panel with structured UI) -->
+                    <div
+                        class="tech-panel rounded-3xl p-1 relative overflow-hidden flex flex-col h-[500px]"
+                    >
+                        <!-- Header -->
+                        <div
+                            class="px-6 py-5 border-b border-white/10 flex justify-between items-center bg-black/10"
+                        >
+                            <div>
+                                <h3
+                                    class="font-medium text-cream-50 flex items-center gap-2 text-lg"
+                                >
+                                    <span
+                                        class="w-2 h-2 rounded-full bg-cream-50/50"
+                                    ></span>
+                                    Explicit Hierarchy
+                                </h3>
+                                <p
+                                    class="text-xs text-cream-50/40 mt-1 uppercase tracking-wider"
+                                >
+                                    Graphical User Interface
+                                </p>
+                            </div>
+                            <div class="text-right">
+                                <div
+                                    class="text-[10px] text-cream-50/40 uppercase tracking-widest font-bold"
+                                >
+                                    Friction Factor
+                                </div>
+                                <div
+                                    class="text-xs font-medium text-cream-50/60"
+                                >
+                                    Navigation Depth
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Content (Mock UI) -->
+                        <div
+                            class="flex-1 bg-[#F2EFE9] relative overflow-hidden"
+                            id="nav-sim-container"
+                        >
+                            <!-- Navigation UI: Home -->
+                            <div
+                                id="nav-screen-home"
+                                class="absolute inset-0 p-6 grid grid-cols-2 gap-4 content-start"
+                            >
+                                <div
+                                    class="col-span-2 flex justify-between items-center mb-4"
+                                >
+                                    <div
+                                        class="w-24 h-5 bg-moss-900/10 rounded-full"
+                                    ></div>
+                                    <div
+                                        class="w-8 h-8 rounded-full bg-moss-900/10"
+                                    ></div>
+                                </div>
+                                <!-- App Icons -->
+                                <div
+                                    class="aspect-square bg-white rounded-2xl shadow-ceramic flex flex-col items-center justify-center gap-2 border border-white"
+                                >
+                                    <div
+                                        class="w-8 h-8 rounded-full bg-moss-900/5"
+                                    ></div>
+                                    <div
+                                        class="w-12 h-2 bg-moss-900/5 rounded-full"
+                                    ></div>
+                                </div>
+                                <div
+                                    id="btn-settings"
+                                    class="aspect-square bg-white rounded-2xl shadow-ceramic flex flex-col items-center justify-center gap-2 border border-white cursor-pointer transition-all hover:scale-105 group"
+                                >
+                                    <div
+                                        class="w-8 h-8 rounded-full bg-moss-900/10 group-hover:bg-sage-400/20 text-moss-900 flex items-center justify-center"
+                                    >
+                                        ⚙️
+                                    </div>
+                                    <div
+                                        class="text-xs font-medium text-moss-900/60"
+                                    >
+                                        Settings
+                                    </div>
+                                </div>
+                                <div
+                                    class="col-span-2 h-32 bg-white rounded-2xl shadow-ceramic border border-white mt-2 opacity-50"
+                                ></div>
+                            </div>
+
+                            <!-- Navigation UI: Settings -->
+                            <div
+                                id="nav-screen-settings"
+                                class="absolute inset-0 bg-[#F2EFE9] hidden flex-col"
+                            >
+                                <div
+                                    class="h-14 border-b border-moss-900/5 flex items-center px-6 gap-2 text-xs text-moss-900/40 bg-white/50 backdrop-blur"
+                                >
+                                    <span>Home</span>
+                                    <span class="text-moss-900/20">/</span>
+                                    <span class="font-medium text-moss-900"
+                                        >Settings</span
+                                    >
+                                </div>
+                                <div class="p-6 space-y-1">
+                                    <div
+                                        class="p-4 bg-white rounded-xl shadow-sm border border-white/50 text-sm text-moss-900/40"
+                                    >
+                                        General
+                                    </div>
+                                    <div
+                                        id="btn-account"
+                                        class="p-4 bg-white rounded-xl shadow-ceramic border border-white text-sm font-medium text-moss-900 cursor-pointer flex justify-between items-center hover:bg-sage-50 transition-colors"
+                                    >
+                                        Account & Security
+                                        <span class="text-sage-400">›</span>
+                                    </div>
+                                    <div
+                                        class="p-4 bg-white rounded-xl shadow-sm border border-white/50 text-sm text-moss-900/40 mt-1"
+                                    >
+                                        Privacy
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Navigation UI: Account -->
+                            <div
+                                id="nav-screen-account"
+                                class="absolute inset-0 bg-[#F2EFE9] hidden flex-col"
+                            >
+                                <div
+                                    class="h-14 border-b border-moss-900/5 flex items-center px-6 gap-2 text-xs text-moss-900/40 bg-white/50 backdrop-blur"
+                                >
+                                    <span>Settings</span>
+                                    <span class="text-moss-900/20">/</span>
+                                    <span class="font-medium text-moss-900"
+                                        >Account</span
+                                    >
+                                </div>
+                                <div class="p-6">
+                                    <div
+                                        class="bg-white p-5 rounded-2xl shadow-ceramic border border-white"
+                                    >
+                                        <div
+                                            class="text-[10px] text-moss-900/40 uppercase tracking-widest font-bold mb-2"
+                                        >
+                                            Display Name
+                                        </div>
+                                        <div
+                                            class="flex justify-between items-center"
+                                        >
+                                            <span
+                                                class="text-sm font-mono text-moss-900"
+                                                >user_123</span
+                                            >
+                                            <span
+                                                id="btn-edit"
+                                                class="text-xs bg-sage-50 text-sage-400 border border-sage-400/20 px-4 py-1.5 rounded-full font-bold cursor-pointer hover:bg-sage-400 hover:text-white transition-all"
+                                                >Edit</span
+                                            >
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Mouse Cursor -->
+                            <div
+                                id="sim-mouse"
+                                class="absolute w-6 h-6 bg-moss-900 rounded-full shadow-2xl pointer-events-none opacity-0 transition-all duration-500 z-50 flex items-center justify-center border border-white/20"
+                                style="margin-top: -12px; margin-left: -12px"
+                            >
+                                <div
+                                    class="w-1.5 h-1.5 bg-sage-400 rounded-full"
+                                ></div>
+                            </div>
+
+                            <!-- Timer Overlay -->
+                            <div
+                                class="absolute bottom-6 right-6 z-40 bg-moss-900/5 px-4 py-2 rounded-full backdrop-blur border border-moss-900/5"
+                            >
+                                <span
+                                    class="text-[10px] text-moss-900/40 uppercase tracking-widest mr-2"
+                                    >Nav Time</span
+                                >
+                                <span
+                                    id="nav-timer"
+                                    class="font-mono font-bold text-moss-900 text-lg"
+                                    >0.0s</span
+                                >
+                            </div>
+
+                            <!-- Success State -->
+                            <div
+                                id="sim-nav-success"
+                                class="absolute inset-0 bg-moss-900/95 backdrop-blur-sm flex flex-col items-center justify-center z-50 opacity-0 pointer-events-none transition-opacity duration-500"
+                            >
+                                <div
+                                    class="w-16 h-16 rounded-full border border-sage-400/30 flex items-center justify-center mb-4"
+                                >
+                                    <span class="text-2xl">📍</span>
+                                </div>
+                                <div class="text-xl font-medium text-sage-400">
+                                    Destination Reached
+                                </div>
+                                <div
+                                    class="text-sm text-cream-50/60 mt-2 font-light"
+                                >
+                                    4 Clicks • Zero Ambiguity
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Quantitative Data Section -->
+            <section id="data" class="scroll-mt-32">
+                <div class="mb-10 text-center md:text-left">
+                    <h2 class="text-3xl font-medium text-moss-900">
+                        Quantitative Benchmarks
+                    </h2>
+                    <p class="text-moss-900/60 mt-2 max-w-2xl font-light">
+                        Performance metrics analysis from 2025 enterprise field
+                        studies.
+                    </p>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    <!-- Chart 1: Latency -->
+                    <div class="tech-panel rounded-3xl p-8">
+                        <div class="flex justify-between items-start mb-6">
+                            <div>
+                                <h3 class="font-medium text-cream-50 text-lg">
+                                    Task Completion Time
+                                </h3>
+                                <p class="text-xs text-cream-50/40">
+                                    Includes cognitive & system latency
+                                </p>
+                            </div>
+                        </div>
+                        <div class="chart-container">
+                            <canvas id="timeChart"></canvas>
+                        </div>
+                        <div
+                            class="mt-6 p-4 rounded-xl bg-copper-500/10 border border-copper-500/20"
+                        >
+                            <p class="text-xs text-copper-500 leading-relaxed">
+                                <strong class="block mb-1 font-bold"
+                                    >The "Processing" Tax</strong
+                                >
+                                While input is fast, AI processing latency
+                                (3-5s) erodes speed advantages for simple tasks
+                                compared to instant-feedback navigation.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Chart 2: Accuracy -->
+                    <div class="tech-panel rounded-3xl p-8">
+                        <div class="flex justify-between items-start mb-6">
+                            <div>
+                                <h3 class="font-medium text-cream-50 text-lg">
+                                    Success Rate by Complexity
+                                </h3>
+                                <p class="text-xs text-cream-50/40">
+                                    Manual GUI vs. AI-Assisted
+                                </p>
+                            </div>
+                        </div>
+                        <div class="chart-container">
+                            <canvas id="errorChart"></canvas>
+                        </div>
+                        <div
+                            class="mt-6 p-4 rounded-xl bg-sage-400/10 border border-sage-400/20"
+                        >
+                            <p class="text-xs text-sage-400 leading-relaxed">
+                                <strong class="block mb-1 font-bold"
+                                    >Verification Gap</strong
+                                >
+                                Explicit Navigation maintains a 98% accuracy
+                                rate for simple retrieval because the options
+                                are visible and verified before clicking.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Theory Section -->
+            <section
+                id="theory"
+                class="grid grid-cols-1 md:grid-cols-2 gap-8 scroll-mt-32"
+            >
+                <!-- Theory Card 1 -->
+                <div class="glass-panel p-10 rounded-3xl">
+                    <div
+                        class="text-sage-400 font-bold tracking-widest text-[10px] mb-4 uppercase"
+                    >
+                        Core Concept
+                    </div>
+                    <h2 class="text-3xl font-medium text-moss-900 mb-6">
+                        The "Gulf of Envisioning"
+                    </h2>
+                    <p class="text-moss-900/70 leading-relaxed mb-6 font-light">
+                        Unlike the old "Gulf of Execution" (how do I do it?),
+                        Generative UI creates a new barrier: <br />
+                        <em class="text-moss-900 font-normal"
+                            >"I don't know what this system is capable of
+                            understanding."</em
+                        >
+                    </p>
+                    <div
+                        class="p-6 bg-white/50 rounded-2xl border border-white/60"
+                    >
+                        <div class="flex gap-4 items-start">
+                            <span class="text-2xl">⚡</span>
+                            <p class="text-sm text-moss-900/80 font-light">
+                                <strong>The "Blank Page" Paralysis:</strong>
+                                Users often stare at the blinking cursor,
+                                overwhelmed by infinite possibility but lacking
+                                specific vocabulary.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Theory Card 2 -->
+                <div class="glass-panel p-10 rounded-3xl">
+                    <div
+                        class="text-copper-500 font-bold tracking-widest text-[10px] mb-4 uppercase"
+                    >
+                        Historical Context
+                    </div>
+                    <div
+                        class="space-y-8 relative before:absolute before:left-4 before:top-4 before:bottom-4 before:w-px before:bg-moss-900/10"
+                    >
+                        <!-- Step 1 -->
+                        <div class="relative pl-12 opacity-40">
+                            <div
+                                class="absolute left-0 w-8 h-8 rounded-full bg-white border border-moss-900/10 flex items-center justify-center text-[10px] font-bold text-moss-900"
+                            >
+                                1.0
+                            </div>
+                            <h4 class="font-medium text-moss-900">
+                                Command Line
+                            </h4>
+                            <p class="text-xs text-moss-900/60 mt-1">
+                                Total Recall. High Expertise.
+                            </p>
+                        </div>
+                        <!-- Step 2 -->
+                        <div class="relative pl-12">
+                            <div
+                                class="absolute left-0 w-8 h-8 rounded-full bg-sage-50 border border-sage-400 flex items-center justify-center text-[10px] font-bold text-sage-500"
+                            >
+                                2.0
+                            </div>
+                            <h4 class="font-medium text-moss-900">
+                                GUI Navigation
+                            </h4>
+                            <p class="text-xs text-moss-900/60 mt-1">
+                                Total Recognition. "Don't Make Me Think."
+                            </p>
+                        </div>
+                        <!-- Step 3 -->
+                        <div class="relative pl-12">
+                            <div
+                                class="absolute left-0 w-8 h-8 rounded-full bg-moss-900 flex items-center justify-center text-[10px] font-bold text-cream-50"
+                            >
+                                3.0
+                            </div>
+                            <h4 class="font-medium text-moss-900">
+                                Generative UI
+                            </h4>
+                            <p class="text-xs text-moss-900/60 mt-1">
+                                Intent-Based. Faceted Prompting.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Verdict / Conclusion -->
+            <section id="verdict" class="scroll-mt-32 pb-20">
+                <h2
+                    class="text-3xl font-medium text-moss-900 mb-10 text-center"
+                >
+                    The Hybrid Verdict
+                </h2>
+
+                <div
+                    class="grid grid-cols-1 md:grid-cols-3 gap-0 rounded-3xl overflow-hidden shadow-soft-studio border border-white/20"
+                >
+                    <!-- Routine Tasks -->
+                    <div class="glass-panel p-10 border-r border-white/20">
+                        <h3
+                            class="text-xs font-bold text-moss-900/40 uppercase tracking-widest mb-6"
+                        >
+                            Routine Tasks
+                        </h3>
+                        <div class="text-sage-400 font-medium text-xl mb-3">
+                            Generative Intent
+                        </div>
+                        <p class="text-sm text-moss-900/60 mb-6 font-light">
+                            "Remind me to call John."
+                        </p>
+                        <ul class="text-xs text-moss-900/70 space-y-3">
+                            <li class="flex items-center gap-2">
+                                <span
+                                    class="w-1.5 h-1.5 rounded-full bg-sage-400"
+                                ></span>
+                                3x Faster Execution
+                            </li>
+                            <li class="flex items-center gap-2">
+                                <span
+                                    class="w-1.5 h-1.5 rounded-full bg-sage-400"
+                                ></span>
+                                Zero Interaction Friction
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- Complex Discovery (Highlighted) -->
+                    <div class="tech-panel p-10 relative">
+                        <div
+                            class="absolute top-0 left-0 w-full h-1 bg-sage-400"
+                        ></div>
+                        <h3
+                            class="text-xs font-bold text-cream-50/40 uppercase tracking-widest mb-6"
+                        >
+                            Complex Discovery
+                        </h3>
+                        <div class="text-cream-50 font-medium text-xl mb-3">
+                            Hybrid Augmentation
+                        </div>
+                        <p class="text-sm text-cream-50/60 mb-6 font-light">
+                            "Show sales..."
+                            <span class="text-sage-400">[AI Suggests Q1]</span>
+                        </p>
+                        <ul class="text-xs text-cream-50/70 space-y-3">
+                            <li class="flex items-center gap-2">
+                                <span
+                                    class="w-1.5 h-1.5 rounded-full bg-sage-400"
+                                ></span>
+                                Low Articulation Barrier
+                            </li>
+                            <li class="flex items-center gap-2">
+                                <span
+                                    class="w-1.5 h-1.5 rounded-full bg-sage-400"
+                                ></span>
+                                Verifiable Output
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- Safety Critical -->
+                    <div class="glass-panel p-10 border-l border-white/20">
+                        <h3
+                            class="text-xs font-bold text-moss-900/40 uppercase tracking-widest mb-6"
+                        >
+                            Safety Critical
+                        </h3>
+                        <div class="text-moss-900 font-medium text-xl mb-3">
+                            Explicit Nav
+                        </div>
+                        <p class="text-sm text-moss-900/60 mb-6 font-light">
+                            Payments, Deletion, Settings
+                        </p>
+                        <ul class="text-xs text-moss-900/70 space-y-3">
+                            <li class="flex items-center gap-2">
+                                <span
+                                    class="w-1.5 h-1.5 rounded-full bg-sage-400"
+                                ></span>
+                                100% Predictable
+                            </li>
+                            <li class="flex items-center gap-2">
+                                <span
+                                    class="w-1.5 h-1.5 rounded-full bg-sage-400"
+                                ></span>
+                                Zero Hallucination Risk
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Footer -->
+            <footer class="border-t border-moss-900/10 pt-10 pb-20 text-center">
+                <p
+                    class="text-xs text-moss-900/40 uppercase tracking-widest mb-2"
+                >
+                    Sources
+                </p>
+                <p class="text-xs text-moss-900/60">
+                    <a
+                        href="https://www.nngroup.com/articles/ai-paradigm/"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="hover:text-moss-900 underline"
+                        >Jakob Nielsen (NN/g) - AI: The First New UI Paradigm in
+                        60 Years (2023)</a
+                    >
+                    &bull;
+                    <a
+                        href="https://www.microsoft.com/en-us/research/wp-content/uploads/2025/12/New-Future-Of-Work-Report-2025.pdf"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="hover:text-moss-900 underline"
+                        >Microsoft Research - New Future of Work Report 2023
+                        (LLMs and Work)</a
+                    >
+                    &bull;
+                    <a
+                        href="https://www.hbs.edu/faculty/Pages/item.aspx?num=64700"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="hover:text-moss-900 underline"
+                        >Harvard Business School - Navigating the Jagged
+                        Technological Frontier (2023)</a
+                    >
+                    &bull;
+                    <a
+                        href="https://www.geoffreylitt.com/2023/03/25/llm-end-user-programming.html"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="hover:text-moss-900 underline"
+                        >Geoffrey Litt (Ink &amp; Switch) - Malleable Software
+                        in the Age of LLMs (2023)</a
+                    >
+                    &bull;
+                    <a
+                        href="https://m3.material.io/"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="hover:text-moss-900 underline"
+                        >Google Material Design 3 - AI Design Guidelines</a
+                    >
+                </p>
+            </footer>
+        </main>
+
+        <!-- Logic Script -->
+        <script>
+            // --- Color Constants for JS ---
+            const theme = {
+                moss: "#1A3324",
+                sage: "#76A880",
+                copper: "#9C5F32",
+                cream: "#EFEFEF", // text light
+                bgTech: "#2C5530",
+            };
+
+            // --- Simulation Logic ---
+            document
+                .getElementById("run-sim-btn")
+                .addEventListener("click", runSimulation);
+
+            function runSimulation() {
+                const btn = document.getElementById("run-sim-btn");
+                if (btn.disabled) return;
+
+                btn.disabled = true;
+                btn.style.opacity = "0.7";
+                btn.querySelector("span span").innerText =
+                    "Protocol Running...";
+
+                resetSim();
+                runPromptSequence();
+            }
+
+            function resetSim() {
+                // Prompt
+                document.getElementById("sim-prompt-input").innerText = "";
+                document.getElementById("sim-prompt-area").innerHTML =
+                    '<div class="flex items-center gap-3 opacity-30"><div class="w-1 h-1 rounded-full bg-cream-50"></div><span class="font-light italic">System ready. Awaiting intent...</span></div>';
+                document.getElementById("prompt-timer").innerText = "0.0s";
+                document
+                    .getElementById("sim-prompt-success")
+                    .classList.remove("opacity-100");
+                document
+                    .getElementById("ai-processing")
+                    .classList.remove("opacity-100");
+
+                // Nav
+                document.getElementById("nav-timer").innerText = "0.0s";
+                document
+                    .getElementById("sim-nav-success")
+                    .classList.remove("opacity-100");
+
+                // Screens
+                document
+                    .getElementById("nav-screen-home")
+                    .classList.remove("hidden");
+                document
+                    .getElementById("nav-screen-home")
+                    .classList.add("grid");
+                document
+                    .getElementById("nav-screen-settings")
+                    .classList.add("hidden");
+                document
+                    .getElementById("nav-screen-settings")
+                    .classList.remove("flex");
+                document
+                    .getElementById("nav-screen-account")
+                    .classList.add("hidden");
+                document
+                    .getElementById("nav-screen-account")
+                    .classList.remove("flex");
+
+                document.getElementById("sim-mouse").style.opacity = "0";
+            }
+
+            function runPromptSequence() {
+                const input = document.getElementById("sim-prompt-input");
+                const timer = document.getElementById("prompt-timer");
+                const targetText = "change user to 'alex_dev'";
+                const startTime = Date.now();
+                let idx = 0;
+
+                // 1. Articulation Delay (Thinking)
+                setTimeout(() => {
+                    // 2. Typing
+                    const interval = setInterval(() => {
+                        input.innerText += targetText[idx];
+                        idx++;
+                        timer.innerText =
+                            ((Date.now() - startTime) / 1000).toFixed(1) + "s";
+
+                        if (idx >= targetText.length) {
+                            clearInterval(interval);
+
+                            // 3. AI Latency
+                            document
+                                .getElementById("ai-processing")
+                                .classList.add("opacity-100");
+                            const processingStart = Date.now();
+                            const updateProcessing = setInterval(() => {
+                                timer.innerText =
+                                    ((Date.now() - startTime) / 1000).toFixed(
+                                        1,
+                                    ) + "s";
+                            }, 50);
+
+                            setTimeout(() => {
+                                clearInterval(updateProcessing);
+                                document
+                                    .getElementById("sim-prompt-success")
+                                    .classList.add("opacity-100");
+                                setTimeout(runNavSequence, 800);
+                            }, 1800);
+                        }
+                    }, 60);
+                }, 800);
+            }
+
+            function runNavSequence() {
+                const container = document.getElementById("nav-sim-container");
+                const mouse = document.getElementById("sim-mouse");
+                const timer = document.getElementById("nav-timer");
+                const startTime = Date.now();
+
+                const timerInterval = setInterval(() => {
+                    timer.innerText =
+                        ((Date.now() - startTime) / 1000).toFixed(1) + "s";
+                }, 50);
+
+                const moveClick = (targetId, delay, nextFn) => {
+                    setTimeout(() => {
+                        const target = document.getElementById(targetId);
+                        if (!target) return;
+
+                        const cRect = container.getBoundingClientRect();
+                        const tRect = target.getBoundingClientRect();
+                        const top = tRect.top - cRect.top + tRect.height / 2;
+                        const left = tRect.left - cRect.left + tRect.width / 2;
+
+                        mouse.style.opacity = "1";
+                        mouse.style.top = `${top}px`;
+                        mouse.style.left = `${left}px`;
+
+                        setTimeout(() => {
+                            // Click ripple
+                            const ripple = document.createElement("div");
+                            ripple.className = "click-circle click-animate";
+                            ripple.style.top = `${top - 12}px`;
+                            ripple.style.left = `${left - 12}px`;
+                            container.appendChild(ripple);
+                            setTimeout(() => ripple.remove(), 500);
+
+                            if (nextFn) nextFn();
+                        }, 500);
+                    }, delay);
+                };
+
+                moveClick("btn-settings", 200, () => {
+                    document
+                        .getElementById("nav-screen-home")
+                        .classList.add("hidden");
+                    document
+                        .getElementById("nav-screen-home")
+                        .classList.remove("grid");
+                    document
+                        .getElementById("nav-screen-settings")
+                        .classList.remove("hidden");
+                    document
+                        .getElementById("nav-screen-settings")
+                        .classList.add("flex");
+
+                    moveClick("btn-account", 600, () => {
+                        document
+                            .getElementById("nav-screen-settings")
+                            .classList.add("hidden");
+                        document
+                            .getElementById("nav-screen-settings")
+                            .classList.remove("flex");
+                        document
+                            .getElementById("nav-screen-account")
+                            .classList.remove("hidden");
+                        document
+                            .getElementById("nav-screen-account")
+                            .classList.add("flex");
+
+                        moveClick("btn-edit", 600, () => {
+                            clearInterval(timerInterval);
+                            document
+                                .getElementById("sim-nav-success")
+                                .classList.add("opacity-100");
+
+                            // Reset Button
+                            const btn = document.getElementById("run-sim-btn");
+                            btn.disabled = false;
+                            btn.style.opacity = "1";
+                            btn.querySelector("span span").innerText =
+                                "▶ Initiate Protocol";
+                        });
+                    });
+                });
+            }
+
+            // --- Charts ---
+            Chart.defaults.color = "rgba(239, 239, 239, 0.6)";
+            Chart.defaults.font.family = "'Outfit', sans-serif";
+
+            new Chart(document.getElementById("timeChart"), {
+                type: "bar",
+                data: {
+                    labels: ["Routine Action", "Complex Query"],
+                    datasets: [
+                        {
+                            label: "Input Time",
+                            data: [2.1, 4.5],
+                            backgroundColor: theme.sage,
+                            stack: "Stack 0",
+                            borderRadius: 4,
+                        },
+                        {
+                            label: "AI Latency",
+                            data: [1.8, 3.2],
+                            backgroundColor: theme.copper,
+                            stack: "Stack 0",
+                            borderRadius: 4,
+                        },
+                        {
+                            label: "Manual Nav Time",
+                            data: [5.2, 8.1],
+                            backgroundColor: "rgba(239, 239, 239, 0.3)",
+                            stack: "Stack 1",
+                            borderRadius: 4,
+                        },
+                    ],
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: "bottom",
+                            labels: { color: theme.cream },
+                        },
+                    },
+                    scales: {
+                        y: {
+                            stacked: true,
+                            grid: { color: "rgba(255,255,255,0.05)" },
+                        },
+                        x: { stacked: true, grid: { display: false } },
+                    },
+                },
+            });
+
+            new Chart(document.getElementById("errorChart"), {
+                type: "bar",
+                data: {
+                    labels: ["Simple Retrieval", "Complex Analysis"],
+                    datasets: [
+                        {
+                            label: "AI Correctness",
+                            data: [92, 65],
+                            backgroundColor: theme.copper,
+                            borderRadius: 4,
+                        },
+                        {
+                            label: "Manual Correctness",
+                            data: [98, 84],
+                            backgroundColor: theme.sage,
+                            borderRadius: 4,
+                        },
+                    ],
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: "bottom",
+                            labels: { color: theme.cream },
+                        },
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            max: 100,
+                            grid: { color: "rgba(255,255,255,0.05)" },
+                        },
+                        x: { grid: { display: false } },
+                    },
+                },
+            });
+        </script>
+    </body>
+</html>

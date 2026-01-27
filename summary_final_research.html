@@ -1,0 +1,618 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Smart Apps | Executive Summary</title>
+        <script src="https://cdn.tailwindcss.com"></script>
+        <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+        />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+            rel="stylesheet"
+        />
+        <script>
+            tailwind.config = {
+                theme: {
+                    extend: {
+                        colors: {
+                            moss: {
+                                950: "#0D1A12",
+                                900: "#1A3324",
+                                800: "#2C5530",
+                                700: "#3D7340",
+                            },
+                            copper: {
+                                400: "#B8734A",
+                                500: "#9C5F32",
+                                600: "#7D4C28",
+                            },
+                            sage: {
+                                300: "#A3C4A9",
+                                400: "#76A880",
+                                500: "#5A8C63",
+                                50: "#E1EADF",
+                            },
+                            cream: { 100: "#E8E5DF", 50: "#F2EFE9" },
+                        },
+                        fontFamily: {
+                            sans: ["Inter", "system-ui", "sans-serif"],
+                        },
+                        boxShadow: {
+                            "soft-studio":
+                                "0 25px 50px -12px rgba(26, 51, 36, 0.15), 0 12px 24px -8px rgba(26, 51, 36, 0.1)",
+                            ceramic:
+                                "0 4px 14px -2px rgba(26, 51, 36, 0.08), 0 2px 6px -1px rgba(26, 51, 36, 0.04)",
+                        },
+                    },
+                },
+            };
+        </script>
+        <style>
+            body {
+                font-family: "Inter", system-ui, sans-serif;
+                background: linear-gradient(180deg, #f2efe9 0%, #e1eadf 100%);
+                background-attachment: fixed;
+                color: #1a3324;
+                line-height: 1.6;
+            }
+            .tech-panel {
+                background: linear-gradient(135deg, #1a3324 0%, #2c5530 100%);
+                box-shadow: 0 25px 50px -12px rgba(26, 51, 36, 0.25);
+                position: relative;
+            }
+            .glass-panel {
+                background: rgba(255, 255, 255, 0.7);
+                backdrop-filter: blur(20px);
+                border: 1px solid rgba(255, 255, 255, 0.8);
+                box-shadow: 0 4px 14px -2px rgba(26, 51, 36, 0.08);
+            }
+            .ceramic-btn {
+                background: linear-gradient(135deg, #1a3324 0%, #2c5530 100%);
+                color: #f2efe9;
+                box-shadow: 0 4px 14px -2px rgba(26, 51, 36, 0.3);
+                transition: all 0.3s ease;
+            }
+            .ceramic-btn:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 8px 20px -4px rgba(26, 51, 36, 0.4);
+            }
+            .stat-highlight {
+                font-size: 3rem;
+                font-weight: 300;
+                line-height: 1;
+            }
+            .section-divider {
+                height: 1px;
+                background: linear-gradient(
+                    90deg,
+                    transparent,
+                    rgba(26, 51, 36, 0.2),
+                    transparent
+                );
+                margin: 60px 0;
+            }
+            .layers-graphic {
+                display: flex;
+                flex-direction: column;
+                gap: 8px;
+                width: 100%;
+            }
+            .layer {
+                padding: 16px;
+                border-radius: 12px;
+                text-align: center;
+                font-weight: 600;
+                font-size: 0.85rem;
+            }
+            .layer-smart {
+                background: linear-gradient(135deg, #1a3324 0%, #2c5530 100%);
+                color: #f2efe9;
+                box-shadow: 0 8px 20px rgba(26, 51, 36, 0.3);
+            }
+        </style>
+    </head>
+    <body class="antialiased selection:bg-sage-400 selection:text-white">
+        <!-- Page Navigation -->
+        <div class="w-full bg-moss-900 border-b border-moss-800">
+            <div
+                class="max-w-5xl mx-auto px-6 h-12 flex items-center justify-center gap-2"
+            >
+                <a
+                    href="smart_apps2.html"
+                    class="px-4 py-2 text-sm font-medium rounded-lg text-cream-50/70 hover:text-cream-50 hover:bg-moss-800 transition-colors"
+                >
+                    Overview
+                </a>
+                <a
+                    href="final_research.html"
+                    class="px-4 py-2 text-sm font-medium rounded-lg text-cream-50/70 hover:text-cream-50 hover:bg-moss-800 transition-colors"
+                >
+                    Full Research
+                </a>
+                <a
+                    href="summary_final_research.html"
+                    class="px-4 py-2 text-sm font-medium rounded-lg bg-sage-400 text-moss-900"
+                >
+                    Executive Summary
+                </a>
+                <a
+                    href="infographic.html"
+                    class="px-4 py-2 text-sm font-medium rounded-lg text-cream-50/70 hover:text-cream-50 hover:bg-moss-800 transition-colors"
+                >
+                    Infographic
+                </a>
+            </div>
+        </div>
+
+        <nav class="sticky top-0 z-50 glass-panel border-b border-white/30">
+            <div
+                class="max-w-5xl mx-auto px-6 h-16 flex items-center justify-between"
+            >
+                <div class="flex items-center gap-3">
+                    <div
+                        class="w-10 h-10 rounded-full bg-gradient-to-br from-moss-800 to-moss-900 flex items-center justify-center text-cream-50 font-bold text-sm shadow-lg"
+                    >
+                        <i class="fa-solid fa-microchip"></i>
+                    </div>
+                    <span
+                        class="text-moss-900 font-semibold tracking-wide text-sm"
+                        >Smart Apps <span class="opacity-40">|</span> Executive
+                        Summary</span
+                    >
+                </div>
+            </div>
+        </nav>
+
+        <main class="max-w-5xl mx-auto px-6 py-12 space-y-16">
+            <section class="text-center max-w-4xl mx-auto space-y-8">
+                <div
+                    class="inline-flex items-center px-4 py-2 rounded-full bg-sage-50 border border-sage-400/30 text-moss-900 text-xs font-bold tracking-widest uppercase"
+                >
+                    Executive Summary
+                </div>
+                <h1
+                    class="text-4xl md:text-6xl font-light text-moss-900 leading-tight tracking-tight"
+                >
+                    The First New UI Paradigm<br /><span
+                        class="text-transparent bg-clip-text bg-gradient-to-r from-moss-800 to-sage-400 font-normal"
+                        >in 60 Years</span
+                    >
+                </h1>
+                <p
+                    class="text-lg text-moss-900/70 leading-relaxed max-w-2xl mx-auto font-light"
+                >
+                    A shift from
+                    <strong class="text-moss-900">Command-Based</strong> ("Do
+                    this, click that") to
+                    <strong class="text-moss-900">Intent-Based</strong> ("Here
+                    is the result I want") interaction.
+                </p>
+            </section>
+
+            <div class="section-divider"></div>
+
+            <section>
+                <div class="text-center mb-10">
+                    <div
+                        class="text-copper-500 font-bold text-xs uppercase tracking-widest mb-3"
+                    >
+                        The Challenge
+                    </div>
+                    <h2 class="text-3xl font-light text-moss-900 mb-4">
+                        The Affordance Gap
+                    </h2>
+                    <p class="text-moss-900/60 font-light max-w-xl mx-auto">
+                        AI creates a new usability crisis: users do not know
+                        what they can ask for.
+                    </p>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div class="tech-panel rounded-2xl p-6">
+                        <div class="stat-highlight text-sage-400 mb-2">37%</div>
+                        <div class="h-px w-10 bg-sage-400/50 mb-3"></div>
+                        <h3 class="font-medium text-cream-50 text-base mb-2">
+                            Faster Execution
+                        </h3>
+                        <p class="text-sm text-cream-50/60 font-light">
+                            Speed gain for info retrieval using GenUI vs click
+                            paths.
+                        </p>
+                    </div>
+                    <div class="tech-panel rounded-2xl p-6">
+                        <div class="stat-highlight text-copper-500 mb-2">
+                            +19%
+                        </div>
+                        <div class="h-px w-10 bg-copper-500/50 mb-3"></div>
+                        <h3 class="font-medium text-cream-50 text-base mb-2">
+                            Error Risk
+                        </h3>
+                        <p class="text-sm text-cream-50/60 font-light">
+                            Increase when users over-rely on AI without
+                            verification.
+                        </p>
+                    </div>
+                    <div class="tech-panel rounded-2xl p-6">
+                        <div class="stat-highlight text-cream-50 mb-2">2s</div>
+                        <div class="h-px w-10 bg-cream-50/50 mb-3"></div>
+                        <h3 class="font-medium text-cream-50 text-base mb-2">
+                            Threshold
+                        </h3>
+                        <p class="text-sm text-cream-50/60 font-light">
+                            If prompting takes longer than clicking, users
+                            revert to GUI.
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <div class="section-divider"></div>
+
+            <section>
+                <div class="text-center mb-10">
+                    <div
+                        class="text-sage-500 font-bold text-xs uppercase tracking-widest mb-3"
+                    >
+                        Research Insights
+                    </div>
+                    <h2 class="text-3xl font-light text-moss-900 mb-4">
+                        5 Core Shifts
+                    </h2>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="glass-panel p-6 rounded-2xl">
+                        <div class="text-sage-500 font-bold text-xs mb-2">
+                            01
+                        </div>
+                        <h3 class="font-medium text-moss-900 mb-2">
+                            Malleable Software
+                        </h3>
+                        <p class="text-sm text-moss-900/70 font-light">
+                            UI generated at runtime based on intent. The
+                            interface <em>is</em> the response.
+                        </p>
+                    </div>
+                    <div class="glass-panel p-6 rounded-2xl">
+                        <div class="text-sage-500 font-bold text-xs mb-2">
+                            02
+                        </div>
+                        <h3 class="font-medium text-moss-900 mb-2">
+                            Sandwich Workflow
+                        </h3>
+                        <p class="text-sm text-moss-900/70 font-light">
+                            Human sets context &rarr; AI generates &rarr; Human
+                            verifies. Users reject full automation.
+                        </p>
+                    </div>
+                    <div class="glass-panel p-6 rounded-2xl">
+                        <div class="text-sage-500 font-bold text-xs mb-2">
+                            03
+                        </div>
+                        <h3 class="font-medium text-moss-900 mb-2">
+                            Inverse IA
+                        </h3>
+                        <p class="text-sm text-moss-900/70 font-light">
+                            Start with the destination (via intent), system
+                            reconstructs the navigation path.
+                        </p>
+                    </div>
+                    <div class="glass-panel p-6 rounded-2xl">
+                        <div class="text-sage-500 font-bold text-xs mb-2">
+                            04
+                        </div>
+                        <h3 class="font-medium text-moss-900 mb-2">
+                            Latency Trade-off
+                        </h3>
+                        <p class="text-sm text-moss-900/70 font-light">
+                            If AI &gt;1s latency, it must provide &gt;10x value.
+                            AI cannot replace nav until instant.
+                        </p>
+                    </div>
+                    <div class="glass-panel p-6 rounded-2xl md:col-span-2">
+                        <div class="text-sage-500 font-bold text-xs mb-2">
+                            05
+                        </div>
+                        <h3 class="font-medium text-moss-900 mb-2">
+                            Contextual Chips
+                        </h3>
+                        <p class="text-sm text-moss-900/70 font-light">
+                            Dynamic buttons that suggest intents based on
+                            context. Bridges Recognition (GUI) and Recall (AI).
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <div class="section-divider"></div>
+
+            <section>
+                <div class="text-center mb-10">
+                    <div
+                        class="text-sage-500 font-bold text-xs uppercase tracking-widest mb-3"
+                    >
+                        The Solution
+                    </div>
+                    <h2 class="text-3xl font-light text-moss-900 mb-4">
+                        Smart Apps
+                    </h2>
+                    <p class="text-moss-900/60 font-light max-w-xl mx-auto">
+                        Add an intelligent layer on top of existing apps. No
+                        rebuild required.
+                    </p>
+                </div>
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
+                    <div class="tech-panel p-8 rounded-2xl">
+                        <div class="layers-graphic mb-6">
+                            <div class="layer layer-smart">
+                                SMART LAYER (AI)
+                            </div>
+                            <div
+                                class="layer"
+                                style="
+                                    background: rgba(255, 255, 255, 0.1);
+                                    color: #f2efe9;
+                                "
+                            >
+                                LEGACY APP (Base)
+                            </div>
+                        </div>
+                        <h3 class="text-cream-50 font-medium text-lg mb-3">
+                            The Stack
+                        </h3>
+                        <ul class="text-cream-50/70 space-y-2 text-sm">
+                            <li class="flex items-start gap-2">
+                                <span class="text-sage-400">&#10003;</span> App
+                                acts as an
+                                <strong class="text-cream-50">agent</strong>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <span class="text-sage-400">&#10003;</span>
+                                Complex workflows become conversation
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <span class="text-sage-400">&#10003;</span>
+                                Preserve existing investment
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="glass-panel p-8 rounded-2xl">
+                        <div class="flex items-center gap-4 mb-4">
+                            <div
+                                class="w-12 h-12 rounded-xl bg-gradient-to-br from-moss-800 to-moss-900 flex items-center justify-center text-cream-50 text-xl shadow-lg"
+                            >
+                                <i class="fa-solid fa-microchip"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-medium text-moss-900">
+                                    FunctionGemma
+                                </h3>
+                                <p class="text-xs text-moss-900/50">
+                                    270M Parameters
+                                </p>
+                            </div>
+                        </div>
+                        <ul class="text-sm text-moss-900/70 space-y-2">
+                            <li>
+                                <strong class="text-moss-900"
+                                    >On-Device:</strong
+                                >
+                                Zero latency, runs on phone/laptop
+                            </li>
+                            <li>
+                                <strong class="text-moss-900">~300MB</strong>
+                                model file, ~500MB RAM
+                            </li>
+                            <li>
+                                <strong class="text-moss-900">~85%</strong> task
+                                success rate
+                            </li>
+                            <li>
+                                <strong class="text-moss-900"
+                                    >GDPR Ready:</strong
+                                >
+                                Data never leaves device
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div class="glass-panel p-6 rounded-2xl text-center">
+                        <div
+                            class="w-12 h-12 rounded-xl bg-moss-900/5 flex items-center justify-center mx-auto mb-3"
+                        >
+                            <i
+                                class="fa-solid fa-shield-halved text-xl text-moss-900"
+                            ></i>
+                        </div>
+                        <h3 class="font-medium text-moss-900 mb-1">
+                            Data Sovereignty
+                        </h3>
+                        <p class="text-xs text-moss-900/60">
+                            Data never leaves browser or private network
+                        </p>
+                    </div>
+                    <div class="glass-panel p-6 rounded-2xl text-center">
+                        <div
+                            class="w-12 h-12 rounded-xl bg-moss-900/5 flex items-center justify-center mx-auto mb-3"
+                        >
+                            <i
+                                class="fa-solid fa-bolt text-xl text-moss-900"
+                            ></i>
+                        </div>
+                        <h3 class="font-medium text-moss-900 mb-1">
+                            Offline Capable
+                        </h3>
+                        <p class="text-xs text-moss-900/60">
+                            Works anywhere, &lt;200ms latency
+                        </p>
+                    </div>
+                    <div class="glass-panel p-6 rounded-2xl text-center">
+                        <div
+                            class="w-12 h-12 rounded-xl bg-moss-900/5 flex items-center justify-center mx-auto mb-3"
+                        >
+                            <i
+                                class="fa-solid fa-coins text-xl text-moss-900"
+                            ></i>
+                        </div>
+                        <h3 class="font-medium text-moss-900 mb-1">
+                            Cost Advantage
+                        </h3>
+                        <p class="text-xs text-moss-900/60">
+                            Offload compute to edge, reduce cloud costs
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <div class="section-divider"></div>
+
+            <section>
+                <div class="text-center mb-10">
+                    <div
+                        class="text-sage-500 font-bold text-xs uppercase tracking-widest mb-3"
+                    >
+                        When to Use What
+                    </div>
+                    <h2 class="text-3xl font-light text-moss-900">
+                        Implementation Matrix
+                    </h2>
+                </div>
+                <div
+                    class="bg-white rounded-2xl shadow-soft-studio border border-moss-900/5 overflow-hidden"
+                >
+                    <div
+                        class="grid grid-cols-1 md:grid-cols-3 divide-y md:divide-y-0 md:divide-x divide-moss-900/10"
+                    >
+                        <div class="p-6">
+                            <div
+                                class="text-[10px] font-bold text-copper-500 uppercase tracking-widest mb-2"
+                            >
+                                Trivial / Navigational
+                            </div>
+                            <div class="font-medium text-moss-900 mb-2">
+                                Use Standard GUI
+                            </div>
+                            <p class="text-xs text-moss-900/60">
+                                "Go to Settings." AI is overkill for 200ms
+                                actions.
+                            </p>
+                        </div>
+                        <div class="p-6 bg-moss-900/5">
+                            <div
+                                class="text-[10px] font-bold text-moss-900/40 uppercase tracking-widest mb-2"
+                            >
+                                Exploratory / Unknown
+                            </div>
+                            <div class="font-medium text-moss-900 mb-2">
+                                Use Hybrid
+                            </div>
+                            <p class="text-xs text-moss-900/60">
+                                "How do I change privacy?" AI suggests the path.
+                            </p>
+                        </div>
+                        <div class="p-6 relative">
+                            <div
+                                class="absolute top-0 left-0 w-1 h-full bg-sage-400"
+                            ></div>
+                            <div
+                                class="text-[10px] font-bold text-sage-500 uppercase tracking-widest mb-2"
+                            >
+                                Ambitious / Batch
+                            </div>
+                            <div class="font-medium text-moss-900 mb-2">
+                                Use Intent (AI)
+                            </div>
+                            <p class="text-xs text-moss-900/60">
+                                "Summarize Q3 reports and email them." AI is 10x
+                                faster.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <div class="section-divider"></div>
+
+            <section class="text-center pb-10">
+                <div class="tech-panel rounded-2xl p-10 max-w-2xl mx-auto">
+                    <div
+                        class="text-sage-400 font-bold text-xs uppercase tracking-widest mb-4"
+                    >
+                        The Verdict
+                    </div>
+                    <h2 class="text-3xl font-light text-cream-50 mb-4">
+                        Hybrid Interfaces Win
+                    </h2>
+                    <p class="text-cream-50/70 font-light mb-6">
+                        Neither pure GUI nor pure AI. The future is intelligent
+                        augmentation of existing applications with
+                        context-aware, intent-based interactions.
+                    </p>
+                    <a
+                        href="./final_research.html"
+                        class="ceramic-btn inline-block px-8 py-3 rounded-full text-sm font-medium"
+                        >Read Full Research &rarr;</a
+                    >
+                </div>
+            </section>
+
+            <footer class="border-t border-moss-900/10 pt-8 pb-12 text-center">
+                <p
+                    class="text-xs text-moss-900/40 uppercase tracking-widest mb-2"
+                >
+                    Sources
+                </p>
+                <p class="text-xs text-moss-900/60 mb-4">
+                    <a
+                        href="https://www.nngroup.com/articles/ai-paradigm/"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="hover:text-moss-900 underline"
+                        >Jakob Nielsen (NN/g) - AI: The First New UI Paradigm in
+                        60 Years (2023)</a
+                    >
+                    &bull;
+                    <a
+                        href="https://www.microsoft.com/en-us/research/wp-content/uploads/2025/12/New-Future-Of-Work-Report-2025.pdf"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="hover:text-moss-900 underline"
+                        >Microsoft Research - New Future of Work Report 2025
+                        (LLMs and Work)</a
+                    >
+                    &bull;
+                    <a
+                        href="https://www.hbs.edu/faculty/Pages/item.aspx?num=64700"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="hover:text-moss-900 underline"
+                        >Harvard Business School - Navigating the Jagged
+                        Technological Frontier (2023)</a
+                    >
+                    &bull;
+                    <a
+                        href="https://www.geoffreylitt.com/2023/03/25/llm-end-user-programming.html"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="hover:text-moss-900 underline"
+                        >Geoffrey Litt (Ink &amp; Switch) - Malleable Software
+                        in the Age of LLMs (2023)</a
+                    >
+                    &bull;
+                    <a
+                        href="https://m3.material.io/"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="hover:text-moss-900 underline"
+                        >Google Material Design 3 - AI Design Guidelines</a
+                    >
+                </p>
+                <p class="text-xs text-moss-900/40">
+                    Michal Zadarnowski | Jan 2026 | Digital Strategy
+                </p>
+            </footer>
+        </main>
+    </body>
+</html>

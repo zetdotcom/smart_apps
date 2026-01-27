@@ -1,0 +1,1435 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Smart Apps: The Next Era of Intelligent Interfaces</title>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Urbanist:wght@400;500;600;700;800&display=swap"
+            rel="stylesheet"
+        />
+        <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+        />
+        <style>
+            /* --- RESET & BASE --- */
+            * {
+                box-sizing: border-box;
+                margin: 0;
+                padding: 0;
+            }
+
+            :root {
+                --color-deep-moss: #1a3324;
+                --color-forest-green: #2c5530;
+                --color-burnished-copper: #9c5f32;
+                --color-crisp-sage: #76a880;
+                --color-warm-cream: #f2efe9;
+                --color-pale-sage: #e1eadf;
+                --color-text-main: #1a3324;
+                --color-text-light: #f9f9f9;
+                --shadow-soft: 0 20px 40px rgba(26, 51, 36, 0.08);
+                --shadow-glass: 0 8px 32px 0 rgba(0, 0, 0, 0.15);
+            }
+
+            body {
+                font-family: "Urbanist", sans-serif;
+                background: linear-gradient(
+                    to bottom,
+                    var(--color-warm-cream),
+                    var(--color-pale-sage)
+                );
+                color: var(--color-text-main);
+                line-height: 1.6;
+                overflow-x: hidden;
+            }
+
+            h1,
+            h2,
+            h3,
+            h4 {
+                color: var(--color-deep-moss);
+                line-height: 1.1;
+            }
+
+            p {
+                margin-bottom: 1rem;
+                font-size: 1.1rem;
+                color: rgba(26, 51, 36, 0.9);
+            }
+
+            .container {
+                max-width: 1200px;
+                margin: 0 auto;
+                padding: 0 20px;
+            }
+
+            section {
+                padding: 100px 0;
+                position: relative;
+            }
+
+            /* --- UTILITIES --- */
+            .text-light {
+                color: var(--color-text-light) !important;
+            }
+            .text-sage {
+                color: var(--color-crisp-sage) !important;
+            }
+            .text-copper {
+                color: var(--color-burnished-copper) !important;
+            }
+            .bg-moss {
+                background-color: var(--color-deep-moss);
+            }
+
+            .glass-card {
+                background: linear-gradient(
+                    145deg,
+                    var(--color-deep-moss),
+                    var(--color-forest-green)
+                );
+                backdrop-filter: blur(10px);
+                border-radius: 20px;
+                border: 1px solid rgba(255, 255, 255, 0.1);
+                padding: 40px;
+                color: var(--color-text-light);
+                box-shadow: var(--shadow-glass);
+                height: 100%;
+            }
+
+            .glass-card h3 {
+                color: var(--color-crisp-sage);
+                margin-bottom: 15px;
+            }
+            .glass-card p {
+                color: rgba(255, 255, 255, 0.9);
+            }
+            .glass-card li {
+                color: rgba(255, 255, 255, 0.9);
+                margin-bottom: 10px;
+            }
+
+            .accent-icon {
+                font-size: 2rem;
+                margin-bottom: 1rem;
+                display: inline-block;
+                color: var(--color-crisp-sage);
+            }
+
+            /* --- VISUAL PLACEHOLDERS (CSS Graphics) --- */
+            .visual-box {
+                width: 100%;
+                height: 300px;
+                background: rgba(255, 255, 255, 0.5);
+                border-radius: 20px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                position: relative;
+                overflow: hidden;
+                box-shadow: var(--shadow-soft);
+            }
+
+            /* Layers Graphic */
+            .layers-graphic {
+                position: relative;
+                width: 200px;
+                height: 150px;
+            }
+            .layer {
+                width: 100%;
+                height: 60px;
+                border-radius: 8px;
+                position: absolute;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-weight: bold;
+                font-size: 0.9rem;
+                box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+            }
+            .layer-base {
+                background: var(--color-deep-moss);
+                color: var(--color-text-light);
+                bottom: 0;
+                transform: scale(0.9);
+                z-index: 1;
+            }
+            .layer-smart {
+                background: rgba(118, 168, 128, 0.9);
+                color: white;
+                bottom: 40px;
+                backdrop-filter: blur(5px);
+                z-index: 2;
+                border: 1px solid rgba(255, 255, 255, 0.3);
+                animation: float 4s ease-in-out infinite;
+            }
+            @keyframes float {
+                0%,
+                100% {
+                    transform: translateY(0);
+                }
+                50% {
+                    transform: translateY(-10px);
+                }
+            }
+
+            /* Schematic Graphic */
+            .schematic-graphic {
+                display: flex;
+                align-items: center;
+                gap: 20px;
+            }
+            .node {
+                width: 80px;
+                height: 80px;
+                border-radius: 50%;
+                background: var(--color-deep-moss);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                color: var(--color-crisp-sage);
+                font-size: 1.5rem;
+                box-shadow: var(--shadow-soft);
+            }
+            .connector {
+                height: 4px;
+                width: 60px;
+                background: var(--color-burnished-copper);
+                border-radius: 2px;
+            }
+            .output-ui {
+                width: 100px;
+                height: 120px;
+                background: white;
+                border: 2px solid var(--color-deep-moss);
+                border-radius: 8px;
+                padding: 10px;
+                display: flex;
+                flex-direction: column;
+                gap: 5px;
+            }
+            .ui-line {
+                height: 8px;
+                background: var(--color-pale-sage);
+                border-radius: 4px;
+            }
+
+            /* Shield Graphic */
+            .shield-graphic {
+                font-size: 8rem;
+                background: linear-gradient(
+                    135deg,
+                    var(--color-deep-moss),
+                    var(--color-crisp-sage)
+                );
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+                filter: drop-shadow(0 10px 10px rgba(0, 0, 0, 0.1));
+            }
+
+            /* Transformation Graphic */
+            .transform-container {
+                display: flex;
+                align-items: center;
+                gap: 30px;
+            }
+            .input-bar {
+                width: 120px;
+                height: 40px;
+                background: white;
+                border-radius: 20px;
+                border: 1px solid #ddd;
+                display: flex;
+                align-items: center;
+                padding-left: 10px;
+                color: #ccc;
+                font-size: 0.8rem;
+            }
+            .transform-arrow {
+                color: var(--color-burnished-copper);
+                font-size: 1.5rem;
+            }
+            .widget-mock {
+                width: 140px;
+                height: 100px;
+                background: linear-gradient(
+                    135deg,
+                    #fff,
+                    var(--color-pale-sage)
+                );
+                border-radius: 10px;
+                box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+                padding: 10px;
+                display: flex;
+                align-items: flex-end;
+                gap: 5px;
+            }
+            .bar {
+                background: var(--color-crisp-sage);
+                border-radius: 2px 2px 0 0;
+                width: 20px;
+            }
+
+            /* Sphere Graphic */
+            .sphere-graphic {
+                width: 150px;
+                height: 150px;
+                border-radius: 50%;
+                background: radial-gradient(
+                    circle at 30% 30%,
+                    var(--color-crisp-sage),
+                    var(--color-deep-moss)
+                );
+                box-shadow:
+                    0 20px 50px rgba(0, 0, 0, 0.3),
+                    inset 0 0 20px rgba(255, 255, 255, 0.2);
+                position: relative;
+            }
+            .sphere-ring {
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                width: 200px;
+                height: 60px;
+                border: 2px solid rgba(255, 255, 255, 0.2);
+                border-radius: 50%;
+            }
+
+            /* --- HERO SECTION --- */
+            .hero {
+                min-height: 90vh;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                text-align: center;
+                background: radial-gradient(
+                    circle at 50% 50%,
+                    rgba(118, 168, 128, 0.1) 0%,
+                    transparent 60%
+                );
+            }
+
+            .hero h1 {
+                font-size: 5rem;
+                margin-bottom: 20px;
+                letter-spacing: -2px;
+                background: linear-gradient(
+                    to right,
+                    var(--color-deep-moss),
+                    var(--color-forest-green)
+                );
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+            }
+
+            .hero .subtitle {
+                font-size: 1.8rem;
+                color: var(--color-burnished-copper);
+                font-weight: 500;
+                max-width: 800px;
+                margin: 0 auto 40px;
+            }
+
+            .hero-footer {
+                margin-top: 60px;
+                font-size: 0.9rem;
+                text-transform: uppercase;
+                letter-spacing: 2px;
+                color: var(--color-deep-moss);
+                opacity: 0.7;
+            }
+
+            /* --- EVOLUTION TIMELINE --- */
+            .evolution-grid {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+                gap: 30px;
+                margin-top: 50px;
+            }
+
+            .timeline-card {
+                background: rgba(255, 255, 255, 0.6);
+                border-radius: 16px;
+                padding: 30px;
+                border-left: 4px solid var(--color-burnished-copper);
+                transition: transform 0.3s ease;
+            }
+
+            .timeline-card.future {
+                background: var(--color-deep-moss);
+                color: var(--color-text-light);
+                border-left: 4px solid var(--color-crisp-sage);
+                grid-column: span 1; /* Reset on mobile, check media query */
+            }
+
+            .timeline-card.future h3 {
+                color: var(--color-crisp-sage);
+            }
+            .timeline-card.future p {
+                color: rgba(255, 255, 255, 0.9);
+            }
+            .timeline-card.future .mode-item {
+                background: rgba(255, 255, 255, 0.1);
+                padding: 10px;
+                border-radius: 8px;
+                margin-top: 10px;
+                font-size: 0.95rem;
+            }
+
+            .year-badge {
+                display: inline-block;
+                padding: 5px 12px;
+                border-radius: 50px;
+                font-weight: 700;
+                font-size: 0.9rem;
+                margin-bottom: 15px;
+            }
+
+            .past .year-badge {
+                background: rgba(156, 95, 50, 0.1);
+                color: var(--color-burnished-copper);
+            }
+            .future .year-badge {
+                background: var(--color-crisp-sage);
+                color: var(--color-deep-moss);
+            }
+
+            /* --- OPPORTUNITY --- */
+            .opportunity-layout {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 60px;
+                align-items: center;
+            }
+
+            .opp-list li {
+                position: relative;
+                padding-left: 25px;
+                margin-bottom: 15px;
+            }
+
+            .opp-list li::before {
+                content: "→";
+                position: absolute;
+                left: 0;
+                color: var(--color-crisp-sage);
+                font-weight: bold;
+            }
+
+            /* --- TECHNOLOGY --- */
+            .tech-grid {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+                gap: 40px;
+                margin-top: 40px;
+            }
+
+            /* --- BUSINESS CASE --- */
+            .business-grid {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+                gap: 30px;
+                margin-top: 50px;
+            }
+
+            .stat-card {
+                text-align: center;
+                padding: 40px 20px;
+                background: #fff;
+                border-radius: 20px;
+                box-shadow: var(--shadow-soft);
+            }
+
+            .stat-card i {
+                font-size: 3rem;
+                margin-bottom: 20px;
+                background: linear-gradient(
+                    135deg,
+                    var(--color-deep-moss),
+                    var(--color-crisp-sage)
+                );
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+            }
+
+            /* --- USE CASES --- */
+            .use-case-container {
+                display: flex;
+                flex-direction: column;
+                gap: 30px;
+            }
+
+            .chat-row {
+                display: flex;
+                gap: 20px;
+                align-items: flex-start;
+                max-width: 900px;
+                margin: 0 auto;
+                width: 100%;
+            }
+
+            .chat-bubble {
+                flex: 1;
+                padding: 25px;
+                border-radius: 20px;
+                position: relative;
+            }
+
+            .user-bubble {
+                background: #fff;
+                border-bottom-left-radius: 4px;
+                box-shadow: var(--shadow-soft);
+            }
+
+            .ai-bubble {
+                background: var(--color-deep-moss);
+                color: var(--color-text-light);
+                border-bottom-right-radius: 4px;
+                border: 1px solid rgba(118, 168, 128, 0.3);
+            }
+
+            .ai-bubble h4 {
+                color: var(--color-crisp-sage);
+                margin-bottom: 5px;
+                font-size: 0.9rem;
+                text-transform: uppercase;
+                letter-spacing: 1px;
+            }
+            .ai-bubble p {
+                color: rgba(255, 255, 255, 0.9);
+                font-size: 1rem;
+                margin: 0;
+            }
+            .benefit-tag {
+                display: inline-block;
+                margin-top: 10px;
+                font-size: 0.8rem;
+                background: rgba(118, 168, 128, 0.2);
+                color: var(--color-crisp-sage);
+                padding: 4px 10px;
+                border-radius: 4px;
+            }
+
+            /* --- CONCLUSION --- */
+            .conclusion-banner {
+                background: var(--color-deep-moss);
+                color: var(--color-text-light);
+                text-align: center;
+                padding: 120px 20px;
+                border-radius: 30px;
+                margin-bottom: 60px;
+                position: relative;
+                overflow: hidden;
+            }
+
+            .conclusion-banner::before {
+                content: "";
+                position: absolute;
+                top: -50%;
+                left: -50%;
+                width: 200%;
+                height: 200%;
+                background: radial-gradient(
+                    circle,
+                    rgba(118, 168, 128, 0.1) 0%,
+                    transparent 70%
+                );
+                pointer-events: none;
+            }
+
+            .cta-box {
+                background: #79a782;
+                display: inline-block;
+                text: smoke-white;
+                padding: 30px 50px;
+                border-radius: 16px;
+                margin-top: 40px;
+                border: 1px solid var(--color-crisp-sage);
+            }
+
+            /* RESPONSIVE */
+            @media (max-width: 768px) {
+                .hero h1 {
+                    font-size: 3rem;
+                }
+                .opportunity-layout {
+                    grid-template-columns: 1fr;
+                }
+                .timeline-card.future {
+                    grid-column: auto;
+                }
+                .chat-row {
+                    flex-direction: column;
+                }
+                .tech-grid {
+                    grid-template-columns: 1fr;
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <!-- Page Navigation -->
+        <div
+            style="
+                width: 100%;
+                background: var(--color-deep-moss);
+                border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            "
+        >
+            <div
+                style="
+                    max-width: 1200px;
+                    margin: 0 auto;
+                    padding: 0 20px;
+                    height: 48px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    gap: 8px;
+                "
+            >
+                <a
+                    href="smart_apps2.html"
+                    style="
+                        padding: 8px 16px;
+                        font-size: 0.875rem;
+                        font-weight: 500;
+                        border-radius: 8px;
+                        background: var(--color-crisp-sage);
+                        color: var(--color-deep-moss);
+                        text-decoration: none;
+                    "
+                >
+                    Overview
+                </a>
+                <a
+                    href="final_research.html"
+                    style="
+                        padding: 8px 16px;
+                        font-size: 0.875rem;
+                        font-weight: 500;
+                        border-radius: 8px;
+                        color: rgba(255, 255, 255, 0.7);
+                        text-decoration: none;
+                        transition: all 0.2s;
+                    "
+                    onmouseover="this.style.color='#fff'; this.style.background='var(--color-forest-green)'"
+                    onmouseout="this.style.color='rgba(255,255,255,0.7)'; this.style.background='transparent'"
+                >
+                    Full Research
+                </a>
+                <a
+                    href="summary_final_research.html"
+                    style="
+                        padding: 8px 16px;
+                        font-size: 0.875rem;
+                        font-weight: 500;
+                        border-radius: 8px;
+                        color: rgba(255, 255, 255, 0.7);
+                        text-decoration: none;
+                        transition: all 0.2s;
+                    "
+                    onmouseover="this.style.color='#fff'; this.style.background='var(--color-forest-green)'"
+                    onmouseout="this.style.color='rgba(255,255,255,0.7)'; this.style.background='transparent'"
+                >
+                    Executive Summary
+                </a>
+                <a
+                    href="infographic.html"
+                    style="
+                        padding: 8px 16px;
+                        font-size: 0.875rem;
+                        font-weight: 500;
+                        border-radius: 8px;
+                        color: rgba(255, 255, 255, 0.7);
+                        text-decoration: none;
+                        transition: all 0.2s;
+                    "
+                    onmouseover="this.style.color='#fff'; this.style.background='var(--color-forest-green)'"
+                    onmouseout="this.style.color='rgba(255,255,255,0.7)'; this.style.background='transparent'"
+                >
+                    Infographic
+                </a>
+            </div>
+        </div>
+
+        <!-- HERO SECTION -->
+        <section class="hero">
+            <div class="container">
+                <div class="icon-header">
+                    <i
+                        class="fa-solid fa-microchip accent-icon"
+                        style="font-size: 4rem; opacity: 0.8"
+                    ></i>
+                </div>
+                <h1>Smart Apps</h1>
+                <p class="subtitle">The Next Era of Intelligent Interfaces</p>
+                <p
+                    style="
+                        font-size: 1.2rem;
+                        max-width: 600px;
+                        margin: 0 auto;
+                        color: var(--color-deep-moss);
+                    "
+                >
+                    Leveraging Edge AI and FunctionGemma for Zero-Latency,
+                    Privacy-First Integration.
+                </p>
+                <div class="hero-footer">
+                    Michal Zadarnowski/Jan 2026 &nbsp;|&nbsp; Digital Strategy
+                </div>
+            </div>
+        </section>
+
+        <!-- EVOLUTION SECTION -->
+        <section id="evolution">
+            <div class="container">
+                <h2
+                    style="
+                        text-align: center;
+                        font-size: 2.5rem;
+                        margin-bottom: 10px;
+                    "
+                >
+                    The Evolution of Interaction
+                </h2>
+                <p style="text-align: center; margin-bottom: 50px">
+                    From Manual Clicks to Intent-Driven Action
+                </p>
+
+                <div class="evolution-grid">
+                    <!-- 1980s -->
+                    <div class="timeline-card past">
+                        <span class="year-badge">1980s</span>
+                        <h3>Command Line</h3>
+                        <p style="margin-top: 10px">
+                            High friction. Users had to learn the machine's
+                            language to operate software.
+                        </p>
+                    </div>
+
+                    <!-- 2000s -->
+                    <div class="timeline-card past">
+                        <span class="year-badge">2000s</span>
+                        <h3>Graphical UI</h3>
+                        <p style="margin-top: 10px">
+                            Static menus and buttons. Users forced to memorize
+                            rigid paths.
+                        </p>
+                        <div
+                            style="
+                                font-family: monospace;
+                                font-size: 0.8rem;
+                                color: var(--color-burnished-copper);
+                                margin-top: 10px;
+                            "
+                        >
+                            Menu &rarr; Settings &rarr; Profile &rarr; Edit
+                        </div>
+                    </div>
+
+                    <!-- 2026 -->
+                    <div class="timeline-card future">
+                        <span class="year-badge">2026</span>
+                        <h3>Smart Apps</h3>
+                        <p style="margin-top: 10px">
+                            <strong>Intent-Based:</strong> The interface adapts
+                            to the user, not the other way around.
+                        </p>
+
+                        <div style="margin-top: 20px">
+                            <div class="mode-item">
+                                <i
+                                    class="fa-solid fa-wand-magic-sparkles text-sage"
+                                ></i>
+                                <strong>Generative UI</strong><br />
+                                Building temporary interfaces on the fly.
+                            </div>
+                            <div class="mode-item">
+                                <i class="fa-solid fa-compass text-sage"></i>
+                                <strong>Smart Navigation</strong><br />
+                                Instantly finding the right screen.
+                            </div>
+                            <div class="mode-item">
+                                <i class="fa-solid fa-rocket text-sage"></i>
+                                <strong>App Control</strong><br />
+                                Direct execution of tasks.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="resources" style="background: white">
+            <div class="container">
+                <h2 style="text-align: center; margin-bottom: 2rem">
+                    Related Resources
+                </h2>
+                <div
+                    style="
+                        display: flex;
+                        flex-wrap: wrap;
+                        gap: 1.5rem;
+                        justify-content: center;
+                    "
+                >
+                    <a
+                        href="https://www.youtube.com/clip/UgkxWZPhDf-lo4gV7dRnPOxskjDA0dT7FAO4"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        style="
+                            display: inline-flex;
+                            align-items: center;
+                            gap: 0.75rem;
+                            padding: 1rem 1.5rem;
+                            background: linear-gradient(
+                                145deg,
+                                var(--color-deep-moss),
+                                var(--color-forest-green)
+                            );
+                            color: var(--color-text-light);
+                            text-decoration: none;
+                            border-radius: 12px;
+                            font-weight: 500;
+                            box-shadow: var(--shadow-soft);
+                            transition:
+                                transform 0.2s,
+                                box-shadow 0.2s;
+                        "
+                    >
+                        <i
+                            class="fa-brands fa-youtube"
+                            style="font-size: 1.25rem"
+                        ></i>
+                        FunctionGemma Demo
+                        <i
+                            class="fa-solid fa-arrow-up-right-from-square"
+                            style="font-size: 0.875rem; opacity: 0.7"
+                        ></i>
+                    </a>
+                    <a
+                        href="https://youtube.com/clip/UgkxN6XBJYLM5HD9SfC6kcXT4vcPh4y99eJ7?si=0-46f0bwLKpSvLZk"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        style="
+                            display: inline-flex;
+                            align-items: center;
+                            gap: 0.75rem;
+                            padding: 1rem 1.5rem;
+                            background: linear-gradient(
+                                145deg,
+                                var(--color-deep-moss),
+                                var(--color-forest-green)
+                            );
+                            color: var(--color-text-light);
+                            text-decoration: none;
+                            border-radius: 12px;
+                            font-weight: 500;
+                            box-shadow: var(--shadow-soft);
+                            transition:
+                                transform 0.2s,
+                                box-shadow 0.2s;
+                        "
+                    >
+                        <i
+                            class="fa-brands fa-youtube"
+                            style="font-size: 1.25rem"
+                        ></i>
+                        Gen UI Chatbot
+                        <i
+                            class="fa-solid fa-arrow-up-right-from-square"
+                            style="font-size: 0.875rem; opacity: 0.7"
+                        ></i>
+                    </a>
+                    <a
+                        href="https://www.linkedin.com/posts/michal-zadarnowski_functiongemma-edgeai-frontendarchitecture-activity-7409556691790430208-ruor"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        style="
+                            display: inline-flex;
+                            align-items: center;
+                            gap: 0.75rem;
+                            padding: 1rem 1.5rem;
+                            background: linear-gradient(
+                                145deg,
+                                var(--color-deep-moss),
+                                var(--color-forest-green)
+                            );
+                            color: var(--color-text-light);
+                            text-decoration: none;
+                            border-radius: 12px;
+                            font-weight: 500;
+                            box-shadow: var(--shadow-soft);
+                            transition:
+                                transform 0.2s,
+                                box-shadow 0.2s;
+                        "
+                    >
+                        <i
+                            class="fa-brands fa-linkedin"
+                            style="font-size: 1.25rem"
+                        ></i>
+                        Smart Apps Post
+                        <i
+                            class="fa-solid fa-arrow-up-right-from-square"
+                            style="font-size: 0.875rem; opacity: 0.7"
+                        ></i>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- OPPORTUNITY SECTION -->
+        <section id="opportunity" style="background: white">
+            <div class="container">
+                <div class="opportunity-layout">
+                    <div>
+                        <h2 style="font-size: 2.5rem; margin-bottom: 30px">
+                            The Opportunity: "Smart Integration"
+                        </h2>
+
+                        <div style="margin-bottom: 30px">
+                            <h3 class="text-copper">The Problem</h3>
+                            <p>
+                                Many applications suffer from "Feature Creep."
+                                Users are overwhelmed by menus and navigation
+                                trees.
+                            </p>
+                        </div>
+
+                        <div
+                            style="
+                                background: var(--color-warm-cream);
+                                padding: 30px;
+                                border-radius: 16px;
+                            "
+                        >
+                            <h3 style="color: var(--color-deep-moss)">
+                                The Solution
+                            </h3>
+                            <p>
+                                <strong
+                                    >No need to rebuild apps from
+                                    scratch.</strong
+                                >
+                            </p>
+                            <p>
+                                An intelligent "Smart Layer" can be added on top
+                                of existing codebases.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Visual Replacement for Layers Image -->
+                    <div
+                        class="glass-card"
+                        style="
+                            min-height: auto;
+                            display: flex;
+                            flex-direction: column;
+                            align-items: center;
+                        "
+                    >
+                        <div class="layers-graphic" style="margin-bottom: 20px">
+                            <div class="layer layer-base">
+                                LEGACY APP (Base)
+                            </div>
+                            <div class="layer layer-smart">
+                                SMART LAYER (AI)
+                            </div>
+                        </div>
+                        <h3>The Result</h3>
+                        <ul class="opp-list" style="list-style: none">
+                            <li>The app acts as an <strong>agent</strong>.</li>
+                            <li>
+                                Complex workflows become simple conversation
+                                streams.
+                            </li>
+                            <li>
+                                Preserves existing investment while adding
+                                intelligent capabilities.
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- TECHNOLOGY SECTION -->
+        <section id="technology">
+            <div class="container">
+                <h2
+                    style="
+                        text-align: center;
+                        font-size: 2.5rem;
+                        margin-bottom: 50px;
+                    "
+                >
+                    Powered by FunctionGemma
+                </h2>
+
+                <div class="tech-grid">
+                    <!-- Engine -->
+                    <div class="glass-card">
+                        <i class="fa-solid fa-microchip accent-icon"></i>
+                        <h3>The Engine: FunctionGemma</h3>
+                        <p
+                            style="
+                                font-size: 0.9rem;
+                                text-transform: uppercase;
+                                letter-spacing: 1px;
+                                margin-bottom: 15px;
+                            "
+                        >
+                            270M Parameter Model
+                        </p>
+                        <p>
+                            <strong>Specialized AI:</strong> Optimized for
+                            action and structure, not just chat.
+                        </p>
+                        <hr
+                            style="
+                                border: 0;
+                                border-top: 1px solid rgba(255, 255, 255, 0.1);
+                                margin: 20px 0;
+                            "
+                        />
+                        <h4
+                            style="
+                                color: var(--color-crisp-sage);
+                                margin-bottom: 10px;
+                            "
+                        >
+                            Deployment Flexibility
+                        </h4>
+                        <ul>
+                            <li>
+                                <strong>On-Device:</strong> Zero latency, runs
+                                on phone/laptop.
+                            </li>
+                            <li>
+                                <strong>Client Server:</strong> Hosted on
+                                private infrastructure for control.
+                            </li>
+                        </ul>
+
+                        <h4
+                            style="
+                                color: var(--color-crisp-sage);
+                                margin: 20px 0 10px;
+                            "
+                        >
+                            More technical notes
+                        </h4>
+                        <ul>
+                            <li>
+                                <strong>Footprint:</strong> ~300MB model file
+                                (deployment-dependent).
+                            </li>
+                            <li>
+                                <strong>Memory:</strong> ~500MB RAM target for
+                                on-device inference (varies with
+                                runtime/quantization).
+                            </li>
+                            <li>
+                                <strong>Tuning outcomes:</strong> Fine-tuned
+                                setups can reach ~85% task success on their
+                                evaluation suite.
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- Protocol -->
+                    <div class="glass-card">
+                        <div
+                            class="schematic-graphic"
+                            style="margin-bottom: 20px"
+                        >
+                            <div class="node">
+                                <i class="fa-solid fa-brain"></i>
+                            </div>
+                            <div class="connector"></div>
+                            <div class="output-ui">
+                                <div class="ui-line" style="width: 80%"></div>
+                                <div class="ui-line" style="width: 60%"></div>
+                                <div
+                                    class="ui-line"
+                                    style="
+                                        width: 90%;
+                                        background: var(--color-crisp-sage);
+                                    "
+                                ></div>
+                            </div>
+                        </div>
+                        <h3>The Architecture</h3>
+                        <p>
+                            <strong>Big Players Standards:</strong> Google A2UI,
+                            Vercel json-render, Thesys — built for Cloud LLMs.
+                        </p>
+                        <p>
+                            <strong>Our Solution:</strong> We may need to come
+                            up with something lightweight for this use case,
+                            tailored for Small Language Models (SLMs) and
+                            function calling.
+                        </p>
+                        <div
+                            style="
+                                background: rgba(0, 0, 0, 0.2);
+                                padding: 15px;
+                                border-radius: 8px;
+                                margin: 20px 0;
+                                font-family: monospace;
+                                font-size: 0.9rem;
+                            "
+                        >
+                            Natural Language
+                            <i class="fa-solid fa-arrow-right text-sage"></i>
+                            Function call
+                            <i class="fa-solid fa-arrow-right text-sage"></i>
+                            Action (UI render/ app navigation/ API call)
+                        </div>
+                        <p>
+                            <strong>Safety:</strong> AI strictly fills forms for
+                            approved components.
+                            <span style="color: var(--color-crisp-sage)"
+                                >Never writes raw code.</span
+                            >
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- BUSINESS CASE -->
+        <section id="business" style="background: #fff">
+            <div class="container">
+                <h2 style="text-align: center; margin-bottom: 50px">
+                    Private. Fast. Reliable.
+                </h2>
+
+                <div class="business-grid">
+                    <div class="stat-card">
+                        <i
+                            class="fa-solid fa-shield-halved"
+                            style="
+                                font-size: 3rem;
+                                color: var(--color-deep-moss);
+                                margin-bottom: 20px;
+                            "
+                        ></i>
+                        <h3>Data Sovereignty & Privacy</h3>
+                        <p>
+                            <strong>GDPR Ready.</strong> Data never needs to
+                            leave the browser (On-Device) or the private
+                            network.
+                        </p>
+                    </div>
+
+                    <div class="stat-card">
+                        <i
+                            class="fa-solid fa-bolt"
+                            style="
+                                font-size: 3rem;
+                                color: var(--color-deep-moss);
+                                margin-bottom: 20px;
+                            "
+                        ></i>
+                        <h3>Reliability & Performance</h3>
+                        <p>
+                            <strong>Offline Capable.</strong> Works in subways,
+                            airplanes, and poor signal areas.
+                        </p>
+                        <p>
+                            <strong>Zero Latency.</strong> Immediate response
+                            (<200ms) vs cloud lag.
+                        </p>
+                    </div>
+
+                    <div class="stat-card">
+                        <i
+                            class="fa-solid fa-coins"
+                            style="
+                                font-size: 3rem;
+                                color: var(--color-deep-moss);
+                                margin-bottom: 20px;
+                            "
+                        ></i>
+                        <h3>Cost Efficiency</h3>
+                        <p>
+                            <strong>Reduced Cloud Dependency.</strong> Offloads
+                            compute to local devices, cutting API costs and
+                            server load.
+                        </p>
+                        <p>
+                            <strong>Scalable by Design.</strong> More users
+                            doesn't mean more server costs.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- USE CASES -->
+        <section id="use-cases">
+            <div class="container">
+                <h2 style="text-align: center; margin-bottom: 60px">
+                    The "Smart Layer" in Action
+                </h2>
+
+                <div class="use-case-container">
+                    <!-- Scenario A -->
+                    <div class="chat-row">
+                        <div class="chat-bubble user-bubble">
+                            <div
+                                style="
+                                    font-weight: bold;
+                                    margin-bottom: 5px;
+                                    color: var(--color-burnished-copper);
+                                "
+                            >
+                                User
+                            </div>
+                            "I need to update my billing address."
+                        </div>
+                        <div class="chat-bubble ai-bubble">
+                            <h4>Scenario A: Smart Navigation</h4>
+                            <p>
+                                AI identifies intent &rarr; Deep links directly
+                                to <strong>BillingForm</strong> view.
+                            </p>
+                            <span class="benefit-tag">Saves 5+ clicks</span>
+                        </div>
+                    </div>
+
+                    <!-- Scenario B -->
+                    <div class="chat-row">
+                        <div class="chat-bubble user-bubble">
+                            <div
+                                style="
+                                    font-weight: bold;
+                                    margin-bottom: 5px;
+                                    color: var(--color-burnished-copper);
+                                "
+                            >
+                                User
+                            </div>
+                            "How does my spending look this week vs last week?"
+                        </div>
+                        <div class="chat-bubble ai-bubble">
+                            <h4>Scenario B: Generative UI</h4>
+                            <p>
+                                AI sends component type with props &rarr; App
+                                renders what is needed.
+                            </p>
+                            <span class="benefit-tag">Instant Reporting</span>
+                        </div>
+                    </div>
+
+                    <!-- Visualizing the Transformation -->
+                    <div
+                        style="
+                            display: flex;
+                            justify-content: center;
+                            margin: 20px 0;
+                        "
+                    >
+                        <div
+                            class="visual-box"
+                            style="width: auto; padding: 20px; height: auto"
+                        >
+                            <div class="transform-container">
+                                <div class="input-bar">"Show Stats..."</div>
+                                <div class="transform-arrow">
+                                    <i class="fa-solid fa-arrow-right"></i>
+                                </div>
+                                <div class="widget-mock">
+                                    <div class="bar" style="height: 40%"></div>
+                                    <div class="bar" style="height: 70%"></div>
+                                    <div class="bar" style="height: 50%"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Real-world UI Examples -->
+                    <div
+                        style="
+                            display: flex;
+                            justify-content: center;
+                            margin: 40px 0 10px;
+                        "
+                    >
+                        <div style="width: 80%; max-width: 1300px">
+                            <h3 style="text-align: center; margin-bottom: 20px">
+                                Real-World UI Examples (Concept)
+                            </h3>
+
+                            <figure style="margin: 0 0 28px 0">
+                                <img
+                                    src="./bank_usecae.png"
+                                    alt="Bank app dashboard with a Smart Layer prompt and highlighted areas"
+                                    style="
+                                        width: 100%;
+                                        height: auto;
+                                        border-radius: 14px;
+                                        border: 1px solid rgba(0, 0, 0, 0.08);
+                                        box-shadow: 0 18px 50px
+                                            rgba(0, 0, 0, 0.15);
+                                    "
+                                />
+                                <figcaption
+                                    style="
+                                        text-align: center;
+                                        margin-top: 10px;
+                                        color: rgba(255, 255, 255, 0.85);
+                                        font-size: 0.95rem;
+                                    "
+                                >
+                                    Banking: a single intent prompt replaces
+                                    deep navigation and scattered entry points.
+                                </figcaption>
+                            </figure>
+
+                            <figure style="margin: 0">
+                                <img
+                                    src="./gov_usecase.png"
+                                    alt="Government portal screen with an intent prompt and generated UI components callout"
+                                    style="
+                                        width: 100%;
+                                        height: auto;
+                                        border-radius: 14px;
+                                        border: 1px solid rgba(0, 0, 0, 0.08);
+                                        box-shadow: 0 18px 50px
+                                            rgba(0, 0, 0, 0.15);
+                                    "
+                                />
+                                <figcaption
+                                    style="
+                                        text-align: center;
+                                        margin-top: 10px;
+                                        color: rgba(255, 255, 255, 0.85);
+                                        font-size: 0.95rem;
+                                    "
+                                >
+                                    Government services: UI assembled from an
+                                    approved component catalog, guided by user
+                                    intent.
+                                </figcaption>
+                            </figure>
+                        </div>
+                    </div>
+
+                    <!-- Scenario C -->
+                    <div class="chat-row">
+                        <div class="chat-bubble user-bubble">
+                            <div
+                                style="
+                                    font-weight: bold;
+                                    margin-bottom: 5px;
+                                    color: var(--color-burnished-copper);
+                                "
+                            >
+                                User
+                            </div>
+                            "Create a meeting with John on Monday at 9 AM."
+                        </div>
+                        <div class="chat-bubble ai-bubble">
+                            <h4>Scenario C: App Control</h4>
+                            <p>
+                                AI parses details &rarr; Calls Calendar API
+                                &rarr; Shows confirmation card.
+                            </p>
+                            <span class="benefit-tag">Task in seconds</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CONCLUSION -->
+        <section id="conclusion">
+            <div class="container">
+                <div class="conclusion-banner">
+                    <div
+                        style="
+                            display: flex;
+                            justify-content: center;
+                            margin-bottom: 30px;
+                        "
+                    >
+                        <div class="sphere-graphic">
+                            <div class="sphere-ring"></div>
+                        </div>
+                    </div>
+                    <h2 style="color: var(--color-text-light); font-size: 3rem">
+                        The Future of Interfaces
+                    </h2>
+                    <p
+                        style="
+                            color: var(--color-pale-sage);
+                            font-size: 1.5rem;
+                            max-width: 800px;
+                            margin: 20px auto;
+                        "
+                    >
+                        Interfaces are becoming fluid and conversational. Static
+                        navigation is becoming obsolete.
+                    </p>
+
+                    <div
+                        style="
+                            display: flex;
+                            justify-content: center;
+                            gap: 40px;
+                            margin-top: 40px;
+                            flex-wrap: wrap;
+                        "
+                    >
+                        <div style="text-align: left; max-width: 300px">
+                            <h4 style="color: var(--color-crisp-sage)">
+                                Getting Started
+                            </h4>
+                            <p
+                                style="
+                                    font-size: 1rem;
+                                    color: rgba(255, 255, 255, 0.8);
+                                "
+                            >
+                                Start with a "Smart Integration" layer—add
+                                intelligence to existing apps without
+                                rebuilding.
+                            </p>
+                        </div>
+                        <div style="text-align: left; max-width: 300px">
+                            <h4 style="color: var(--color-crisp-sage)">
+                                Try It Out
+                            </h4>
+                            <p
+                                style="
+                                    font-size: 1rem;
+                                    color: rgba(255, 255, 255, 0.8);
+                                "
+                            >
+                                Build a "Smart Search" demo using FunctionGemma
+                                to explore the capabilities.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="cta-box">
+                        <h3 style="margin-bottom: 0">
+                            Explore the Possibilities
+                        </h3>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </body>
+</html>

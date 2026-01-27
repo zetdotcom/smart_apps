@@ -1,0 +1,662 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Future of UI: 5 Core Shifts | 2026 Research Synthesis</title>
+        <script src="https://cdn.tailwindcss.com"></script>
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <link
+            href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap"
+            rel="stylesheet"
+        />
+
+        <script>
+            tailwind.config = {
+                theme: {
+                    extend: {
+                        colors: {
+                            moss: {
+                                950: "#0D1A12",
+                                900: "#1A3324", // Primary Anchor
+                                800: "#2C5530",
+                                700: "#3D7A46",
+                            },
+                            copper: {
+                                400: "#B87E54",
+                                500: "#9C5F32", // Secondary/Friction
+                                600: "#7A4A26",
+                            },
+                            sage: {
+                                300: "#98C9A3",
+                                400: "#76A880", // Highlight/Success
+                                500: "#5A8F65",
+                                50: "#E1EADF",
+                            },
+                            cream: {
+                                100: "#F2EFE9", // Bg Top
+                                50: "#EFEFEF", // Text Light
+                            },
+                        },
+                        fontFamily: {
+                            sans: ["Outfit", "sans-serif"],
+                        },
+                        boxShadow: {
+                            "soft-studio":
+                                "0 30px 60px -15px rgba(26, 51, 36, 0.25)",
+                            ceramic:
+                                "0 4px 8px -2px rgba(26, 51, 36, 0.15), inset 0 2px 4px rgba(255,255,255,0.8)",
+                            "inner-light":
+                                "inset 0 1px 2px 0 rgba(255, 255, 255, 0.1)",
+                        },
+                        backgroundImage: {
+                            "deep-canopy":
+                                "linear-gradient(145deg, #1A3324 0%, #25422E 100%)",
+                            "organic-mist":
+                                "linear-gradient(to bottom, #F2EFE9 0%, #E1EADF 100%)",
+                        },
+                    },
+                },
+            };
+        </script>
+
+        <style>
+            body {
+                background-image: linear-gradient(
+                    to bottom,
+                    #f2efe9 0%,
+                    #e1eadf 100%
+                );
+                color: #1a3324;
+                min-height: 100vh;
+            }
+
+            /* --- UI Containers --- */
+            .tech-panel {
+                background: linear-gradient(135deg, #1a3324 0%, #203e2c 100%);
+                color: #efefef;
+                border: 1px solid rgba(118, 168, 128, 0.1);
+                box-shadow: 0 20px 40px -10px rgba(26, 51, 36, 0.3);
+                position: relative;
+                overflow: hidden;
+            }
+
+            .glass-panel {
+                background: rgba(242, 239, 233, 0.65);
+                backdrop-filter: blur(20px);
+                -webkit-backdrop-filter: blur(20px);
+                border: 1px solid rgba(255, 255, 255, 0.5);
+                box-shadow: 0 8px 32px rgba(26, 51, 36, 0.05);
+                transition: transform 0.3s ease;
+            }
+            .glass-panel:hover {
+                transform: translateY(-4px);
+                box-shadow: 0 12px 40px rgba(26, 51, 36, 0.1);
+            }
+
+            .action-btn {
+                background: #76a880;
+                color: #f2efe9;
+                box-shadow:
+                    0 4px 12px rgba(118, 168, 128, 0.4),
+                    inset 0 2px 0 rgba(255, 255, 255, 0.2);
+                border: none;
+                transition: all 0.3s ease;
+            }
+            .action-btn:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 8px 20px rgba(118, 168, 128, 0.5);
+            }
+
+            .chart-container {
+                position: relative;
+                width: 100%;
+                height: 300px;
+            }
+
+            /* Citation Badge */
+            .cite-badge {
+                font-size: 0.65rem;
+                text-transform: uppercase;
+                letter-spacing: 0.05em;
+                padding: 4px 8px;
+                border-radius: 4px;
+                display: inline-block;
+                margin-bottom: 8px;
+                font-weight: 600;
+            }
+            .cite-tech {
+                background: rgba(255, 255, 255, 0.1);
+                color: #76a880;
+                border: 1px solid rgba(118, 168, 128, 0.2);
+            }
+            .cite-glass {
+                background: #e1eadf;
+                color: #2c5530;
+                border: 1px solid #76a880;
+            }
+        </style>
+    </head>
+    <body class="antialiased selection:bg-sage-400 selection:text-white">
+        <!-- Navigation -->
+        <nav class="sticky top-0 z-50 glass-panel border-b border-white/20">
+            <div
+                class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between"
+            >
+                <div class="flex items-center gap-3">
+                    <div
+                        class="w-8 h-8 rounded-full bg-gradient-to-br from-moss-800 to-moss-900 flex items-center justify-center text-cream-50 font-bold text-xs shadow-inner"
+                    >
+                        R
+                    </div>
+                    <span
+                        class="text-moss-900 font-semibold tracking-wide text-sm"
+                        >HCI Research <span class="opacity-50">|</span> The
+                        Future of UI</span
+                    >
+                </div>
+                <div class="hidden md:flex space-x-1">
+                    <button
+                        onclick="document.getElementById('deep-dive').scrollIntoView({behavior:'smooth'})"
+                        class="px-4 py-2 text-sm text-moss-900/70 hover:text-moss-900 transition-colors font-medium"
+                    >
+                        5 Core Shifts
+                    </button>
+                    <button
+                        onclick="document.getElementById('simulation').scrollIntoView({behavior:'smooth'})"
+                        class="px-4 py-2 text-sm text-moss-900/70 hover:text-moss-900 transition-colors"
+                    >
+                        Lab
+                    </button>
+                    <button
+                        onclick="document.getElementById('data').scrollIntoView({behavior:'smooth'})"
+                        class="px-4 py-2 text-sm text-moss-900/70 hover:text-moss-900 transition-colors"
+                    >
+                        Data
+                    </button>
+                </div>
+            </div>
+        </nav>
+
+        <main class="max-w-7xl mx-auto px-6 py-16 space-y-32">
+            <!-- Hero Section -->
+            <section class="text-center max-w-4xl mx-auto space-y-8">
+                <div
+                    class="inline-flex items-center px-4 py-2 rounded-full bg-sage-50 border border-sage-400/20 text-moss-900 text-xs font-bold tracking-widest uppercase mb-4"
+                >
+                    Research Synthesis 2023-2026
+                </div>
+                <h1
+                    class="text-5xl md:text-7xl font-light text-moss-900 leading-tight"
+                >
+                    Beyond the Glass Slab <br />
+                    <span
+                        class="text-transparent bg-clip-text bg-gradient-to-r from-moss-800 to-sage-400 font-normal"
+                        >The Era of Malleable Software</span
+                    >
+                </h1>
+                <p
+                    class="text-xl text-moss-900/70 font-light leading-relaxed max-w-2xl mx-auto"
+                >
+                    Current apps are static factories. Future apps are liquid.
+                    <br />
+                    Exploring the 5 critical shifts in interaction design driven
+                    by Generative AI.
+                </p>
+            </section>
+
+            <!-- DEEP DIVE: 5 CORE SHIFTS (Requested Extension) -->
+            <section id="deep-dive" class="scroll-mt-32">
+                <div class="mb-12 border-b border-moss-900/10 pb-6">
+                    <h2 class="text-3xl font-medium text-moss-900">
+                        Deep Dive: 5 Core Shifts
+                    </h2>
+                    <p class="text-moss-900/60 mt-2">
+                        Selected insights from NN/g, Ink & Switch, and Microsoft
+                        Research.
+                    </p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <!-- Topic 1: Malleable Software -->
+                    <div
+                        class="tech-panel p-10 rounded-3xl md:col-span-2 flex flex-col md:flex-row gap-8 items-center"
+                    >
+                        <div class="flex-1">
+                            <span class="cite-badge cite-tech"
+                                >Ink & Switch (2024)</span
+                            >
+                            <h3 class="text-3xl font-light text-cream-50 mb-4">
+                                1. Malleable Software (The "Liquid" UI)
+                            </h3>
+                            <p
+                                class="text-cream-50/70 leading-relaxed font-light mb-6"
+                            >
+                                Today, software is rigid. If you want a chart,
+                                but the app only has a list view, you are stuck.
+                                <strong>Malleable Software</strong> proposes
+                                that the UI should be generated
+                                <em>at runtime</em> based on user intent. If you
+                                ask for a "Sales Dashboard," the AI shouldn't
+                                just retrieve data—it should write the code to
+                                render the dashboard layout instantly. The
+                                interface *is* the response.
+                            </p>
+                            <div
+                                class="flex gap-4 text-xs font-mono text-sage-400"
+                            >
+                                <span
+                                    class="border border-sage-400/30 px-2 py-1 rounded"
+                                    >Static: Pre-defined Views</span
+                                >
+                                <span class="text-cream-50/30">→</span>
+                                <span
+                                    class="border border-sage-400/30 px-2 py-1 rounded bg-sage-400/10"
+                                    >Liquid: Generated Views</span
+                                >
+                            </div>
+                        </div>
+                        <div
+                            class="w-full md:w-1/3 aspect-square bg-moss-950/30 rounded-2xl border border-white/5 flex items-center justify-center relative overflow-hidden"
+                        >
+                            <!-- Abstract Visual -->
+                            <div
+                                class="absolute inset-0 bg-gradient-to-br from-sage-400/20 to-transparent"
+                            ></div>
+                            <div class="text-center z-10">
+                                <div class="text-4xl mb-2">💧</div>
+                                <div
+                                    class="text-xs text-cream-50/60 uppercase tracking-widest"
+                                >
+                                    ephemeral<br />components
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Topic 2: The Sandwich Workflow -->
+                    <div class="glass-panel p-8 rounded-3xl">
+                        <span class="cite-badge cite-glass"
+                            >Harvard Business School (2023)</span
+                        >
+                        <h3 class="text-2xl font-medium text-moss-900 mb-4">
+                            2. The "Sandwich" Workflow
+                        </h3>
+                        <p
+                            class="text-moss-900/70 leading-relaxed font-light mb-6 text-sm"
+                        >
+                            Users reject full automation ("Set it and forget
+                            it") for high-stakes tasks. They prefer a
+                            "Sandwich":
+                            <br /><br />
+                            <strong>1. Top Slice (Human):</strong> Sets
+                            context/strategy.<br />
+                            <strong>2. Meat (AI):</strong> Generates the
+                            draft/execution.<br />
+                            <strong>3. Bottom Slice (Human):</strong> Verifies
+                            and refines. <br /><br />
+                            UI must support this verification loop, not hide it.
+                        </p>
+                    </div>
+
+                    <!-- Topic 3: Inverse IA -->
+                    <div class="tech-panel p-8 rounded-3xl">
+                        <div
+                            class="absolute top-0 right-0 w-32 h-32 bg-copper-500/10 rounded-full blur-2xl"
+                        ></div>
+                        <span class="cite-badge cite-tech"
+                            >Nielsen Norman Group (2024)</span
+                        >
+                        <h3 class="text-2xl font-medium text-cream-50 mb-4">
+                            3. Inverse Information Architecture
+                        </h3>
+                        <p
+                            class="text-cream-50/70 leading-relaxed font-light mb-6 text-sm"
+                        >
+                            Standard IA is "Go to Folder > Find File." Inverse
+                            IA is "I have the File, show me the Context."
+                            <br /><br />
+                            AI flips the navigation model. You start with the
+                            destination (the specific insight or document found
+                            via Intent) and the system must dynamically
+                            reconstruct the "Breadcrumbs" to show you where you
+                            are.
+                        </p>
+                    </div>
+
+                    <!-- Topic 4: The Latency Trade-off -->
+                    <div class="glass-panel p-8 rounded-3xl">
+                        <span class="cite-badge cite-glass"
+                            >Microsoft Future of Work (2024)</span
+                        >
+                        <h3 class="text-2xl font-medium text-moss-900 mb-4">
+                            4. The Latency/Fidelity Trade-off
+                        </h3>
+                        <p
+                            class="text-moss-900/70 leading-relaxed font-light mb-6 text-sm"
+                        >
+                            Users perceive "fast and dumb" (Standard GUI) as
+                            reliable, and "slow and smart" (AI) as a utility.
+                            <br /><br />
+                            <strong>The Threshold:</strong> If an AI interaction
+                            takes >1s, it must provide >10x the value of a
+                            click. For simple navigation, 0.1s latency is
+                            mandatory. AI cannot replace navigation until it is
+                            instant.
+                        </p>
+                    </div>
+
+                    <!-- Topic 5: Contextual Chips -->
+                    <div class="tech-panel p-8 rounded-3xl">
+                        <div
+                            class="absolute bottom-0 left-0 w-32 h-32 bg-sage-400/10 rounded-full blur-2xl"
+                        ></div>
+                        <span class="cite-badge cite-tech"
+                            >Android Design / Material 3 (2025)</span
+                        >
+                        <h3 class="text-2xl font-medium text-cream-50 mb-4">
+                            5. Suggestibility & "Empty States"
+                        </h3>
+                        <p
+                            class="text-cream-50/70 leading-relaxed font-light mb-6 text-sm"
+                        >
+                            The biggest barrier to Intent UI is "What can I
+                            say?" The blank text box causes anxiety.
+                            <br /><br />
+                            The solution is
+                            <strong>Contextual Chips</strong>—dynamic,
+                            situation-aware buttons that suggest intents based
+                            on what is currently on screen. It bridges the gap
+                            between Recognition (GUI) and Recall (AI).
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Simulation Section (Preserved) -->
+            <section id="simulation" class="scroll-mt-32">
+                <div
+                    class="flex flex-col md:flex-row justify-between items-end mb-8 px-2 border-b border-moss-900/10 pb-6"
+                >
+                    <div>
+                        <h2 class="text-2xl font-medium text-moss-900">
+                            Lab: The Articulation Barrier
+                        </h2>
+                        <p class="text-sm text-moss-900/60 mt-2 max-w-lg">
+                            Comparing the cognitive load of "Chatting" vs.
+                            "Clicking" for simple tasks.
+                        </p>
+                    </div>
+                    <button
+                        id="run-sim-btn"
+                        class="action-btn px-8 py-3 rounded-full font-medium text-sm tracking-wide mt-4 md:mt-0"
+                    >
+                        Run Protocol
+                    </button>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    <!-- Chat Only -->
+                    <div
+                        class="tech-panel rounded-3xl p-1 overflow-hidden relative h-[400px] flex flex-col"
+                    >
+                        <div
+                            class="bg-black/20 p-4 border-b border-white/5 flex justify-between items-center"
+                        >
+                            <h3
+                                class="text-cream-50 font-medium text-sm flex items-center gap-2"
+                            >
+                                <span
+                                    class="w-1.5 h-1.5 bg-copper-500 rounded-full"
+                                ></span>
+                                Chat-Only
+                            </h3>
+                            <span
+                                class="text-[10px] text-copper-500 uppercase tracking-widest"
+                                >High Friction</span
+                            >
+                        </div>
+                        <div class="flex-1 p-6 flex flex-col justify-end">
+                            <div class="relative">
+                                <div
+                                    class="w-full bg-white/5 border border-white/10 rounded-xl p-3 text-sm text-cream-50 font-mono flex items-center gap-2"
+                                >
+                                    <span class="text-sage-400">></span>
+                                    <span id="chat-input"></span>
+                                    <span
+                                        class="w-1.5 h-4 bg-sage-400 animate-pulse"
+                                    ></span>
+                                </div>
+                                <div
+                                    id="chat-latency"
+                                    class="absolute -top-8 right-0 text-xs text-copper-500 opacity-0"
+                                >
+                                    Processing (2.1s)...
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Hybrid GenUI -->
+                    <div
+                        class="tech-panel rounded-3xl p-1 overflow-hidden relative h-[400px] flex flex-col"
+                    >
+                        <div
+                            class="bg-black/20 p-4 border-b border-white/5 flex justify-between items-center"
+                        >
+                            <h3
+                                class="text-sage-400 font-medium text-sm flex items-center gap-2"
+                            >
+                                <span
+                                    class="w-1.5 h-1.5 bg-sage-400 rounded-full animate-pulse"
+                                ></span>
+                                Contextual (Hybrid)
+                            </h3>
+                            <span
+                                class="text-[10px] text-sage-400 uppercase tracking-widest"
+                                >Optimal</span
+                            >
+                        </div>
+                        <div class="flex-1 bg-[#F2EFE9] p-6 relative">
+                            <!-- Visual Nav Elements -->
+                            <div class="flex gap-2 mb-6 opacity-50">
+                                <div
+                                    class="w-8 h-8 rounded bg-moss-900/10"
+                                ></div>
+                                <div
+                                    class="w-8 h-8 rounded bg-moss-900/10"
+                                ></div>
+                            </div>
+                            <!-- Suggestion Chips (The Solution) -->
+                            <div class="absolute bottom-6 left-6 right-6">
+                                <div class="flex gap-2 mb-3 overflow-x-auto">
+                                    <div
+                                        class="px-3 py-1 rounded-full bg-sage-50 text-moss-900 text-[10px] border border-sage-400/30 whitespace-nowrap"
+                                    >
+                                        Summarize Data
+                                    </div>
+                                    <div
+                                        class="px-3 py-1 rounded-full bg-white text-moss-900/50 text-[10px] border border-moss-900/10 whitespace-nowrap"
+                                    >
+                                        Export PDF
+                                    </div>
+                                </div>
+                                <div
+                                    class="bg-white rounded-xl shadow-soft-studio p-3 border border-moss-900/5 flex items-center gap-3"
+                                >
+                                    <span class="text-sage-400">✨</span>
+                                    <span
+                                        class="text-sm text-moss-900 font-medium"
+                                        id="hybrid-input"
+                                        >Tap to Summarize...</span
+                                    >
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Data Section -->
+            <section id="data" class="scroll-mt-32 pb-20">
+                <h2 class="text-2xl font-medium text-moss-900 mb-8 px-2">
+                    Adoption Metrics
+                </h2>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div class="tech-panel rounded-3xl p-8">
+                        <h3 class="text-cream-50 font-medium mb-1">
+                            Preference by Task Complexity
+                        </h3>
+                        <p class="text-xs text-cream-50/40 mb-6">
+                            Users revert to GUI for simple tasks.
+                        </p>
+                        <div class="chart-container">
+                            <canvas id="adoptionChart"></canvas>
+                        </div>
+                    </div>
+
+                    <div
+                        class="glass-panel p-8 rounded-3xl flex flex-col justify-center"
+                    >
+                        <h3 class="text-moss-900 font-medium text-lg mb-4">
+                            The "2-Second Rule"
+                        </h3>
+                        <p
+                            class="text-sm text-moss-900/70 font-light leading-relaxed mb-6"
+                        >
+                            If articulating a prompt takes longer than clicking
+                            a button (approx 2s), users revert to GUI. AI is
+                            reserved for "Ambitious Tasks" where manual effort
+                            is >10s.
+                        </p>
+                        <div
+                            class="w-full bg-moss-900/5 h-2 rounded-full overflow-hidden mb-2"
+                        >
+                            <div class="w-1/4 h-full bg-sage-400"></div>
+                        </div>
+                        <div
+                            class="flex justify-between text-[10px] text-moss-900/40 uppercase tracking-widest"
+                        >
+                            <span>Nav (0.2s)</span>
+                            <span>Prompt (3.0s)</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- Logic -->
+        <script>
+            // --- Simulation Logic ---
+            document
+                .getElementById("run-sim-btn")
+                .addEventListener("click", runSimulation);
+
+            function runSimulation() {
+                const btn = document.getElementById("run-sim-btn");
+                if (btn.disabled) return;
+                btn.disabled = true;
+                btn.style.opacity = "0.7";
+                btn.innerText = "Running Protocol...";
+
+                // Reset
+                document.getElementById("chat-input").innerText = "";
+                document
+                    .getElementById("chat-latency")
+                    .classList.remove("opacity-100");
+                document.getElementById("hybrid-input").innerText =
+                    "Tap to Summarize...";
+
+                // Run Chat (Slow)
+                let idx = 0;
+                const target = "Change notification settings";
+                const chatInterval = setInterval(() => {
+                    document.getElementById("chat-input").innerText +=
+                        target[idx];
+                    idx++;
+                    if (idx >= target.length) {
+                        clearInterval(chatInterval);
+                        document
+                            .getElementById("chat-latency")
+                            .classList.add("opacity-100");
+                        document.getElementById("chat-latency").innerText =
+                            "Processing (2.1s)...";
+                    }
+                }, 80);
+
+                // Run Hybrid (Fast)
+                setTimeout(() => {
+                    document.getElementById("hybrid-input").innerText =
+                        "Summarizing Data...";
+                    document
+                        .getElementById("hybrid-input")
+                        .classList.add("text-sage-600");
+
+                    setTimeout(() => {
+                        document.getElementById("hybrid-input").innerText =
+                            "Summary Complete ✓";
+
+                        // Reset Button
+                        btn.disabled = false;
+                        btn.style.opacity = "1";
+                        btn.innerText = "Run Protocol";
+                    }, 1000);
+                }, 500);
+            }
+
+            // --- Chart ---
+            Chart.defaults.font.family = "'Outfit', sans-serif";
+            Chart.defaults.color = "rgba(239, 239, 239, 0.6)";
+
+            new Chart(document.getElementById("adoptionChart"), {
+                type: "radar",
+                data: {
+                    labels: [
+                        "Simple Nav",
+                        "Data Entry",
+                        "Discovery",
+                        "Creation",
+                        "Analysis",
+                    ],
+                    datasets: [
+                        {
+                            label: "GUI Preference",
+                            data: [95, 85, 40, 20, 10],
+                            backgroundColor: "rgba(156, 95, 50, 0.2)", // Copper
+                            borderColor: "#9C5F32",
+                            pointBackgroundColor: "#9C5F32",
+                        },
+                        {
+                            label: "AI Preference",
+                            data: [5, 15, 60, 80, 95],
+                            backgroundColor: "rgba(118, 168, 128, 0.2)", // Sage
+                            borderColor: "#76A880",
+                            pointBackgroundColor: "#76A880",
+                        },
+                    ],
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        r: {
+                            angleLines: { color: "rgba(255,255,255,0.1)" },
+                            grid: { color: "rgba(255,255,255,0.1)" },
+                            pointLabels: {
+                                color: "#EFEFEF",
+                                font: { size: 10 },
+                            },
+                        },
+                    },
+                    plugins: {
+                        legend: {
+                            position: "bottom",
+                            labels: { color: "#EFEFEF" },
+                        },
+                    },
+                },
+            });
+        </script>
+    </body>
+</html>

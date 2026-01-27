@@ -1,0 +1,1066 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>The Third Paradigm: Intent vs. Command | 2026 Research</title>
+        <script src="https://cdn.tailwindcss.com"></script>
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <link
+            href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap"
+            rel="stylesheet"
+        />
+
+        <script>
+            tailwind.config = {
+                theme: {
+                    extend: {
+                        colors: {
+                            moss: {
+                                950: "#0D1A12",
+                                900: "#1A3324", // Deep Moss (Primary Anchor)
+                                800: "#2C5530", // Forest Green (Gradient End)
+                                700: "#3D7A46",
+                            },
+                            copper: {
+                                400: "#B87E54",
+                                500: "#9C5F32", // Burnished Copper (Bad/Secondary)
+                                600: "#7A4A26",
+                            },
+                            sage: {
+                                300: "#98C9A3",
+                                400: "#76A880", // Crisp Sage (Good/Highlight)
+                                500: "#5A8F65",
+                                50: "#E1EADF", // Pale Sage (Bg Bottom)
+                            },
+                            cream: {
+                                100: "#F2EFE9", // Warm Cream (Bg Top)
+                                50: "#EFEFEF", // Text on Dark
+                            },
+                        },
+                        fontFamily: {
+                            sans: ["Outfit", "sans-serif"],
+                        },
+                        boxShadow: {
+                            "soft-studio":
+                                "0 30px 60px -15px rgba(26, 51, 36, 0.25)",
+                            ceramic:
+                                "0 4px 8px -2px rgba(26, 51, 36, 0.15), inset 0 2px 4px rgba(255,255,255,0.8)",
+                            "inner-light":
+                                "inset 0 1px 2px 0 rgba(255, 255, 255, 0.2)",
+                        },
+                        backgroundImage: {
+                            "deep-canopy":
+                                "linear-gradient(145deg, #1A3324 0%, #25422E 100%)",
+                            "organic-mist":
+                                "linear-gradient(to bottom, #F2EFE9 0%, #E1EADF 100%)",
+                        },
+                    },
+                },
+            };
+        </script>
+
+        <style>
+            body {
+                background-image: linear-gradient(
+                    to bottom,
+                    #f2efe9 0%,
+                    #e1eadf 100%
+                );
+                color: #1a3324;
+                min-height: 100vh;
+            }
+
+            /* --- Components --- */
+
+            /* The "Deep Canopy" container style */
+            .tech-panel {
+                background: linear-gradient(135deg, #1a3324 0%, #203e2c 100%);
+                color: #efefef;
+                border: 1px solid rgba(118, 168, 128, 0.1);
+                box-shadow: 0 20px 40px -10px rgba(26, 51, 36, 0.3);
+            }
+
+            .glass-panel {
+                background: rgba(242, 239, 233, 0.65);
+                backdrop-filter: blur(20px);
+                -webkit-backdrop-filter: blur(20px);
+                border: 1px solid rgba(255, 255, 255, 0.5);
+                box-shadow: 0 8px 32px rgba(26, 51, 36, 0.05);
+            }
+
+            .ceramic-btn {
+                background: #f2efe9;
+                color: #1a3324;
+                box-shadow:
+                    0 4px 6px -1px rgba(26, 51, 36, 0.1),
+                    inset 0 2px 4px rgba(255, 255, 255, 1);
+                border: 1px solid rgba(255, 255, 255, 0.8);
+                transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            }
+            .ceramic-btn:hover {
+                transform: translateY(-2px);
+                box-shadow:
+                    0 10px 15px -3px rgba(26, 51, 36, 0.15),
+                    inset 0 2px 4px rgba(255, 255, 255, 1);
+            }
+
+            /* Highlight Button (Sage) */
+            .action-btn {
+                background: #76a880;
+                color: #f2efe9;
+                box-shadow:
+                    0 4px 12px rgba(118, 168, 128, 0.4),
+                    inset 0 2px 0 rgba(255, 255, 255, 0.2);
+                border: none;
+                transition: all 0.3s ease;
+            }
+            .action-btn:hover {
+                background: #6a9a73;
+                transform: translateY(-1px);
+                box-shadow:
+                    0 8px 20px rgba(118, 168, 128, 0.5),
+                    inset 0 2px 0 rgba(255, 255, 255, 0.2);
+            }
+
+            /* Chart Containers */
+            .chart-container {
+                position: relative;
+                width: 100%;
+                height: 340px;
+            }
+
+            /* Tooltips */
+            .citation-trigger {
+                cursor: pointer;
+                border-bottom: 1px dashed #76a880;
+                position: relative;
+                font-weight: 500;
+                color: #2c5530;
+            }
+
+            .citation-trigger:hover::after {
+                content: attr(data-cite);
+                position: absolute;
+                bottom: 120%;
+                left: 50%;
+                transform: translateX(-50%);
+                width: 280px;
+                background: #1a3324;
+                color: #f2efe9;
+                padding: 12px;
+                border-radius: 8px;
+                font-size: 0.75rem;
+                line-height: 1.4;
+                z-index: 100;
+                box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
+                pointer-events: none;
+                text-align: left;
+                font-weight: 400;
+            }
+
+            /* Simulation Specifics */
+            .sim-input {
+                background: rgba(255, 255, 255, 0.05);
+                border: 1px solid rgba(255, 255, 255, 0.1);
+                color: #f2efe9;
+            }
+            .sim-input:focus {
+                outline: none;
+                border-color: #76a880;
+                background: rgba(255, 255, 255, 0.08);
+            }
+
+            /* Pulse Animation for Sage */
+            @keyframes pulse-soft {
+                0% {
+                    box-shadow: 0 0 0 0 rgba(118, 168, 128, 0.4);
+                }
+                70% {
+                    box-shadow: 0 0 0 10px rgba(118, 168, 128, 0);
+                }
+                100% {
+                    box-shadow: 0 0 0 0 rgba(118, 168, 128, 0);
+                }
+            }
+            .pulse-active {
+                animation: pulse-soft 2s infinite;
+            }
+
+            .click-ripple {
+                position: absolute;
+                width: 20px;
+                height: 20px;
+                border-radius: 50%;
+                background: rgba(118, 168, 128, 0.5);
+                transform: scale(0);
+                pointer-events: none;
+                z-index: 50;
+                animation: ripple-effect 0.6s linear;
+            }
+            @keyframes ripple-effect {
+                0% {
+                    transform: scale(0);
+                    opacity: 1;
+                }
+                100% {
+                    transform: scale(3);
+                    opacity: 0;
+                }
+            }
+        </style>
+
+        <!-- Chosen Palette: Deep Moss (#1A3324), Burnished Copper (#9C5F32), Crisp Sage (#76A880) -->
+        <!-- Application Structure:
+         1. Hero: The "Third Paradigm" (New 2023 Research Context).
+         2. Simulation: "Outcome Specification" vs "Command Specification".
+         3. Deep Dive: The Affordance Crisis (Why menus survive).
+         4. Data: Latency tolerance vs Utility.
+         5. Verdict: Hybrid Interfaces.
+    -->
+        <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    </head>
+    <body class="antialiased selection:bg-sage-400 selection:text-white">
+        <!-- Navigation -->
+        <nav class="sticky top-0 z-50 glass-panel border-b border-white/20">
+            <div
+                class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between"
+            >
+                <div class="flex items-center gap-3">
+                    <div
+                        class="w-8 h-8 rounded-full bg-gradient-to-br from-moss-800 to-moss-900 flex items-center justify-center text-cream-50 font-bold text-xs shadow-inner"
+                    >
+                        R
+                    </div>
+                    <span
+                        class="text-moss-900 font-semibold tracking-wide text-sm"
+                        >HCI Research
+                        <span class="opacity-50">|</span> 2023-2025
+                        Synthesis</span
+                    >
+                </div>
+                <div class="hidden md:flex space-x-1">
+                    <button
+                        onclick="document.getElementById('paradigm').scrollIntoView({behavior:'smooth'})"
+                        class="px-4 py-2 text-sm text-moss-900/70 hover:text-moss-900 transition-colors"
+                    >
+                        The Third Paradigm
+                    </button>
+                    <button
+                        onclick="document.getElementById('simulation').scrollIntoView({behavior:'smooth'})"
+                        class="px-4 py-2 text-sm text-moss-900/70 hover:text-moss-900 transition-colors"
+                    >
+                        Lab
+                    </button>
+                    <button
+                        onclick="document.getElementById('data').scrollIntoView({behavior:'smooth'})"
+                        class="px-4 py-2 text-sm text-moss-900/70 hover:text-moss-900 transition-colors"
+                    >
+                        Data
+                    </button>
+                </div>
+            </div>
+        </nav>
+
+        <main class="max-w-7xl mx-auto px-6 py-16 space-y-24">
+            <!-- Hero Section -->
+            <section
+                id="paradigm"
+                class="text-center max-w-4xl mx-auto space-y-8"
+            >
+                <div
+                    class="inline-flex items-center px-4 py-2 rounded-full bg-sage-50 border border-sage-400/20 text-moss-900 text-xs font-bold tracking-widest uppercase mb-4"
+                >
+                    Research Update • NN/g 2023 • Microsoft 2024
+                </div>
+                <h1
+                    class="text-5xl md:text-7xl font-light text-moss-900 leading-tight"
+                >
+                    The First New UI Paradigm <br />
+                    <span
+                        class="text-transparent bg-clip-text bg-gradient-to-r from-moss-800 to-sage-400 font-normal"
+                        >in 60 Years.</span
+                    >
+                </h1>
+                <p
+                    class="text-xl text-moss-900/70 font-light leading-relaxed max-w-2xl mx-auto"
+                >
+                    We are shifting from
+                    <span class="font-medium text-moss-900"
+                        >Command-Based Interaction</span
+                    >
+                    (Do this, then click that) to
+                    <span class="font-medium text-moss-900"
+                        >Intent-Based Interaction</span
+                    >
+                    (Here is the result I want). <br />But this shift creates a
+                    new usability crisis:
+                    <strong class="text-copper-500 font-medium"
+                        >The Affordance Gap</strong
+                    >.
+                </p>
+            </section>
+
+            <!-- Simulation Lab -->
+            <section id="simulation" class="scroll-mt-32">
+                <div
+                    class="flex flex-col md:flex-row justify-between items-end mb-8 px-2"
+                >
+                    <div>
+                        <h2 class="text-2xl font-medium text-moss-900">
+                            Paradigm Simulation
+                        </h2>
+                        <p class="text-sm text-moss-900/60 mt-2 max-w-lg">
+                            Test the "Paradox of Articulation." AI is faster
+                            only if you can articulate the outcome perfectly.
+                        </p>
+                    </div>
+                    <button
+                        id="run-sim-btn"
+                        class="action-btn px-8 py-3 rounded-full font-medium text-sm tracking-wide mt-4 md:mt-0"
+                    >
+                        Run Comparison Protocol
+                    </button>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    <!-- Paradigm A: Intent (AI) -->
+                    <div
+                        class="tech-panel rounded-3xl p-1 overflow-hidden relative h-[500px] flex flex-col"
+                    >
+                        <div
+                            class="bg-black/20 p-5 flex justify-between items-center border-b border-white/5 backdrop-blur-sm"
+                        >
+                            <div>
+                                <h3
+                                    class="text-sage-400 font-medium text-lg flex items-center gap-2"
+                                >
+                                    <span
+                                        class="w-1.5 h-1.5 bg-sage-400 rounded-full animate-pulse"
+                                    ></span>
+                                    Intent-Based
+                                </h3>
+                                <p
+                                    class="text-[10px] text-cream-50/40 uppercase tracking-widest mt-1"
+                                >
+                                    Generative UI / LLM
+                                </p>
+                            </div>
+                            <div class="text-right">
+                                <span
+                                    class="citation-trigger text-xs text-copper-500 border-copper-500"
+                                    data-cite="Nielsen (2023): Users specify the outcome, not the moves. This reverses the locus of control."
+                                    >Outcome Specification</span
+                                >
+                            </div>
+                        </div>
+
+                        <div class="flex-1 p-8 flex flex-col relative">
+                            <!-- Chat History -->
+                            <div
+                                id="sim-prompt-area"
+                                class="flex-1 space-y-4 overflow-y-auto mb-4 text-sm text-cream-50/50"
+                            >
+                                <div class="flex gap-3 opacity-40">
+                                    <div
+                                        class="w-6 h-6 rounded-full bg-cream-50/10 flex-shrink-0"
+                                    ></div>
+                                    <div
+                                        class="p-2 rounded bg-white/5 text-xs italic"
+                                    >
+                                        System awaiting intent specification...
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Input -->
+                            <div class="relative z-10">
+                                <div
+                                    class="flex items-center gap-3 bg-moss-950/50 border border-white/10 rounded-xl p-3 focus-within:border-sage-400/50 transition-colors"
+                                >
+                                    <span class="text-sage-400">➜</span>
+                                    <span
+                                        id="sim-prompt-input"
+                                        class="font-mono text-sm text-cream-50"
+                                    ></span>
+                                    <span
+                                        class="w-2 h-4 bg-sage-400/50 animate-pulse"
+                                    ></span>
+                                </div>
+                            </div>
+
+                            <!-- Processing State -->
+                            <div
+                                id="ai-thinking"
+                                class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center opacity-0 transition-opacity duration-300"
+                            >
+                                <div
+                                    class="text-xs text-sage-400 font-mono mb-2 uppercase tracking-widest"
+                                >
+                                    Generating UI...
+                                </div>
+                                <div class="flex justify-center gap-1">
+                                    <div
+                                        class="w-1.5 h-1.5 bg-sage-400 rounded-full animate-bounce"
+                                    ></div>
+                                    <div
+                                        class="w-1.5 h-1.5 bg-sage-400 rounded-full animate-bounce delay-100"
+                                    ></div>
+                                    <div
+                                        class="w-1.5 h-1.5 bg-sage-400 rounded-full animate-bounce delay-200"
+                                    ></div>
+                                </div>
+                            </div>
+
+                            <!-- Result Card -->
+                            <div
+                                id="ai-result"
+                                class="absolute top-20 left-8 right-8 bg-moss-800/90 backdrop-blur-md p-6 rounded-2xl border border-sage-400/20 shadow-2xl opacity-0 transform translate-y-4 transition-all duration-500 z-20"
+                            >
+                                <div
+                                    class="flex justify-between items-start mb-4"
+                                >
+                                    <div>
+                                        <div
+                                            class="text-xs text-sage-400 uppercase tracking-widest mb-1"
+                                        >
+                                            Generated View
+                                        </div>
+                                        <div
+                                            class="text-lg text-cream-50 font-medium"
+                                        >
+                                            Q3 Sales Report
+                                        </div>
+                                    </div>
+                                    <div class="text-2xl text-sage-400">✨</div>
+                                </div>
+                                <div class="space-y-2">
+                                    <div
+                                        class="h-2 bg-white/10 rounded w-3/4"
+                                    ></div>
+                                    <div
+                                        class="h-2 bg-white/10 rounded w-1/2"
+                                    ></div>
+                                </div>
+                                <div
+                                    class="mt-4 pt-4 border-t border-white/10 flex justify-between items-center"
+                                >
+                                    <span class="text-xs text-cream-50/40"
+                                        >Latency:
+                                        <span id="ai-timer">0.0s</span></span
+                                    >
+                                    <span class="text-xs text-copper-500"
+                                        >Risk: Hallucination</span
+                                    >
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Paradigm B: Command (GUI) -->
+                    <div
+                        class="tech-panel rounded-3xl p-1 overflow-hidden relative h-[500px] flex flex-col"
+                    >
+                        <div
+                            class="bg-black/20 p-5 flex justify-between items-center border-b border-white/5 backdrop-blur-sm"
+                        >
+                            <div>
+                                <h3
+                                    class="text-cream-50 font-medium text-lg flex items-center gap-2"
+                                >
+                                    <span
+                                        class="w-1.5 h-1.5 bg-cream-50 rounded-full"
+                                    ></span>
+                                    Command-Based
+                                </h3>
+                                <p
+                                    class="text-[10px] text-cream-50/40 uppercase tracking-widest mt-1"
+                                >
+                                    Hierarchical GUI
+                                </p>
+                            </div>
+                            <div class="text-right">
+                                <span
+                                    class="citation-trigger text-xs text-sage-400 border-sage-400"
+                                    data-cite="Norman (1988): Good design makes the state of the system visible (Affordance)."
+                                    >Visible State</span
+                                >
+                            </div>
+                        </div>
+
+                        <div
+                            class="flex-1 bg-[#F2EFE9] relative overflow-hidden"
+                            id="nav-container"
+                        >
+                            <!-- Interactive GUI Mockup -->
+                            <div
+                                id="gui-screen-home"
+                                class="absolute inset-0 p-6 grid grid-cols-2 gap-4 content-start transition-opacity duration-300"
+                            >
+                                <!-- Nav Bar -->
+                                <div
+                                    class="col-span-2 h-12 bg-white rounded-xl shadow-ceramic border border-white flex items-center px-4 justify-between mb-2"
+                                >
+                                    <div
+                                        class="w-4 h-4 rounded bg-moss-900/10"
+                                    ></div>
+                                    <div
+                                        class="w-20 h-2 rounded bg-moss-900/10"
+                                    ></div>
+                                </div>
+
+                                <!-- Dashboard Widgets -->
+                                <div
+                                    id="btn-reports"
+                                    class="aspect-square bg-white rounded-2xl shadow-ceramic border border-white flex flex-col items-center justify-center gap-2 cursor-pointer hover:bg-sage-50 transition-colors group"
+                                >
+                                    <div
+                                        class="w-10 h-10 rounded-full bg-moss-900/5 group-hover:bg-sage-400/20 flex items-center justify-center text-moss-900"
+                                    >
+                                        📊
+                                    </div>
+                                    <div
+                                        class="text-xs font-medium text-moss-900/60"
+                                    >
+                                        Reports
+                                    </div>
+                                </div>
+                                <div
+                                    class="aspect-square bg-white rounded-2xl shadow-ceramic border border-white opacity-50 flex flex-col items-center justify-center gap-2"
+                                >
+                                    <div
+                                        class="w-10 h-10 rounded-full bg-moss-900/5"
+                                    ></div>
+                                    <div
+                                        class="w-12 h-2 bg-moss-900/5 rounded"
+                                    ></div>
+                                </div>
+                            </div>
+
+                            <!-- Screen: Reports -->
+                            <div
+                                id="gui-screen-reports"
+                                class="absolute inset-0 bg-[#F2EFE9] hidden flex-col transition-opacity duration-300"
+                            >
+                                <div
+                                    class="h-14 bg-white/50 backdrop-blur border-b border-moss-900/5 flex items-center px-6 gap-2 text-xs text-moss-900/40"
+                                >
+                                    <span>Home</span>
+                                    <span class="text-moss-900/20">/</span>
+                                    <span class="font-medium text-moss-900"
+                                        >Reports</span
+                                    >
+                                </div>
+                                <div class="p-6 space-y-3">
+                                    <div
+                                        id="btn-q3"
+                                        class="p-4 bg-white rounded-xl shadow-ceramic border border-white flex justify-between items-center cursor-pointer hover:bg-sage-50 transition-colors"
+                                    >
+                                        <span
+                                            class="text-sm font-medium text-moss-900"
+                                            >Q3 Financials</span
+                                        >
+                                        <span class="text-sage-400">→</span>
+                                    </div>
+                                    <div
+                                        class="p-4 bg-white rounded-xl shadow-sm border border-white/50 opacity-50"
+                                    >
+                                        <span class="text-sm text-moss-900/40"
+                                            >Q2 Financials</span
+                                        >
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Screen: Final -->
+                            <div
+                                id="gui-screen-final"
+                                class="absolute inset-0 bg-[#F2EFE9] hidden flex-col items-center justify-center"
+                            >
+                                <div
+                                    class="w-16 h-16 rounded-full bg-sage-400/20 flex items-center justify-center mb-2"
+                                >
+                                    <span class="text-2xl">📍</span>
+                                </div>
+                                <div class="text-moss-900 font-medium">
+                                    Found via Navigation
+                                </div>
+                                <div class="text-xs text-moss-900/50 mt-1">
+                                    Time: <span id="gui-timer">0.0s</span>
+                                </div>
+                            </div>
+
+                            <!-- Mouse Cursor -->
+                            <div
+                                id="sim-mouse"
+                                class="absolute w-5 h-5 bg-moss-900 rounded-full border border-white shadow-xl opacity-0 pointer-events-none transition-all duration-500 z-50 flex items-center justify-center"
+                                style="top: 50%; left: 50%"
+                            >
+                                <div
+                                    class="w-1 h-1 bg-white rounded-full"
+                                ></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Deep Dive: The Affordance Crisis -->
+            <section class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="glass-panel p-10 rounded-3xl">
+                    <div
+                        class="text-copper-500 font-bold tracking-widest text-[10px] mb-4 uppercase"
+                    >
+                        The Usability Gap
+                    </div>
+                    <h3 class="text-3xl font-light text-moss-900 mb-6">
+                        Why Menus Survive
+                    </h3>
+                    <p class="text-moss-900/70 leading-relaxed font-light mb-6">
+                        In a GUI, features are
+                        <strong class="text-moss-900 font-medium"
+                            >visible affordances</strong
+                        >. You know you can "Save" because you see a button.
+                        <br /><br />
+                        In an Intent UI (AI), features are invisible. This
+                        creates the
+                        <span
+                            class="citation-trigger"
+                            data-cite="Norman (2024): The Affordance Crisis occurs when capabilities exceed visibility."
+                            >Affordance Crisis</span
+                        >. If the user doesn't know *what* to ask for, the
+                        system's power is inaccessible.
+                    </p>
+                </div>
+
+                <div
+                    class="tech-panel p-10 rounded-3xl relative overflow-hidden"
+                >
+                    <div
+                        class="absolute -right-10 -bottom-10 w-64 h-64 bg-sage-400/10 rounded-full blur-3xl"
+                    ></div>
+                    <div
+                        class="text-sage-400 font-bold tracking-widest text-[10px] mb-4 uppercase"
+                    >
+                        The Solution
+                    </div>
+                    <h3 class="text-3xl font-light text-cream-50 mb-6">
+                        Hybrid Interfaces
+                    </h3>
+                    <p class="text-cream-50/70 leading-relaxed font-light mb-6">
+                        The consensus for 2026 is
+                        <strong class="text-cream-50 font-medium"
+                            >Prompt Augmentation</strong
+                        >. Menus for discovery ("What can I do?"), AI for
+                        execution ("Do it for these 50 files").
+                    </p>
+                    <div
+                        class="inline-block px-4 py-2 rounded bg-white/5 border border-white/10 text-xs text-cream-50/60"
+                    >
+                        See: Microsoft Copilot UI, Notion AI
+                    </div>
+                </div>
+            </section>
+
+            <!-- Quantitative Data -->
+            <section id="data" class="scroll-mt-32">
+                <div class="mb-10 text-center md:text-left">
+                    <h2 class="text-3xl font-medium text-moss-900">
+                        2025 Performance Metrics
+                    </h2>
+                    <p class="text-moss-900/60 mt-2">
+                        Data synthesized from Microsoft New Future of Work &
+                        Baymard Institute.
+                    </p>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    <!-- Latency Chart -->
+                    <div class="tech-panel rounded-3xl p-8">
+                        <h3 class="text-cream-50 font-medium mb-1">
+                            Latency Tolerance Thresholds
+                        </h3>
+                        <p class="text-xs text-cream-50/40 mb-6">
+                            Users wait longer for AI, but drop-off is steep.
+                        </p>
+                        <div class="chart-container">
+                            <canvas id="latencyChart"></canvas>
+                        </div>
+                    </div>
+
+                    <!-- Error Rate Chart -->
+                    <div class="tech-panel rounded-3xl p-8">
+                        <h3 class="text-cream-50 font-medium mb-1">
+                            The "Ambitious Task" Paradox
+                        </h3>
+                        <p class="text-xs text-cream-50/40 mb-6">
+                            AI excels at complex tasks, fails at trivial ones.
+                        </p>
+                        <div class="chart-container">
+                            <canvas id="taskChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Verdict Matrix -->
+            <section class="pb-20">
+                <h2
+                    class="text-3xl font-medium text-moss-900 text-center mb-10"
+                >
+                    The 2026 Implementation Matrix
+                </h2>
+
+                <div
+                    class="bg-white rounded-3xl shadow-soft-studio border border-moss-900/5 overflow-hidden"
+                >
+                    <div
+                        class="grid grid-cols-1 md:grid-cols-3 divide-y md:divide-y-0 md:divide-x divide-moss-900/10"
+                    >
+                        <!-- Scenario 1 -->
+                        <div class="p-8 hover:bg-sage-50/50 transition-colors">
+                            <div
+                                class="text-[10px] font-bold text-copper-500 uppercase tracking-widest mb-3"
+                            >
+                                Trivial / Navigational
+                            </div>
+                            <div class="text-lg font-medium text-moss-900 mb-2">
+                                Use Standard GUI
+                            </div>
+                            <p class="text-sm text-moss-900/60 leading-relaxed">
+                                "Go to Settings."
+                                <br />AI is overkill. Latency (2s) is
+                                unacceptable for a 200ms action.
+                            </p>
+                        </div>
+
+                        <!-- Scenario 2 -->
+                        <div
+                            class="p-8 hover:bg-sage-50/50 transition-colors bg-moss-900/5"
+                        >
+                            <div
+                                class="text-[10px] font-bold text-moss-900/40 uppercase tracking-widest mb-3"
+                            >
+                                Exploratory / Unknown
+                            </div>
+                            <div class="text-lg font-medium text-moss-900 mb-2">
+                                Use Hybrid
+                            </div>
+                            <p class="text-sm text-moss-900/60 leading-relaxed">
+                                "How do I change privacy?"
+                                <br />AI suggests the path, or provides a deep
+                                link.
+                            </p>
+                        </div>
+
+                        <!-- Scenario 3 -->
+                        <div
+                            class="p-8 hover:bg-sage-50/50 transition-colors relative overflow-hidden"
+                        >
+                            <div
+                                class="absolute top-0 left-0 w-1 h-full bg-sage-400"
+                            ></div>
+                            <div
+                                class="text-[10px] font-bold text-sage-400 uppercase tracking-widest mb-3"
+                            >
+                                Ambitious / Batch
+                            </div>
+                            <div class="text-lg font-medium text-moss-900 mb-2">
+                                Use Intent (AI)
+                            </div>
+                            <p class="text-sm text-moss-900/60 leading-relaxed">
+                                "Summarize Q3 reports and email them to the
+                                team."
+                                <br />Impossible with GUI alone. AI is 10x
+                                faster.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- Logic Script -->
+        <script>
+            // --- Simulation Logic ---
+            document
+                .getElementById("run-sim-btn")
+                .addEventListener("click", runSimulation);
+
+            function runSimulation() {
+                const btn = document.getElementById("run-sim-btn");
+                if (btn.classList.contains("opacity-50")) return;
+
+                btn.classList.add("opacity-50", "cursor-not-allowed");
+                btn.innerText = "Running Protocol...";
+
+                resetSim();
+                runAISequence();
+            }
+
+            function resetSim() {
+                // Reset AI
+                document.getElementById("sim-prompt-input").innerText = "";
+                document
+                    .getElementById("ai-thinking")
+                    .classList.remove("opacity-100");
+                document
+                    .getElementById("ai-result")
+                    .classList.remove("opacity-100", "translate-y-0");
+                document
+                    .getElementById("ai-result")
+                    .classList.add("translate-y-4");
+                document.getElementById("ai-timer").innerText = "0.0s";
+
+                // Reset GUI
+                document
+                    .getElementById("gui-screen-home")
+                    .classList.remove("hidden");
+                document
+                    .getElementById("gui-screen-reports")
+                    .classList.add("hidden");
+                document
+                    .getElementById("gui-screen-reports")
+                    .classList.remove("flex");
+                document
+                    .getElementById("gui-screen-final")
+                    .classList.add("hidden");
+                document
+                    .getElementById("gui-screen-final")
+                    .classList.remove("flex");
+                document.getElementById("sim-mouse").style.opacity = "0";
+                document.getElementById("gui-timer").innerText = "0.0s";
+            }
+
+            function runAISequence() {
+                const input = document.getElementById("sim-prompt-input");
+                const target = "show Q3 sales breakdown";
+                let idx = 0;
+                const startTime = Date.now();
+                const timer = document.getElementById("ai-timer");
+
+                // 1. Typing (Articulation)
+                const typeInterval = setInterval(() => {
+                    input.innerText += target[idx];
+                    idx++;
+                    timer.innerText =
+                        ((Date.now() - startTime) / 1000).toFixed(1) + "s";
+
+                    if (idx >= target.length) {
+                        clearInterval(typeInterval);
+
+                        // 2. Thinking (Latency)
+                        document
+                            .getElementById("ai-thinking")
+                            .classList.add("opacity-100");
+
+                        const processStart = Date.now();
+                        const processInterval = setInterval(() => {
+                            timer.innerText =
+                                ((Date.now() - startTime) / 1000).toFixed(1) +
+                                "s";
+                        }, 50);
+
+                        setTimeout(() => {
+                            clearInterval(processInterval);
+                            document
+                                .getElementById("ai-thinking")
+                                .classList.remove("opacity-100");
+                            document
+                                .getElementById("ai-result")
+                                .classList.add("opacity-100", "translate-y-0");
+                            document
+                                .getElementById("ai-result")
+                                .classList.remove("translate-y-4");
+
+                            // Start GUI Sequence
+                            setTimeout(runGUISequence, 1000);
+                        }, 2200); // 2.2s Latency Simulation
+                    }
+                }, 50);
+            }
+
+            function runGUISequence() {
+                const container = document.getElementById("nav-container");
+                const mouse = document.getElementById("sim-mouse");
+                const timer = document.getElementById("gui-timer");
+                const startTime = Date.now();
+
+                const timerInterval = setInterval(() => {
+                    timer.innerText =
+                        ((Date.now() - startTime) / 1000).toFixed(1) + "s";
+                }, 50);
+
+                const moveClick = (targetId, delay, next) => {
+                    setTimeout(() => {
+                        const target = document.getElementById(targetId);
+                        if (!target) return;
+                        const cRect = container.getBoundingClientRect();
+                        const tRect = target.getBoundingClientRect();
+                        const top = tRect.top - cRect.top + tRect.height / 2;
+                        const left = tRect.left - cRect.left + tRect.width / 2;
+
+                        mouse.style.opacity = "1";
+                        mouse.style.top = top + "px";
+                        mouse.style.left = left + "px";
+
+                        setTimeout(() => {
+                            // Ripple
+                            const rip = document.createElement("div");
+                            rip.className = "click-ripple";
+                            rip.style.top = top - 10 + "px";
+                            rip.style.left = left - 10 + "px";
+                            container.appendChild(rip);
+                            setTimeout(() => rip.remove(), 600);
+                            if (next) next();
+                        }, 400);
+                    }, delay);
+                };
+
+                // 1. Click Reports
+                moveClick("btn-reports", 200, () => {
+                    document
+                        .getElementById("gui-screen-home")
+                        .classList.add("hidden");
+                    document
+                        .getElementById("gui-screen-reports")
+                        .classList.remove("hidden");
+                    document
+                        .getElementById("gui-screen-reports")
+                        .classList.add("flex");
+
+                    // 2. Click Q3
+                    moveClick("btn-q3", 600, () => {
+                        clearInterval(timerInterval);
+                        document
+                            .getElementById("gui-screen-reports")
+                            .classList.add("hidden");
+                        document
+                            .getElementById("gui-screen-reports")
+                            .classList.remove("flex");
+                        document
+                            .getElementById("gui-screen-final")
+                            .classList.remove("hidden");
+                        document
+                            .getElementById("gui-screen-final")
+                            .classList.add("flex");
+
+                        // Reset Button
+                        const btn = document.getElementById("run-sim-btn");
+                        btn.classList.remove(
+                            "opacity-50",
+                            "cursor-not-allowed",
+                        );
+                        btn.innerText = "Run Comparison Protocol";
+                    });
+                });
+            }
+
+            // --- Charts ---
+            Chart.defaults.font.family = "'Outfit', sans-serif";
+            Chart.defaults.color = "rgba(239, 239, 239, 0.5)";
+
+            // Chart 1: Latency Tolerance
+            new Chart(document.getElementById("latencyChart"), {
+                type: "line",
+                data: {
+                    labels: ["0.1s", "1s", "5s", "10s", "15s"],
+                    datasets: [
+                        {
+                            label: "GUI Bounce Rate",
+                            data: [5, 15, 60, 95, 100],
+                            borderColor: "#9C5F32", // Copper
+                            backgroundColor: "rgba(156, 95, 50, 0.1)",
+                            tension: 0.4,
+                            fill: true,
+                        },
+                        {
+                            label: "AI Intent Bounce Rate",
+                            data: [5, 5, 10, 25, 60], // Users wait longer for AI
+                            borderColor: "#76A880", // Sage
+                            backgroundColor: "rgba(118, 168, 128, 0.1)",
+                            tension: 0.4,
+                            fill: true,
+                        },
+                    ],
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: "bottom",
+                            labels: { color: "#EFEFEF" },
+                        },
+                        tooltip: {
+                            callbacks: {
+                                afterBody: () =>
+                                    "Source: NN/g 2024 Response Time Limits",
+                            },
+                        },
+                    },
+                    scales: {
+                        y: {
+                            title: {
+                                display: true,
+                                text: "% Abandonment",
+                                color: "rgba(239,239,239,0.3)",
+                            },
+                            grid: { color: "rgba(255,255,255,0.05)" },
+                        },
+                        x: { grid: { display: false } },
+                    },
+                },
+            });
+
+            // Chart 2: Task Suitability
+            new Chart(document.getElementById("taskChart"), {
+                type: "bar",
+                data: {
+                    labels: [
+                        "Navigation",
+                        "Simple Edit",
+                        "Data Retrieval",
+                        "Complex Analysis",
+                    ],
+                    datasets: [
+                        {
+                            label: "Standard GUI Efficiency",
+                            data: [95, 90, 60, 20],
+                            backgroundColor: "rgba(239, 239, 239, 0.3)",
+                            borderRadius: 4,
+                        },
+                        {
+                            label: "Generative UI Efficiency",
+                            data: [10, 40, 85, 98],
+                            backgroundColor: "#76A880",
+                            borderRadius: 4,
+                        },
+                    ],
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: "bottom",
+                            labels: { color: "#EFEFEF" },
+                        },
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            max: 100,
+                            grid: { color: "rgba(255,255,255,0.05)" },
+                            title: {
+                                display: true,
+                                text: "User Success Score",
+                            },
+                        },
+                        x: { grid: { display: false } },
+                    },
+                },
+            });
+        </script>
+    </body>
+</html>
