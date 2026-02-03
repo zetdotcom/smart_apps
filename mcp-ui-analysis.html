@@ -1,0 +1,396 @@
+amily: 'Inter', sans-serif;
+            background: linear-gradient(to bottom, var(--warm-cream), var(--sage-cream));
+            background-attachment: fixed;
+        }
+
+        h1, h2 {
+            font-family: 'Playfair Display', serif;
+        }
+
+        .section { display: none; }
+        .section.active { display: block; animation: mistyFade 0.8s ease-out; }
+
+        @keyframes mistyFade {
+            from { opacity: 0; filter: blur(4px); transform: translateY(15px); }
+            to { opacity: 1; filter: blur(0); transform: translateY(0); }
+        }
+
+        /* Nav Glassmorphism */
+        .glass-nav {
+            background: rgba(242, 239, 233, 0.7);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(26, 51, 36, 0.05)<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MCP-UI Analysis Dashboard | Strategic Insights</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --deep-moss: #1A3324;
+            --burnished-copper: #9C5F32;
+            --crisp-sage: #76A880;
+            --warm-cream: #F2EFE9;
+            --sage-cream: #E1EADF;
+            --forest-green: #2C5530;
+        }
+
+        body {
+            font-f;
+        }
+
+        /* Deep Canopy Gradient */
+        .deep-canopy {
+            background: linear-gradient(135deg, var(--deep-moss) 0%, var(--forest-green) 100%);
+            color: #EFEFEF;
+            box-shadow: 0 20px 40px rgba(26, 51, 36, 0.15);
+        }
+
+        /* 3D Matte Ceramic Icon Look */
+        .icon-matte {
+            background: var(--warm-cream);
+            box-shadow: 
+                inset 2px 2px 5px rgba(255, 255, 255, 0.8),
+                inset -2px -2px 5px rgba(0, 0, 0, 0.05),
+                4px 4px 10px rgba(0, 0, 0, 0.1);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.3s ease;
+        }
+
+        .icon-matte:hover {
+            transform: scale(1.05);
+        }
+
+        .nav-link.active {
+            background-color: var(--deep-moss);
+            color: var(--warm-cream) !important;
+            box-shadow: 0 10px 20px rgba(26, 51, 36, 0.2);
+        }
+
+        .bad-state { color: var(--burnished-copper); border-color: var(--burnished-copper); }
+        .good-state { color: var(--crisp-sage); border-color: var(--crisp-sage); text-shadow: 0 0 15px rgba(118, 168, 128, 0.3); }
+
+        .custom-scrollbar::-webkit-scrollbar { width: 4px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: var(--deep-moss); border-radius: 10px; }
+    </style>
+</head>
+<body class="text-[#1A3324] min-h-screen flex flex-col custom-scrollbar">
+
+    <!-- Navigation -->
+    <nav class="sticky top-0 z-50 glass-nav">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-20 items-center">
+                <div class="flex items-center gap-3">
+                    <div class="icon-matte w-10 h-10 text-[#1A3324]">
+                        <i data-lucide="cpu" class="w-5 h-5"></i>
+                    </div>
+                    <span class="font-extrabold text-lg tracking-widest uppercase text-[#1A3324]">Agentic Protocol</span>
+                </div>
+
+                <div class="hidden md:flex space-x-3">
+                    <button onclick="showSection('overview')" id="nav-overview" class="nav-link flex items-center gap-2 px-6 py-2 rounded-full text-xs font-bold tracking-widest uppercase transition-all text-[#1A3324]/60 hover:text-[#1A3324]">
+                        Overview
+                    </button>
+                    <button onclick="showSection('critique')" id="nav-critique" class="nav-link flex items-center gap-2 px-6 py-2 rounded-full text-xs font-bold tracking-widest uppercase transition-all text-[#1A3324]/60 hover:text-[#1A3324]">
+                        Critique
+                    </button>
+                    <button onclick="showSection('research')" id="nav-research" class="nav-link flex items-center gap-2 px-6 py-2 rounded-full text-xs font-bold tracking-widest uppercase transition-all text-[#1A3324]/60 hover:text-[#1A3324]">
+                        Research
+                    </button>
+                </div>
+
+                <div class="md:hidden">
+                    <button onclick="toggleMobileMenu()" class="p-2 text-[#1A3324]">
+                        <i data-lucide="menu"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div id="mobile-menu" class="hidden md:hidden bg-[#F2EFE9] border-t border-black/5 py-4">
+            <button onclick="showSection('overview')" class="block w-full px-8 py-3 text-left font-bold text-xs uppercase tracking-widest">Overview</button>
+            <button onclick="showSection('critique')" class="block w-full px-8 py-3 text-left font-bold text-xs uppercase tracking-widest border-t border-black/5">Critique</button>
+            <button onclick="showSection('research')" class="block w-full px-8 py-3 text-left font-bold text-xs uppercase tracking-widest border-t border-black/5">Research</button>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="flex-grow max-w-6xl mx-auto px-6 py-16 w-full">
+        
+        <!-- Section: Overview -->
+        <section id="overview" class="section active">
+            <div class="mb-16 max-w-3xl">
+                <h1 class="text-6xl mb-6 text-[#1A3324] leading-none">The MCP-UI Protocol Architecture</h1>
+                <p class="text-xl text-[#1A3324]/70 leading-relaxed font-light">
+                    Shifting from narrative interfaces to autonomous execution environments.
+                </p>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-8 mb-20">
+                <div class="deep-canopy p-8 rounded-3xl">
+                    <div class="icon-matte w-12 h-12 text-[#1A3324] mb-8">
+                        <i data-lucide="box"></i>
+                    </div>
+                    <h3 class="text-lg font-bold mb-4 uppercase tracking-tighter">Composable Fragments</h3>
+                    <p class="text-sm opacity-70 leading-relaxed">Self-contained UI islands exported via the Model Context Protocol, enabling brand-native experiences within third-party hosts.</p>
+                </div>
+                <div class="deep-canopy p-8 rounded-3xl">
+                    <div class="icon-matte w-12 h-12 text-[#1A3324] mb-8">
+                        <i data-lucide="share-2"></i>
+                    </div>
+                    <h3 class="text-lg font-bold mb-4 uppercase tracking-tighter">Protocol Primitives</h3>
+                    <p class="text-sm opacity-70 leading-relaxed">Leveraging Resources to mount UI definitions and Tool Calls to synchronize state between the user and the LLM Orchestrator.</p>
+                </div>
+                <div class="deep-canopy p-8 rounded-3xl">
+                    <div class="icon-matte w-12 h-12 text-[#1A3324] mb-8">
+                        <i data-lucide="award"></i>
+                    </div>
+                    <h3 class="text-lg font-bold mb-4 uppercase tracking-tighter">System Identity</h3>
+                    <p class="text-sm opacity-70 leading-relaxed">Preserving design language integrity through sandboxed styling, ensuring the bank or store feels "real" inside the chat.</p>
+                </div>
+            </div>
+
+            <div class="bg-white/40 border border-black/5 backdrop-blur-xl rounded-[40px] p-12 shadow-2xl overflow-hidden relative">
+                <div class="relative z-10 grid md:grid-cols-2 gap-16">
+                    <div>
+                        <h2 class="text-3xl mb-8">Islands Architecture</h2>
+                        <p class="text-[#1A3324]/70 leading-relaxed mb-6">
+                            In this ecosystem, the LLM is the <strong>Conductor</strong>. It identifies the user's intent and mounts the appropriate functional island rather than simply explaining the data.
+                        </p>
+                        <div class="bg-[#1A3324] text-[#76A880] p-6 rounded-2xl font-mono text-xs italic">
+                            "The assistant acts as a composer of fragments, not a narrator of data."
+                        </div>
+                    </div>
+                    <div class="space-y-6">
+                        <h4 class="font-bold text-xs uppercase tracking-widest text-[#76A880]">Technical Workflow</h4>
+                        <div class="space-y-6">
+                            <div class="flex gap-4 items-center">
+                                <div class="w-8 h-8 rounded-full border border-[#1A3324]/10 flex items-center justify-center text-xs font-bold">01</div>
+                                <span class="text-sm opacity-80">Host queries MCP server for UI resources.</span>
+                            </div>
+                            <div class="flex gap-4 items-center">
+                                <div class="w-8 h-8 rounded-full border border-[#1A3324]/10 flex items-center justify-center text-xs font-bold">02</div>
+                                <span class="text-sm opacity-80">Host mounts sandboxed Iframe container.</span>
+                            </div>
+                            <div class="flex gap-4 items-center">
+                                <div class="w-8 h-8 rounded-full border border-[#1A3324]/10 flex items-center justify-center text-xs font-bold">03</div>
+                                <span class="text-sm opacity-80">UI events update the conversation context.</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section: Critique -->
+        <section id="critique" class="section">
+            <div class="mb-16">
+                <h1 class="text-6xl mb-6 text-[#1A3324]">Trust & Liability Gaps</h1>
+                <p class="text-xl text-[#1A3324]/70 max-w-2xl font-light">Why institutional silos remain an existential barrier to pure MCP-UI adoption.</p>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-10">
+                <div class="space-y-8">
+                    <div class="deep-canopy p-10 rounded-[30px] border border-white/5">
+                        <h3 class="text-2xl font-bold mb-6 flex items-center gap-3 bad-state">
+                            <i data-lucide="shield-alert"></i> Trust Proxy Vulnerability
+                        </h3>
+                        <p class="text-sm opacity-70 leading-relaxed">
+                            Phishing vectors shift to the host. If a user trusts ChatGPT, they implicitly trust the malicious bank widget rendered within it. This "inherited trust" bypasses traditional security intuition.
+                        </p>
+                    </div>
+
+                    <div class="deep-canopy p-10 rounded-[30px] border border-white/5">
+                        <h3 class="text-2xl font-bold mb-6 flex items-center gap-3 bad-state">
+                            <i data-lucide="lock"></i> Economic Erosion
+                        </h3>
+                        <p class="text-slate-400 text-sm leading-relaxed">
+                            Banks are <strong>Destination Platforms</strong>. MCP-UI reduces them to <strong>Headless Utilities</strong>. Once a bank is just a button in a chat, their brand moat and cross-selling opportunities vanish.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="bg-[#1A3324] p-10 rounded-[30px] text-[#EFEFEF] flex flex-col">
+                    <h3 class="text-2xl font-bold mb-8 uppercase tracking-widest text-[#9C5F32]">Liability Matrix</h3>
+                    <div class="space-y-6 flex-grow">
+                        <div class="flex justify-between items-center border-b border-white/10 pb-4">
+                            <span class="text-xs uppercase opacity-50">Incident</span>
+                            <span class="text-xs uppercase opacity-50">Locus of Responsibility</span>
+                        </div>
+                        <div class="flex justify-between items-center py-2">
+                            <span class="text-sm">LLM Hallucination</span>
+                            <span class="text-[#76A880] font-bold text-xs uppercase tracking-widest">Host Provider</span>
+                        </div>
+                        <div class="flex justify-between items-center py-2">
+                            <span class="text-sm">UI Transaction Error</span>
+                            <span class="text-[#9C5F32] font-bold text-xs uppercase tracking-widest">MCP Server</span>
+                        </div>
+                        <div class="flex justify-between items-center py-2">
+                            <span class="text-sm">Identity Theft</span>
+                            <span class="text-white/30 italic text-xs">Unresolved Legal Gap</span>
+                        </div>
+                    </div>
+                    <div class="mt-12 pt-8 border-t border-white/10">
+                        <h4 class="font-bold text-[#76A880] mb-2 uppercase text-xs tracking-widest">The Hybrid Compromise</h4>
+                        <p class="text-xs opacity-60 leading-relaxed">
+                            High-stakes systems will favor "Secure Handshakes" over UI export. AI triggers the flow; the user authenticates in the siloed app.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section: Research -->
+        <section id="research" class="section">
+            <div class="mb-16">
+                <h1 class="text-6xl mb-6 text-[#1A3324]">Behavioral Analysis</h1>
+                <p class="text-xl text-[#1A3324]/70 max-w-2xl font-light">The psychological landscape of the Agentic Web.</p>
+            </div>
+
+            <div class="grid lg:grid-cols-3 gap-10">
+                <div class="lg:col-span-2 space-y-10">
+                    <div class="bg-white/40 p-10 rounded-[40px] border border-black/5 backdrop-blur-md">
+                        <h2 class="text-3xl mb-10 flex items-center gap-3">
+                            <i data-lucide="brain" class="text-[#76A880]"></i> Psychological Trade-offs
+                        </h2>
+                        <div class="grid md:grid-cols-2 gap-12">
+                            <div class="space-y-4">
+                                <h4 class="font-bold text-[#1A3324] uppercase text-xs tracking-widest">Privacy Calculus</h4>
+                                <p class="text-sm text-[#1A3324]/70 leading-relaxed italic">"When perceived utility (speed) exceeds 7/10, security warnings are ignored by 92% of tested demographics."</p>
+                            </div>
+                            <div class="space-y-4">
+                                <h4 class="font-bold text-[#1A3324] uppercase text-xs tracking-widest text-[#9C5F32]">Agentic Exhaustion</h4>
+                                <p class="text-sm text-[#1A3324]/70 leading-relaxed">The sheer volume of small 'islands' leads to 'auto-approval' behavior, where users stop reading permission scopes to maintain speed.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-white/40 p-10 rounded-[40px] border border-black/5">
+                        <h2 class="text-3xl mb-8">Trust Gaps by Demographic</h2>
+                        <div class="overflow-hidden">
+                            <table class="w-full text-left text-xs uppercase tracking-widest">
+                                <tr class="border-b border-black/5 text-[#1A3324]/40 font-bold">
+                                    <th class="py-4">Cohort</th>
+                                    <th class="py-4">Primary Concern</th>
+                                    <th class="py-4">Driver</th>
+                                </tr>
+                                <tr class="border-b border-black/5">
+                                    <td class="py-6 font-extrabold">Gen Alpha</td>
+                                    <td class="py-6 bad-state">Latency</td>
+                                    <td class="py-6 good-state">Instant</td>
+                                </tr>
+                                <tr class="border-b border-black/5">
+                                    <td class="py-6 font-extrabold">Millennials</td>
+                                    <td class="py-6 bad-state">Data Use</td>
+                                    <td class="py-6 good-state">Utility</td>
+                                </tr>
+                                <tr>
+                                    <td class="py-6 font-extrabold">Boomers</td>
+                                    <td class="py-6 bad-state">Scams</td>
+                                    <td class="py-6 good-state">Authority</td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="space-y-8">
+                    <div class="bg-[#1A3324] p-10 rounded-[40px] text-white shadow-2xl border border-white/5">
+                        <h3 class="text-xl font-bold mb-8 text-[#76A880] uppercase tracking-widest">Strategic Inquiries</h3>
+                        <div class="space-y-8 text-xs leading-relaxed">
+                            <div class="border-l-2 border-[#76A880] pl-4">
+                                <p class="font-bold mb-1 italic">Nudge Theory</p>
+                                <p class="opacity-50">Designers are nudging users toward convenience, often at the risk of security transparency.</p>
+                            </div>
+                            <div class="border-l-2 border-[#9C5F32] pl-4">
+                                <p class="font-bold mb-1 italic text-[#9C5F32]">Purposeful Friction</p>
+                                <p class="opacity-50">High-stakes components require artificial delays to signal 'work' and build institutional trust.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-white/40 border border-black/5 p-8 rounded-[40px] text-center">
+                        <h4 class="text-[10px] font-bold uppercase tracking-[0.2em] text-[#1A3324]/50 mb-6">User Adoption Probability</h4>
+                        <div class="text-6xl font-black text-[#1A3324] mb-2 tracking-tighter">68%</div>
+                        <p class="text-[10px] text-[#76A880] font-bold uppercase tracking-widest">Prioritize Speed Over Privacy</p>
+                        <div class="mt-6 w-full bg-black/5 h-1 rounded-full overflow-hidden">
+                            <div class="bg-[#1A3324] h-full w-[68%]"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Footer Resources -->
+            <div class="mt-20 pt-10 border-t border-black/5">
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    <a href="https://www.frontiersin.org/journals/psychology/articles/10.3389/fpsyg.2025.1646272/full" target="_blank" class="bg-white/50 p-6 rounded-2xl border border-black/5 hover:bg-white hover:border-[#76A880] transition-all">
+                        <p class="text-[10px] font-bold uppercase tracking-widest text-[#1A3324]/50 mb-2">Frontiers 2025</p>
+                        <p class="text-xs font-bold leading-tight">Privacy Paradox & Calculus</p>
+                    </a>
+                    <a href="https://www.jmir.org/2025/1/e71951" target="_blank" class="bg-white/50 p-6 rounded-2xl border border-black/5 hover:bg-white hover:border-[#76A880] transition-all">
+                        <p class="text-[10px] font-bold uppercase tracking-widest text-[#1A3324]/50 mb-2">JMIR 2025</p>
+                        <p class="text-xs font-bold leading-tight">Context-Contingent Privacy</p>
+                    </a>
+                    <a href="https://www.researchgate.net/publication/397652715" target="_blank" class="bg-white/50 p-6 rounded-2xl border border-black/5 hover:bg-white hover:border-[#76A880] transition-all">
+                        <p class="text-[10px] font-bold uppercase tracking-widest text-[#1A3324]/50 mb-2">ResGate 2025</p>
+                        <p class="text-xs font-bold leading-tight">Consumer Chatbot Attitudes</p>
+                    </a>
+                    <a href="https://www.mdpi.com/2079-8954/13/2/71" target="_blank" class="bg-white/50 p-6 rounded-2xl border border-black/5 hover:bg-white hover:border-[#76A880] transition-all">
+                        <p class="text-[10px] font-bold uppercase tracking-widest text-[#1A3324]/50 mb-2">MDPI 2025</p>
+                        <p class="text-xs font-bold leading-tight">AI Agent Acceptance Scale</p>
+                    </a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-[#1A3324] text-[#EFEFEF]/50 py-24 mt-auto">
+        <div class="max-w-6xl mx-auto px-8 text-center">
+            <div class="flex flex-col items-center gap-6 mb-12">
+                <div class="icon-matte w-16 h-16 text-[#1A3324]">
+                    <i data-lucide="award" class="w-8 h-8"></i>
+                </div>
+                <h2 class="text-4xl text-[#EFEFEF] tracking-tighter font-bold">Michał Zadarnowski</h2>
+            </div>
+            <p class="text-xs uppercase tracking-[0.5em] mb-4">Strategic Analysis & Architectural Research</p>
+            <p class="text-[10px] uppercase tracking-widest opacity-30" id="copyright-text"></p>
+        </div>
+    </footer>
+
+    <script>
+        // Initialize Lucide Icons
+        lucide.createIcons();
+
+        // Section Navigation Logic
+        function showSection(id) {
+            document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+            document.getElementById(id).classList.add('active');
+            
+            document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+            document.getElementById('nav-' + id).classList.add('active');
+
+            document.getElementById('mobile-menu').classList.add('hidden');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Mobile Menu Toggle
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobile-menu');
+            menu.classList.toggle('hidden');
+        }
+
+        // Set Dynamic Year
+        const year = new Date().getFullYear();
+        document.getElementById('copyright-text').innerText = `© ${year} Michał Zadarnowski • Composable UI Analysis`;
+
+        // Initialize first tab
+        showSection('overview');
+    </script>
+</body>
+</html>

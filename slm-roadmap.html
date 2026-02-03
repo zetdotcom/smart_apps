@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gemma Forge: SLM Mastering Roadmap</title>
+    <style>
+        :root {
+            --bg-color: #020617;
+            --card-bg: rgba(30, 41, 59, 0.5);
+            --accent-primary: #38bdf8;
+            --accent-secondary: #818cf8;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --success: #10b981;
+            --border: rgba(51, 65, 85, 0.5);
+            --nav-bg: rgba(15, 23, 42, 0.8);
+            --glass-shine: rgba(255, 255, 255, 0.05);
+            --liquid-gradient: linear-gradient(135deg, #38bdf8 0%, #818cf8 100%);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background-color: var(--bg-color);
+            background-image: 
+                radial-gradient(at 0% 0%, rgba(56, 189, 248, 0.05) 0px, transparent 50%),
+                radial-gradient(at 100% 100%, rgba(129, 140, 248, 0.05) 0px, transparent 50%);
+            color: var(--text-main);
+            line-height: 1.6;
+            padding-bottom: 4rem;
+            min-height: 100vh;
+        }
+
+        /* Navigation - Liquid Glass */
+        nav {
+            background: var(--nav-bg);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border);
+            padding: 1rem;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+        }
+
+        .nav-link {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.9rem;
+            padding: 0.6rem 1.2rem;
+            border-radius: 12px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 1px solid transparent;
+        }
+
+        .nav-link:hover {
+            color: var(--accent-primary);
+            background: var(--glass-shine);
+            border-color: rgba(56, 189, 248, 0.2);
+        }
+
+        .nav-link.active {
+            background: var(--liquid-gradient);
+            color: #fff;
+            box-shadow: 0 4px 15px rgba(56, 189, 248, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .container {
+            max-width: 850px;
+            margin: 2.5rem auto;
+            padding: 0 1.5rem;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        h1 {
+            font-size: 3rem;
+            font-weight: 800;
+            letter-spacing: -0.025em;
+            background: var(--liquid-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 0.75rem;
+        }
+
+        p.subtitle {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        /* Stats Bar Glass */
+        .stats-bar {
+            background: var(--card-bg);
+            backdrop-filter: blur(8px);
+            padding: 1.25rem;
+            border-radius: 20px;
+            border: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2.5rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .progress-container {
+            flex-grow: 1;
+            height: 10px;
+            background: rgba(15, 23, 42, 0.6);
+            border-radius: 20px;
+            margin: 0 1.5rem;
+            overflow: hidden;
+            border: 1px solid var(--border);
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: var(--liquid-gradient);
+            width: 0%;
+            transition: width 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+            box-shadow: 0 0 15px rgba(56, 189, 248, 0.5);
+        }
+
+        .roadmap-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1.75rem;
+        }
+
+        /* Step Card Glass Styling */
+        .step-card {
+            background: var(--card-bg);
+            backdrop-filter: blur(4px);
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            padding: 2rem;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .step-card::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(to right, transparent, rgba(255,255,255,0.1), transparent);
+        }
+
+        .step-card:hover {
+            transform: translateY(-4px);
+            background: rgba(30, 41, 59, 0.7);
+            border-color: rgba(56, 189, 248, 0.4);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+        }
+
+        .step-card.completed {
+            border-color: rgba(16, 185, 129, 0.3);
+            background: rgba(16, 185, 129, 0.03);
+        }
+
+        .step-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.25rem;
+        }
+
+        .step-meta {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .step-number {
+            background: var(--liquid-gradient);
+            color: white;
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 0.9rem;
+            box-shadow: 0 4px 10px rgba(56, 189, 248, 0.2);
+        }
+
+        .step-time {
+            font-size: 0.75rem;
+            color: var(--accent-primary);
+            font-weight: 600;
+            background: rgba(56, 189, 248, 0.1);
+            padding: 4px 12px;
+            border-radius: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .step-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin-bottom: 0.75rem;
+            color: var(--text-main);
+        }
+
+        .step-description {
+            color: var(--text-muted);
+            font-size: 1rem;
+            margin-bottom: 1.5rem;
+            line-height: 1.7;
+        }
+
+        .resource-tag {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            background: rgba(255, 255, 255, 0.03);
+            padding: 4px 12px;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            margin-right: 0.5rem;
+            display: inline-block;
+            margin-bottom: 0.5rem;
+        }
+
+        .controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--border);
+            margin-top: 0.5rem;
+        }
+
+        .completion-status {
+            font-size: 0.8rem;
+            color: var(--success);
+            font-weight: 600;
+            background: rgba(16, 185, 129, 0.1);
+            padding: 4px 10px;
+            border-radius: 6px;
+            display: none;
+        }
+
+        .completed .completion-status {
+            display: block;
+        }
+
+        /* Checkbox Liquid Styling */
+        .checkbox-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: var(--text-muted);
+            transition: color 0.2s;
+        }
+
+        .checkbox-wrapper:hover {
+            color: var(--text-main);
+        }
+
+        input[type="checkbox"] {
+            appearance: none;
+            width: 24px;
+            height: 24px;
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            cursor: pointer;
+            position: relative;
+            transition: all 0.3s;
+            background: rgba(15, 23, 42, 0.5);
+        }
+
+        input[type="checkbox"]:checked {
+            background: var(--liquid-gradient);
+            border-color: transparent;
+            box-shadow: 0 4px 10px rgba(56, 189, 248, 0.4);
+        }
+
+        input[type="checkbox"]:checked::after {
+            content: "✓";
+            position: absolute;
+            color: white;
+            font-size: 14px;
+            font-weight: 900;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .page {
+            display: none;
+            animation: fadeIn 0.4s ease-out;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        footer {
+            margin-top: 6rem;
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            border-top: 1px solid var(--border);
+            padding-top: 2rem;
+        }
+
+        @media (max-width: 600px) {
+            nav { gap: 0.5rem; padding: 0.75rem; }
+            .nav-link { font-size: 0.75rem; padding: 0.5rem 0.75rem; }
+            h1 { font-size: 2.25rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <a href="#" id="nav-finetune" class="nav-link active" onclick="showPage('finetune')">Model Training</a>
+        <a href="#" id="nav-backend" class="nav-link" onclick="showPage('backend')">Backend Integration</a>
+    </nav>
+
+    <div class="container">
+        <!-- Page 1: Fine-Tuning -->
+        <div id="page-finetune" class="page active">
+            <header>
+                <h1>Gemma Forge</h1>
+                <p class="subtitle">Phase 1: Mastering specialized SLM fine-tuning for tool-use autonomy.</p>
+            </header>
+
+            <div class="stats-bar">
+                <span id="ft-progress-text" style="font-weight: 600; font-size: 0.9rem;">0 / 8 Steps</span>
+                <div class="progress-container">
+                    <div id="ft-progress-fill" class="progress-fill"></div>
+                </div>
+            </div>
+
+            <div class="roadmap-list" id="ft-container"></div>
+        </div>
+
+        <!-- Page 2: Backend Implementation -->
+        <div id="page-backend" class="page">
+            <header>
+                <h1>Python Engine</h1>
+                <p class="subtitle">Phase 2: Implementing the production-ready middleware for SLM inference.</p>
+            </header>
+
+            <div class="stats-bar">
+                <span id="be-progress-text" style="font-weight: 600; font-size: 0.9rem;">0 / 8 Steps</span>
+                <div class="progress-container">
+                    <div id="be-progress-fill" class="progress-fill"></div>
+                </div>
+            </div>
+
+            <div class="roadmap-list" id="be-container"></div>
+        </div>
+
+        <footer>
+            <p>Gemma Forge &copy; 2026 • Optimized for High-Performance SLMs</p>
+        </footer>
+    </div>
+
+    <script>
+        const finetuneSteps = [
+            { id: 'ft1', title: "SLM Fundamentals: Why Small is Big", time: "45 min", desc: "Understand the architectural shift from giant LLMs to specialized SLMs (Gemma 3 270M). Learn about latency, cost, and the 'edge' deployment advantage.", tags: ["Architecture", "Gemma 3"] },
+            { id: 'ft2', title: "PEFT & LoRA: Mathematical Cheat Code", time: "90 min", desc: "Learn Low-Rank Adaptation (LoRA) and how it injects trainable matrices into frozen layers to save memory.", tags: ["Math", "LoRA"] },
+            { id: 'ft3', title: "Quantization & QLoRA: VRAM Efficiency", time: "60 min", desc: "Fit a 4B model into 16GB VRAM using 4-bit NormalFloat (NF4). Understand the precision trade-offs.", tags: ["Hardware", "VRAM"] },
+            { id: 'ft4', title: "Dataset Engineering for Function Calling", time: "120 min", desc: "Format JSON schemas for tools and wrap them in Gemma's specialized instruction templates.", tags: ["JSON", "Prompting"] },
+            { id: 'ft5', title: "Environment Setup (TRL, PEFT, Unsloth)", time: "30 min", desc: "Install the stack: Hugging Face Transformers, TRL, and Unsloth for 2x faster local training.", tags: ["DevOps", "Python"] },
+            { id: 'ft6', title: "Supervised Fine-Tuning (SFT) Loop", time: "120 min", desc: "Implement the SFTTrainer, configure hyperparameters, and monitor the loss curve convergence.", tags: ["Code", "Training"] },
+            { id: 'ft7', title: "FunctionGemma Specialization", time: "90 min", desc: "Fine-tune specifically for <start_function_call> deterministic outputs. Learn to penalize creative hallucinations.", tags: ["FunctionGemma", "APIs"] },
+            { id: 'ft8', title: "Evaluation & Local Deployment", time: "60 min", desc: "Merge LoRA weights and run inference using GGUF or ONNX for optimized production serving.", tags: ["GGUF", "Evaluation"] }
+        ];
+
+        const backendSteps = [
+            { id: 'be1', title: "Define Python Tool Schemas", time: "45 min", desc: "Create Pydantic models for your backend functions to ensure strict type safety when parsing model outputs.", tags: ["Pydantic", "Typing"] },
+            { id: 'be2', title: "The 'Developer Role' Prompting", time: "60 min", desc: "Structure the 'developer' system message correctly to activate FunctionGemma's tool-calling state machine.", tags: ["Prompting", "Context"] },
+            { id: 'be3', title: "Inference Engine: Loading the Adapter", time: "60 min", desc: "Set up a Python script to load the base Gemma model and apply your LoRA adapter for runtime inference.", tags: ["Transformers", "PEFT"] },
+            { id: 'be4', title: "Regex & JSON Parser Logic", time: "90 min", desc: "Build a robust parser to extract <start_function_call> tags from the model stream and convert them to JSON objects.", tags: ["Regex", "Parsing"] },
+            { id: 'be5', title: "The 'Developer Turn' Implementation", time: "120 min", desc: "Execute real Python functions based on model output and format the response for the next model iteration.", tags: ["Logic", "API Design"] },
+            { id: 'be6', title: "FastAPI Endpoint Setup", time: "60 min", desc: "Create a POST /chat endpoint that maintains session state and handles multi-turn tool logic synchronously.", tags: ["FastAPI", "Uvicorn"] },
+            { id: 'be7', title: "Streaming Function Calls", time: "120 min", desc: "Implement Server-Sent Events (SSE) to stream partial model thoughts while waiting for tool execution results.", tags: ["SSE", "AsyncIO"] },
+            { id: 'be8', title: "Auth & FE Integration", time: "45 min", desc: "Add API Key security and CORS headers so your Frontend can consume the Gemma backend securely.", tags: ["Security", "CORS"] }
+        ];
+
+        function showPage(pageId) {
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+            
+            document.getElementById(`page-${pageId}`).classList.add('active');
+            document.getElementById(`nav-${pageId}`).classList.add('active');
+            updateUI();
+        }
+
+        function saveProgress(id, checked) {
+            const data = JSON.parse(localStorage.getItem('gemmaForgeV3') || '{}');
+            if (checked) {
+                data[id] = { completed: true, date: new Date().toLocaleDateString() };
+            } else {
+                delete data[id];
+            }
+            localStorage.setItem('gemmaForgeV3', JSON.stringify(data));
+            updateUI();
+        }
+
+        function updateUI() {
+            const progress = JSON.parse(localStorage.getItem('gemmaForgeV3') || '{}');
+            
+            renderList('ft-container', finetuneSteps, progress);
+            renderList('be-container', backendSteps, progress);
+            
+            updateStats('ft', finetuneSteps, progress);
+            updateStats('be', backendSteps, progress);
+        }
+
+        function updateStats(prefix, list, progress) {
+            const completedCount = list.filter(s => progress[s.id]).length;
+            const percentage = (completedCount / list.length) * 100;
+            document.getElementById(`${prefix}-progress-fill`).style.width = `${percentage}%`;
+            document.getElementById(`${prefix}-progress-text`).innerText = `${completedCount} / ${list.length} Steps Completed`;
+        }
+
+        function renderList(containerId, list, progress) {
+            const container = document.getElementById(containerId);
+            container.innerHTML = '';
+
+            list.forEach(step => {
+                const isCompleted = !!progress[step.id];
+                const card = document.createElement('div');
+                card.className = `step-card ${isCompleted ? 'completed' : ''}`;
+                card.innerHTML = `
+                    <div class="step-header">
+                        <div class="step-meta">
+                            <div class="step-number">${step.id.includes('ft') ? step.id.replace('ft','') : step.id.replace('be','')}</div>
+                            <span class="step-time">${step.time}</span>
+                        </div>
+                        <div class="completion-status">✓ Completed ${isCompleted ? progress[step.id].date : ''}</div>
+                    </div>
+                    <div class="step-title">${step.title}</div>
+                    <p class="step-description">${step.desc}</p>
+                    <div class="resource-links">
+                        ${step.tags.map(tag => `<span class="resource-tag">#${tag}</span>`).join('')}
+                    </div>
+                    <div class="controls">
+                        <label class="checkbox-wrapper">
+                            <input type="checkbox" ${isCompleted ? 'checked' : ''} onchange="saveProgress('${step.id}', this.checked)">
+                            <span>${isCompleted ? 'Step Accomplished' : 'Mark as Complete'}</span>
+                        </label>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        // Init
+        updateUI();
+    </script>
+</body>
+</html>
