@@ -63,13 +63,12 @@
             .slide {
                 position: absolute;
                 inset: 0;
-                padding: 72px 84px 100px;
-                display: grid;
-                grid-template-rows: auto 1fr auto;
+                padding: 140px 84px 100px;
                 opacity: 0;
                 transform: translateX(32px) scale(0.985);
                 pointer-events: none;
                 transition: opacity 0.35s ease, transform 0.35s ease;
+                overflow-y: auto;
             }
 
             .slide.active {
@@ -80,14 +79,16 @@
 
             .slide-content {
                 min-height: 0;
-                overflow-y: auto;
             }
 
             .slide-header {
+                position: fixed;
+                top: 28px;
+                right: 28px;
                 display: flex;
                 align-items: center;
                 justify-content: space-between;
-                margin-bottom: 36px;
+                z-index: 15;
             }
 
             .slide-header.compact {
@@ -1218,16 +1219,13 @@
                         </div>
                         <ul class="spec-list">
                             <li>model dostrojony do wywołań funkcji</li>
-                            <li>otwarte wagi modelu</li>
-                            <li>licencja do odpowiedzialnego użycia komercyjnego</li>
                             <li>dobry wybór przy zdefiniowanej powierzchni API</li>
                             <li>dobry wybór dla podejścia local-first i prywatnych wdrożeń</li>
                         </ul>
                         <div class="spec-badges">
-                            <span class="spec-pill good-chip">270M</span>
+                            <span class="spec-pill ">270M</span>
                             <span class="spec-pill">Gemma 3</span>
-                            <span class="spec-pill good-chip">wywołania funkcji</span>
-                            <span class="spec-pill">otwarte wagi</span>
+                            <span class="spec-pill ">function calling</span>
                             <span class="spec-pill">lokalnie / prywatnie</span>
                         </div>
                         <div class="code-block" style="margin-top: 22px;">
