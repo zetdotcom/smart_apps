@@ -1,0 +1,1424 @@
+<!doctype html>
+<html lang="pl">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Mądre aplikacje | Slajdy meetup</title>
+        <style>
+            :root {
+                --deep-moss: #1a3324;
+                --forest-green: #2c5530;
+                --burnished-copper: #9c5f32;
+                --crisp-sage: #76a880;
+                --warm-cream: #f2efe9;
+                --sage-cream: #e1eadf;
+                --text-light: #efefef;
+                --text-dark: #16241b;
+                --text-muted: rgba(26, 51, 36, 0.68);
+                --glass: rgba(255, 255, 255, 0.35);
+                --glass-strong: rgba(255, 255, 255, 0.56);
+                --shadow-soft: 0 20px 50px rgba(26, 51, 36, 0.12);
+                --shadow-deep: 0 30px 80px rgba(26, 51, 36, 0.18);
+                --bg-gradient: linear-gradient(180deg, var(--warm-cream) 0%, var(--sage-cream) 100%);
+                --canopy-gradient: linear-gradient(135deg, var(--deep-moss) 0%, var(--forest-green) 100%);
+            }
+
+            * {
+                box-sizing: border-box;
+                margin: 0;
+                padding: 0;
+            }
+
+            html,
+            body {
+                width: 100%;
+                height: 100%;
+                overflow: hidden;
+            }
+
+            body {
+                font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+                color: var(--text-dark);
+                background: var(--bg-gradient);
+                letter-spacing: -0.015em;
+            }
+
+            body::before {
+                content: "";
+                position: fixed;
+                inset: 0;
+                background:
+                    radial-gradient(circle at top left, rgba(118, 168, 128, 0.15), transparent 32%),
+                    radial-gradient(circle at bottom right, rgba(156, 95, 50, 0.08), transparent 28%),
+                    linear-gradient(180deg, rgba(255, 255, 255, 0.16), transparent 30%);
+                pointer-events: none;
+            }
+
+            .deck {
+                position: relative;
+                width: 100%;
+                height: 100%;
+            }
+
+            .slide {
+                position: absolute;
+                inset: 0;
+                padding: 72px 84px 100px;
+                display: grid;
+                grid-template-rows: auto 1fr auto;
+                opacity: 0;
+                transform: translateX(32px) scale(0.985);
+                pointer-events: none;
+                transition: opacity 0.35s ease, transform 0.35s ease;
+            }
+
+            .slide.active {
+                opacity: 1;
+                transform: translateX(0) scale(1);
+                pointer-events: auto;
+            }
+
+            .slide-content {
+                min-height: 0;
+            }
+
+            .slide-header {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                margin-bottom: 36px;
+            }
+
+            .slide-header.compact {
+                justify-content: flex-end;
+            }
+
+            .eyebrow {
+                display: inline-flex;
+                align-items: center;
+                gap: 12px;
+                padding: 10px 18px;
+                border-radius: 999px;
+                background: rgba(255, 255, 255, 0.42);
+                backdrop-filter: blur(16px);
+                -webkit-backdrop-filter: blur(16px);
+                border: 1px solid rgba(26, 51, 36, 0.1);
+                box-shadow: 0 12px 30px rgba(26, 51, 36, 0.08);
+                font-size: 0.8rem;
+                font-weight: 700;
+                text-transform: uppercase;
+                letter-spacing: 0.14em;
+                color: rgba(26, 51, 36, 0.7);
+            }
+
+            .eyebrow::before {
+                content: "";
+                width: 10px;
+                height: 10px;
+                border-radius: 50%;
+                background: linear-gradient(135deg, var(--crisp-sage), #8db899);
+                box-shadow: 0 0 18px rgba(118, 168, 128, 0.35);
+            }
+
+            .slide-counter {
+                font-size: 0.9rem;
+                font-weight: 700;
+                color: rgba(26, 51, 36, 0.48);
+                letter-spacing: 0.08em;
+            }
+
+            .hero-grid,
+            .split-grid,
+            .architecture-grid,
+            .spec-grid,
+            .closing-grid {
+                display: grid;
+                gap: 28px;
+                min-height: 0;
+            }
+
+            .hero-grid {
+                grid-template-columns: 1.15fr 0.85fr;
+                align-items: center;
+            }
+
+            .split-grid,
+            .architecture-grid,
+            .spec-grid,
+            .closing-grid {
+                grid-template-columns: 1fr 1fr;
+                align-items: stretch;
+            }
+
+            .title {
+                font-size: clamp(3rem, 5vw, 5.4rem);
+                line-height: 0.95;
+                font-weight: 800;
+                color: var(--deep-moss);
+                max-width: 760px;
+            }
+
+            .subtitle {
+                margin-top: 18px;
+                font-size: 1.35rem;
+                line-height: 1.45;
+                color: var(--text-muted);
+                max-width: 760px;
+            }
+
+            .formula {
+                margin-top: 28px;
+                display: inline-flex;
+                flex-wrap: wrap;
+                gap: 14px;
+                align-items: center;
+                font-size: 1rem;
+                font-weight: 700;
+                color: var(--deep-moss);
+            }
+
+            .formula span,
+            .tag,
+            .metric,
+            .step-pill,
+            .spec-pill {
+                padding: 12px 18px;
+                border-radius: 999px;
+                background: rgba(255, 255, 255, 0.46);
+                border: 1px solid rgba(26, 51, 36, 0.08);
+                box-shadow: 0 8px 18px rgba(26, 51, 36, 0.07);
+                backdrop-filter: blur(12px);
+                -webkit-backdrop-filter: blur(12px);
+            }
+
+            .formula .accent,
+            .good,
+            .good-chip {
+                color: var(--crisp-sage);
+                box-shadow: 0 0 22px rgba(118, 168, 128, 0.18);
+            }
+
+            .bad,
+            .bad-chip {
+                color: var(--burnished-copper);
+            }
+
+            .glass-card,
+            .frost-card {
+                border-radius: 34px;
+                padding: 30px;
+                background: var(--glass);
+                border: 1px solid rgba(255, 255, 255, 0.65);
+                backdrop-filter: blur(24px);
+                -webkit-backdrop-filter: blur(24px);
+                box-shadow: var(--shadow-soft);
+            }
+
+            .frost-card {
+                background: var(--glass-strong);
+            }
+
+            .canopy-card,
+            .code-block,
+            .demo-shell {
+                border-radius: 34px;
+                padding: 30px;
+                background: var(--canopy-gradient);
+                color: var(--text-light);
+                border: 1px solid rgba(118, 168, 128, 0.2);
+                box-shadow: var(--shadow-deep);
+                position: relative;
+                overflow: hidden;
+            }
+
+            .canopy-card::before,
+            .code-block::before,
+            .demo-shell::before {
+                content: "";
+                position: absolute;
+                inset: 0;
+                background: linear-gradient(180deg, rgba(255, 255, 255, 0.08), transparent 42%);
+                pointer-events: none;
+            }
+
+            .card-title {
+                font-size: 1.25rem;
+                font-weight: 700;
+                margin-bottom: 14px;
+            }
+
+            .card-text,
+            .list,
+            .mini-list li,
+            .spec-list li {
+                font-size: 1rem;
+                line-height: 1.6;
+            }
+
+            .card-text-muted {
+                color: rgba(239, 239, 239, 0.72);
+            }
+
+            .list,
+            .mini-list,
+            .spec-list {
+                list-style: none;
+                display: grid;
+                gap: 14px;
+            }
+
+            .list li,
+            .mini-list li,
+            .spec-list li {
+                display: flex;
+                gap: 14px;
+                align-items: flex-start;
+            }
+
+            .list li::before,
+            .mini-list li::before,
+            .spec-list li::before {
+                content: "";
+                width: 12px;
+                height: 12px;
+                border-radius: 50%;
+                margin-top: 6px;
+                flex-shrink: 0;
+                background: var(--crisp-sage);
+                box-shadow: 0 0 18px rgba(118, 168, 128, 0.28);
+            }
+
+            .bad-list li::before {
+                background: var(--burnished-copper);
+                box-shadow: none;
+            }
+
+            .stone-icon {
+                width: 78px;
+                height: 78px;
+                border-radius: 26px;
+                background: linear-gradient(145deg, #f8f5f0, #e6ddd1);
+                border: 1px solid rgba(26, 51, 36, 0.06);
+                box-shadow:
+                    inset 0 2px 6px rgba(255, 255, 255, 0.8),
+                    inset 0 -4px 10px rgba(26, 51, 36, 0.08),
+                    0 16px 32px rgba(26, 51, 36, 0.12);
+                display: grid;
+                place-items: center;
+                font-size: 2rem;
+                color: var(--deep-moss);
+                margin-bottom: 22px;
+            }
+
+            .stone-icon.small {
+                width: 58px;
+                height: 58px;
+                border-radius: 20px;
+                font-size: 1.45rem;
+                margin-bottom: 0;
+            }
+
+            .comparison-columns {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 26px;
+            }
+
+            .comparison-title,
+            .panel-label,
+            .spec-label,
+            .section-label {
+                font-size: 0.78rem;
+                font-weight: 800;
+                letter-spacing: 0.15em;
+                text-transform: uppercase;
+                margin-bottom: 16px;
+            }
+
+            .panel-label,
+            .spec-label,
+            .section-label {
+                color: rgba(239, 239, 239, 0.7);
+            }
+
+            .comparison-title.bad {
+                color: var(--burnished-copper);
+            }
+
+            .comparison-title.good {
+                color: var(--crisp-sage);
+            }
+
+            .path-steps {
+                display: grid;
+                gap: 14px;
+                margin-top: 8px;
+            }
+
+            .path-step {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                gap: 18px;
+                padding: 18px 20px;
+                border-radius: 22px;
+                background: rgba(255, 255, 255, 0.5);
+                border: 1px solid rgba(26, 51, 36, 0.08);
+                box-shadow: 0 10px 22px rgba(26, 51, 36, 0.06);
+                font-weight: 600;
+            }
+
+            .path-step .index {
+                width: 34px;
+                height: 34px;
+                border-radius: 50%;
+                display: grid;
+                place-items: center;
+                font-size: 0.85rem;
+                font-weight: 800;
+                background: rgba(26, 51, 36, 0.08);
+            }
+
+            .quote-card {
+                margin-top: 24px;
+                padding: 24px 26px;
+                border-radius: 28px;
+                background: rgba(255, 255, 255, 0.46);
+                border: 1px solid rgba(26, 51, 36, 0.08);
+                box-shadow: 0 10px 26px rgba(26, 51, 36, 0.06);
+                font-size: 1.25rem;
+                line-height: 1.45;
+                font-weight: 600;
+                color: var(--deep-moss);
+            }
+
+            .architecture-stack {
+                display: grid;
+                gap: 14px;
+            }
+
+            .layer {
+                border-radius: 26px;
+                padding: 22px 24px;
+                background: rgba(255, 255, 255, 0.48);
+                border: 1px solid rgba(26, 51, 36, 0.08);
+                box-shadow: 0 10px 24px rgba(26, 51, 36, 0.07);
+            }
+
+            .layer.smart {
+                background: linear-gradient(145deg, rgba(118, 168, 128, 0.16), rgba(255, 255, 255, 0.46));
+                border-color: rgba(118, 168, 128, 0.28);
+            }
+
+            .layer-title {
+                font-size: 1rem;
+                font-weight: 800;
+                margin-bottom: 8px;
+            }
+
+            .layer-text {
+                color: var(--text-muted);
+                font-size: 0.98rem;
+                line-height: 1.55;
+            }
+
+            .connector {
+                height: 34px;
+                display: grid;
+                place-items: center;
+                color: rgba(26, 51, 36, 0.42);
+                font-size: 1.65rem;
+                font-weight: 800;
+            }
+
+            .ui-preview {
+                display: grid;
+                grid-template-rows: auto auto 1fr;
+                gap: 18px;
+            }
+
+            .window-top {
+                display: flex;
+                align-items: center;
+                gap: 8px;
+                opacity: 0.65;
+            }
+
+            .window-top span {
+                width: 12px;
+                height: 12px;
+                border-radius: 50%;
+                background: rgba(242, 239, 233, 0.6);
+            }
+
+            .request-card {
+                padding: 18px 22px;
+                border-radius: 22px;
+                background: rgba(242, 239, 233, 0.1);
+                border: 1px solid rgba(118, 168, 128, 0.18);
+                color: rgba(239, 239, 239, 0.82);
+                font-size: 1rem;
+                line-height: 1.5;
+            }
+
+            .mock-ui {
+                border-radius: 26px;
+                padding: 22px;
+                background: rgba(242, 239, 233, 0.08);
+                border: 1px solid rgba(239, 239, 239, 0.08);
+                display: grid;
+                gap: 16px;
+            }
+
+            .ui-bar,
+            .ui-card,
+            .ui-chart {
+                border-radius: 18px;
+                background: rgba(242, 239, 233, 0.12);
+                border: 1px solid rgba(239, 239, 239, 0.08);
+            }
+
+            .ui-bar {
+                height: 16px;
+                width: 72%;
+            }
+
+            .ui-card {
+                height: 88px;
+                display: grid;
+                align-content: center;
+                padding: 18px;
+                gap: 10px;
+            }
+
+            .ui-card .line {
+                height: 10px;
+                border-radius: 999px;
+                background: rgba(242, 239, 233, 0.22);
+            }
+
+            .ui-card .line.good-line {
+                width: 64%;
+                background: rgba(118, 168, 128, 0.85);
+                box-shadow: 0 0 16px rgba(118, 168, 128, 0.25);
+            }
+
+            .ui-chart {
+                height: 140px;
+                padding: 18px;
+                display: grid;
+                grid-template-columns: repeat(5, 1fr);
+                gap: 12px;
+                align-items: end;
+            }
+
+            .ui-chart span {
+                border-radius: 14px 14px 8px 8px;
+                background: linear-gradient(180deg, rgba(118, 168, 128, 0.95), rgba(118, 168, 128, 0.45));
+                box-shadow: 0 0 18px rgba(118, 168, 128, 0.16);
+            }
+
+            .ui-chart span:nth-child(1) { height: 36%; }
+            .ui-chart span:nth-child(2) { height: 62%; }
+            .ui-chart span:nth-child(3) { height: 48%; }
+            .ui-chart span:nth-child(4) { height: 82%; }
+            .ui-chart span:nth-child(5) { height: 58%; }
+
+            .spec-columns {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 22px;
+            }
+
+            .spec-box {
+                padding: 24px;
+                border-radius: 28px;
+                background: rgba(255, 255, 255, 0.46);
+                border: 1px solid rgba(26, 51, 36, 0.08);
+                box-shadow: 0 12px 26px rgba(26, 51, 36, 0.07);
+            }
+
+            .spec-box.dark {
+                background: var(--canopy-gradient);
+                color: var(--text-light);
+                border-color: rgba(118, 168, 128, 0.2);
+                box-shadow: var(--shadow-deep);
+            }
+
+            .spec-box.dark .spec-title,
+            .spec-box.dark .spec-subtitle,
+            .spec-box.dark .spec-list li {
+                color: var(--text-light);
+            }
+
+            .spec-title {
+                font-size: 1.25rem;
+                font-weight: 800;
+                margin-bottom: 8px;
+                color: var(--deep-moss);
+            }
+
+            .spec-subtitle {
+                font-size: 0.95rem;
+                line-height: 1.55;
+                color: var(--text-muted);
+                margin-bottom: 18px;
+            }
+
+            .spec-badges {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 12px;
+                margin-top: 22px;
+            }
+
+            .code-block {
+                padding: 24px 26px;
+                font-family: "SFMono-Regular", ui-monospace, SFMono-Regular, Menlo, monospace;
+                font-size: 1rem;
+                line-height: 1.8;
+            }
+
+            .code-block strong {
+                color: var(--crisp-sage);
+            }
+
+            .demo-layout {
+                display: grid;
+                grid-template-columns: 1.15fr 0.85fr;
+                gap: 28px;
+                min-height: 0;
+            }
+
+            .demo-stage {
+                display: grid;
+                grid-template-rows: auto 1fr auto;
+                gap: 18px;
+            }
+
+            .browser-bar {
+                display: flex;
+                align-items: center;
+                gap: 8px;
+                opacity: 0.55;
+            }
+
+            .browser-bar span {
+                width: 12px;
+                height: 12px;
+                border-radius: 50%;
+                background: rgba(242, 239, 233, 0.72);
+            }
+
+            .video-placeholder {
+                border-radius: 28px;
+                border: 1px dashed rgba(239, 239, 239, 0.2);
+                display: grid;
+                place-items: center;
+                background:
+                    linear-gradient(180deg, rgba(255, 255, 255, 0.06), transparent),
+                    radial-gradient(circle at center, rgba(118, 168, 128, 0.12), transparent 35%);
+                min-height: 360px;
+                text-align: center;
+                padding: 28px;
+            }
+
+            .video-placeholder h3 {
+                font-size: 2rem;
+                margin-bottom: 12px;
+            }
+
+            .video-placeholder p {
+                max-width: 520px;
+                line-height: 1.6;
+                color: rgba(239, 239, 239, 0.78);
+                font-size: 1rem;
+            }
+
+            .demo-caption {
+                display: flex;
+                gap: 12px;
+                flex-wrap: wrap;
+            }
+
+            .check-list {
+                list-style: none;
+                display: grid;
+                gap: 14px;
+            }
+
+            .check-list li {
+                display: grid;
+                grid-template-columns: 24px 1fr;
+                gap: 14px;
+                align-items: start;
+                font-size: 1rem;
+                line-height: 1.55;
+            }
+
+            .check-list li::before {
+                content: "✓";
+                width: 24px;
+                height: 24px;
+                border-radius: 50%;
+                display: grid;
+                place-items: center;
+                background: rgba(118, 168, 128, 0.16);
+                color: var(--crisp-sage);
+                box-shadow: 0 0 18px rgba(118, 168, 128, 0.18);
+                font-weight: 900;
+            }
+
+            .closing-quote {
+                font-size: clamp(2.2rem, 3.5vw, 4rem);
+                line-height: 1.05;
+                font-weight: 800;
+                color: var(--deep-moss);
+                max-width: 760px;
+            }
+
+            .support-lines {
+                margin-top: 26px;
+                display: grid;
+                gap: 14px;
+            }
+
+            .support-lines .line {
+                padding: 18px 22px;
+                border-radius: 24px;
+                background: rgba(255, 255, 255, 0.5);
+                border: 1px solid rgba(26, 51, 36, 0.08);
+                box-shadow: 0 10px 22px rgba(26, 51, 36, 0.06);
+                font-size: 1.05rem;
+                font-weight: 650;
+            }
+
+            .image-frame {
+                overflow: hidden;
+                border-radius: 34px;
+                border: 1px solid rgba(255, 255, 255, 0.66);
+                background: rgba(255, 255, 255, 0.45);
+                backdrop-filter: blur(20px);
+                -webkit-backdrop-filter: blur(20px);
+                box-shadow: var(--shadow-soft);
+            }
+
+            .image-frame img {
+                display: block;
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+            }
+
+            .image-frame.contain-frame {
+                display: grid;
+                place-items: center;
+                padding: 24px;
+                background:
+                    linear-gradient(180deg, rgba(255, 255, 255, 0.62), rgba(255, 255, 255, 0.38)),
+                    radial-gradient(circle at top left, rgba(118, 168, 128, 0.08), transparent 35%);
+            }
+
+            .image-frame.contain-frame img {
+                width: 100%;
+                height: 100%;
+                object-fit: contain;
+                object-position: center;
+                border-radius: 24px;
+                background: rgba(255, 255, 255, 0.72);
+                box-shadow: 0 18px 40px rgba(26, 51, 36, 0.08);
+            }
+
+            .slide-footer {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                gap: 20px;
+                margin-top: 28px;
+            }
+
+            .slide-hint {
+                display: none;
+            }
+
+            .controls {
+                position: fixed;
+                right: 28px;
+                bottom: 24px;
+                display: flex;
+                gap: 10px;
+                z-index: 20;
+            }
+
+            .control-btn,
+            .notes-toggle {
+                appearance: none;
+                border: 0;
+                border-radius: 999px;
+                padding: 13px 18px;
+                background: rgba(255, 255, 255, 0.52);
+                color: var(--deep-moss);
+                font-weight: 800;
+                cursor: pointer;
+                backdrop-filter: blur(16px);
+                -webkit-backdrop-filter: blur(16px);
+                box-shadow: 0 12px 22px rgba(26, 51, 36, 0.08);
+                border: 1px solid rgba(26, 51, 36, 0.08);
+            }
+
+            .notes-panel-header {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                gap: 16px;
+                margin-bottom: 8px;
+            }
+
+            .notes-close {
+                appearance: none;
+                border: 0;
+                border-radius: 999px;
+                padding: 10px 14px;
+                background: rgba(26, 51, 36, 0.08);
+                color: var(--deep-moss);
+                font-weight: 800;
+                cursor: pointer;
+            }
+
+            .notes-panel {
+                position: fixed;
+                left: 28px;
+                right: 28px;
+                bottom: 24px;
+                padding: 22px 24px;
+                border-radius: 28px;
+                background: rgba(255, 255, 255, 0.75);
+                border: 1px solid rgba(26, 51, 36, 0.1);
+                backdrop-filter: blur(22px);
+                -webkit-backdrop-filter: blur(22px);
+                box-shadow: var(--shadow-soft);
+                z-index: 18;
+                display: none;
+                max-height: min(38vh, 320px);
+                overflow: auto;
+            }
+
+            body.notes-open .notes-panel {
+                display: block;
+            }
+
+            .notes-label {
+                font-size: 0.75rem;
+                text-transform: uppercase;
+                letter-spacing: 0.16em;
+                color: rgba(26, 51, 36, 0.48);
+                font-weight: 800;
+                margin-bottom: 8px;
+            }
+
+            .notes-text {
+                font-size: 0.98rem;
+                line-height: 1.65;
+                color: rgba(26, 51, 36, 0.82);
+                max-width: 1100px;
+            }
+
+            @media (max-width: 1200px) {
+                .slide {
+                    padding: 52px 48px 110px;
+                }
+
+                .hero-grid,
+                .split-grid,
+                .architecture-grid,
+                .spec-grid,
+                .closing-grid,
+                .demo-layout,
+                .comparison-columns,
+                .spec-columns {
+                    grid-template-columns: 1fr;
+                }
+
+                .title,
+                .closing-quote {
+                    max-width: none;
+                }
+            }
+
+            @media (max-width: 900px) {
+                html,
+                body {
+                    height: auto;
+                    min-height: 100%;
+                    overflow: auto;
+                }
+
+                body {
+                    min-height: 100dvh;
+                }
+
+                .deck {
+                    height: auto;
+                    min-height: 100dvh;
+                }
+
+                .slide {
+                    position: relative;
+                    inset: auto;
+                    min-height: 100dvh;
+                    padding: 28px 20px 108px;
+                    display: none;
+                    opacity: 1;
+                    transform: none;
+                    transition: none;
+                    overflow: visible;
+                }
+
+                .slide.active {
+                    display: grid;
+                }
+
+                .slide-header,
+            .slide-footer {
+                    margin-bottom: 20px;
+                    margin-top: 20px;
+                }
+
+                .slide-content {
+                    min-height: auto;
+                }
+
+                .hero-grid,
+                .split-grid,
+                .architecture-grid,
+                .spec-grid,
+                .closing-grid,
+                .demo-layout,
+                .comparison-columns,
+                .spec-columns {
+                    grid-template-columns: 1fr;
+                    gap: 18px;
+                }
+
+                .title {
+                    font-size: clamp(2.1rem, 10vw, 3.2rem);
+                    line-height: 1;
+                }
+
+                .subtitle {
+                    font-size: 1.02rem;
+                    line-height: 1.5;
+                }
+
+                .closing-quote {
+                    font-size: clamp(1.95rem, 8vw, 2.8rem);
+                    line-height: 1.08;
+                }
+
+                .eyebrow,
+                .slide-counter,
+                .formula,
+                .tag,
+                .spec-pill,
+                .path-step,
+                .support-lines .line,
+                .request-card,
+                .card-text,
+                .list,
+                .mini-list li,
+                .spec-list li,
+                .check-list li,
+                .quote-card,
+                .code-block {
+                    font-size: 0.95rem;
+                }
+
+                .glass-card,
+                .frost-card,
+                .canopy-card,
+                .code-block,
+                .demo-shell,
+                .spec-box,
+                .image-frame {
+                    border-radius: 24px;
+                    padding: 20px;
+                }
+
+                .path-step {
+                    grid-template-columns: 34px 1fr;
+                    display: grid;
+                    align-items: center;
+                }
+
+                .path-step .bad {
+                    grid-column: 2;
+                }
+
+                .stone-icon {
+                    width: 62px;
+                    height: 62px;
+                    border-radius: 20px;
+                    font-size: 1.55rem;
+                    margin-bottom: 16px;
+                }
+
+                .stone-icon.small {
+                    width: 52px;
+                    height: 52px;
+                    border-radius: 18px;
+                    font-size: 1.3rem;
+                }
+
+                .video-placeholder {
+                    min-height: 240px;
+                }
+
+                .video-placeholder h3 {
+                    font-size: 1.55rem;
+                }
+
+                .mock-ui {
+                    padding: 16px;
+                }
+
+                .ui-chart {
+                    height: 112px;
+                    gap: 8px;
+                }
+
+                .controls {
+                    left: 12px;
+                    right: 12px;
+                    bottom: 12px;
+                    justify-content: center;
+                    gap: 8px;
+                }
+
+                .control-btn,
+                .notes-toggle {
+                    padding: 12px 16px;
+                    min-width: 64px;
+                }
+
+                .notes-panel {
+                    left: 12px;
+                    right: 12px;
+                    bottom: 72px;
+                    padding: 18px;
+                    max-height: 42vh;
+                    border-radius: 22px;
+                }
+
+                .notes-text {
+                    font-size: 0.92rem;
+                    line-height: 1.55;
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <main class="deck">
+            <section
+                class="slide active"
+                id="wstep"
+                data-notes="Większość aplikacji nadal zmusza użytkownika do myślenia kategoriami menu, sekcji i formularzy. Ja proponuję prostą zmianę: dołożyć warstwę intencji, która rozumie cel użytkownika i mapuje go na zatwierdzone akcje lub gotowy interfejs. To nie jest prezentacja o zastępowaniu aplikacji chatem. To jest prezentacja o tym, jak aplikacja może stać się mądrzejsza."
+            >
+                <div class="slide-header compact">
+                    <div class="slide-counter">01 / 06</div>
+                </div>
+                <div class="slide-content hero-grid">
+                    <div>
+                        <h1 class="title">Mądre aplikacje</h1>
+                        <p class="subtitle">
+                            Interfejs sterowany intencją, zasilany małymi modelami językowymi.
+                        </p>
+                        <div class="formula">
+                            <span>intencja</span>
+                            <span class="accent">→</span>
+                            <span>funkcja</span>
+                            <span class="accent">→</span>
+                            <span>UI</span>
+                        </div>
+                        <div class="quote-card">
+                            Mądra aplikacja = istniejąca aplikacja + mały model + zatwierdzone akcje i komponenty.
+                        </div>
+                    </div>
+                    <div class="canopy-card">
+                        <div class="section-label">Punkt wyjścia</div>
+                        <div class="stone-icon">◌</div>
+                        <h2 class="card-title">To nie kolejny chatbot</h2>
+                        <ul class="list">
+                            <li>Użytkownik mówi, czego chce, zamiast szukać właściwej ścieżki.</li>
+                            <li>Model nie „improwizuje produktu”, tylko uruchamia znane możliwości aplikacji.</li>
+                            <li>Interfejs pozostaje realny, użyteczny i kontrolowany.</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="slide-footer">
+                    <div class="slide-hint">Przekaz otwierający: problem UX najpierw, model dopiero potem.</div>
+                </div>
+            </section>
+
+            <section
+                class="slide"
+                id="problem"
+                data-notes="Tutaj buduję wspólny ból. Użytkownik wie, jaki efekt chce osiągnąć, ale nie wie, jaką ścieżkę przewidział projektant. To nie jest awaria interfejsu, tylko naturalny koszt rosnącej złożoności produktu. Warstwa intencji ma skrócić drogę do celu."
+            >
+                <div class="slide-header">
+                    <div class="eyebrow">Problem</div>
+                    <div class="slide-counter">02 / 06</div>
+                </div>
+                <div class="slide-content split-grid">
+                    <div class="frost-card">
+                        <div class="comparison-title bad">Tradycyjny interfejs</div>
+                        <div class="path-steps">
+                            <div class="path-step">
+                                <span class="index">1</span>
+                                <span>Otwórz menu</span>
+                                <span class="bad">tarcie</span>
+                            </div>
+                            <div class="path-step">
+                                <span class="index">2</span>
+                                <span>Znajdź sekcję</span>
+                                <span class="bad">czas</span>
+                            </div>
+                            <div class="path-step">
+                                <span class="index">3</span>
+                                <span>Odszukaj funkcję</span>
+                                <span class="bad">frustracja</span>
+                            </div>
+                            <div class="path-step">
+                                <span class="index">4</span>
+                                <span>Wypełnij formularz</span>
+                                <span class="bad">błędy</span>
+                            </div>
+                            <div class="path-step">
+                                <span class="index">5</span>
+                                <span>Potwierdź wynik</span>
+                                <span class="bad">koszt</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="canopy-card">
+                        <div class="comparison-title good">Interfejs sterowany intencją</div>
+                        <div class="code-block">
+                            „Pokaż mi ekran do zmiany danych rozliczeniowych”
+                            <br />
+                            <strong>→</strong> model wybiera zatwierdzoną akcję
+                            <br />
+                            <strong>→</strong> aplikacja renderuje właściwy UI
+                        </div>
+                        <div class="quote-card" style="margin-top: 22px; background: rgba(255, 255, 255, 0.08); color: var(--text-light); border-color: rgba(255, 255, 255, 0.08);">
+                            Użytkownik podaje cel. Aplikacja wykonuje właściwą akcję.
+                        </div>
+                    </div>
+                </div>
+                <div class="slide-footer">
+                    <div class="slide-hint">Teza: użytkownicy myślą w rezultatach, nie w strukturze menu.</div>
+                </div>
+            </section>
+
+            <section
+                class="slide"
+                id="pomysl"
+                data-notes="To jest najważniejszy slajd architektoniczny. Chodzi o augmentację, nie przebudowę. Backend, logika biznesowa, istniejące komponenty i routing zostają. Model siedzi pomiędzy językiem naturalnym a zestawem znanych akcji. Dzięki temu zyskujemy inteligencję bez porzucania istniejącej inwestycji."
+            >
+                <div class="slide-header">
+                    <div class="eyebrow">Pomysł</div>
+                    <div class="slide-counter">03 / 06</div>
+                </div>
+                <div class="slide-content architecture-grid">
+                    <div class="frost-card">
+                        <h2 class="title" style="font-size: 3.2rem; max-width: 620px;">Dodaj warstwę intencji. Zachowaj aplikację.</h2>
+                        <p class="subtitle" style="max-width: 620px;">
+                            Intencja użytkownika trafia do lekkiego modelu, a model mapuje ją na znaną funkcję albo gotowy interfejs.
+                        </p>
+                        <div class="architecture-stack" style="margin-top: 28px;">
+                            <div class="layer">
+                                <div class="layer-title">Warstwa użytkownika</div>
+                                <div class="layer-text">Krótka instrukcja w języku naturalnym: cel, nie ścieżka.</div>
+                            </div>
+                            <div class="connector">↓</div>
+                            <div class="layer smart">
+                                <div class="layer-title">Warstwa smart</div>
+                                <div class="layer-text">Mały model wybiera z katalogu zatwierdzonych akcji i wzorców UI.</div>
+                            </div>
+                            <div class="connector">↓</div>
+                            <div class="layer">
+                                <div class="layer-title">Istniejąca aplikacja</div>
+                                <div class="layer-text">Backend, routing, formularze, komponenty, autoryzacja i logika biznesowa.</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="canopy-card ui-preview">
+                        <div class="section-label">Przepływ wykonania</div>
+                        <div class="window-top"><span></span><span></span><span></span></div>
+                        <div class="request-card">„Pokaż porównanie tego tygodnia do poprzedniego i przejdź do właściwego widoku.”</div>
+                        <div class="mock-ui">
+                            <div class="ui-bar"></div>
+                            <div class="ui-card">
+                                <div class="line" style="width: 78%;"></div>
+                                <div class="line good-line"></div>
+                            </div>
+                            <div class="ui-chart">
+                                <span></span><span></span><span></span><span></span><span></span>
+                            </div>
+                        </div>
+                        <ul class="mini-list" style="margin-top: 8px;">
+                            <li>Model rozumie intencję.</li>
+                            <li>Wybiera dozwoloną akcję.</li>
+                            <li>Aplikacja pokazuje żądany interfejs.</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="slide-footer">
+                    <div class="slide-hint">Najmocniejsza linia: nie przebudowujemy produktu, dokładamy warstwę intencji.</div>
+                </div>
+            </section>
+
+            <section
+                class="slide"
+                id="technologia"
+                data-notes="Tutaj tłumaczę wybór techniczny. Nie potrzebuję ogromnego modelu do otwartego rozumowania. Potrzebuję modelu, który dobrze mapuje intencję na znane akcje. W tym kontekście mały model jest praktyczny: tańszy, lżejszy, łatwiejszy do uruchomienia lokalnie albo na prywatnym serwerze. FunctionGemma 270M to specjalizowana wersja Gemma 3 270M pod function calling, z otwartymi wagami i licencją do odpowiedzialnego commercial use."
+            >
+                <div class="slide-header">
+                    <div class="eyebrow">Technologia</div>
+                    <div class="slide-counter">04 / 06</div>
+                </div>
+                <div class="slide-content spec-grid">
+                    <div class="frost-card">
+                        <h2 class="title" style="font-size: 2.8rem; max-width: 620px;">Dlaczego małe modele?</h2>
+                        <p class="subtitle" style="max-width: 620px;">
+                            Przy zadaniu ograniczonym przez znany zestaw akcji „wystarczająco dobre” wygrywa z „maksymalnie dużym”.
+                        </p>
+                        <div class="spec-columns" style="margin-top: 26px;">
+                            <div class="spec-box">
+                                <div class="spec-title">Korzyści produktowe</div>
+                                <ul class="spec-list">
+                                    <li>niższy koszt uruchomienia</li>
+                                    <li>niższe opóźnienie</li>
+                                    <li>większa prywatność</li>
+                                <li>lokalnie / na urządzeniu / prywatny serwer</li>
+                                </ul>
+                            </div>
+                            <div class="spec-box">
+                                <div class="spec-title">Korzyści architektoniczne</div>
+                                <ul class="spec-list">
+                                    <li>łatwiej ograniczyć zakres działania</li>
+                                    <li>łatwiej stroić pod konkretną domenę</li>
+                                    <li>łatwiej utrzymać przewidywalny output</li>
+                                    <li>łatwiej wpiąć w istniejący produkt</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="spec-box dark">
+                        <div class="spec-label">Silnik przykładowy</div>
+                        <div class="stone-icon small">◎</div>
+                        <div class="spec-title" style="margin-top: 16px;">FunctionGemma 270M</div>
+                        <div class="spec-subtitle" style="color: rgba(239, 239, 239, 0.76);">
+                            Specjalizowana wersja <strong>Gemma 3 270M</strong>, dostrojona do wywołań funkcji i mapowania języka naturalnego na akcje API.
+                        </div>
+                        <ul class="spec-list">
+                            <li>model dostrojony do wywołań funkcji</li>
+                            <li>otwarte wagi modelu</li>
+                            <li>licencja do odpowiedzialnego użycia komercyjnego</li>
+                            <li>dobry wybór przy zdefiniowanej powierzchni API</li>
+                            <li>dobry wybór dla podejścia local-first i prywatnych wdrożeń</li>
+                        </ul>
+                        <div class="spec-badges">
+                            <span class="spec-pill good-chip">270M</span>
+                            <span class="spec-pill">Gemma 3</span>
+                            <span class="spec-pill good-chip">wywołania funkcji</span>
+                            <span class="spec-pill">otwarte wagi</span>
+                            <span class="spec-pill">lokalnie / prywatnie</span>
+                        </div>
+                        <div class="code-block" style="margin-top: 22px;">
+                            język naturalny <strong>→</strong> wybór funkcji <strong>→</strong> działanie produktu
+                        </div>
+                    </div>
+                </div>
+                <div class="slide-footer">
+                    <div class="slide-hint">Nie sprzedawaj „magii”. Sprzedaj dopasowanie modelu do ograniczonego problemu.</div>
+                </div>
+            </section>
+
+            <section
+                class="slide"
+                id="demo"
+                data-notes="To jest kulminacja. Mów mniej, pokazuj więcej. Użytkownik wpisuje intencję. Model mapuje ją do zatwierdzonej akcji. Aplikacja pokazuje właściwy interfejs. Jeśli jeszcze nie masz pliku wideo w repo, ten slajd ma już gotowe miejsce na nagranie. Docelowo podmień placeholder na realne demo i trzymaj całość pod minutą."
+            >
+                <div class="slide-header">
+                    <div class="eyebrow">Demo</div>
+                    <div class="slide-counter">05 / 06</div>
+                </div>
+                <div class="slide-content demo-layout">
+                    <div class="demo-shell demo-stage">
+                        <div class="browser-bar"><span></span><span></span><span></span></div>
+                        <video
+                            src="smart-apps-demo.mp4"
+                            controls
+                            muted
+                            loop
+                            playsinline
+                            style="width: 100%; height: 100%; min-height: 360px; object-fit: contain; border-radius: 28px; background: rgba(0,0,0,0.15);"
+                        ></video>
+
+                    </div>
+                    <div class="frost-card">
+                        <h2 class="title" style="font-size: 2.45rem; max-width: 460px;">Użytkownik mówi, czego chce. Aplikacja reaguje.</h2>
+                        <p class="subtitle" style="max-width: 460px;">
+                            Żadnych menu, żadnych formularzy. Jedno zdanie uruchamia właściwą funkcję produktu.
+                        </p>
+                        <div class="quote-card" style="margin-top: 26px; font-size: 1.1rem;">
+                            Najważniejsze nie jest to, że model „odpisuje". Najważniejsze jest to, że <span class="good">produkt reaguje</span>.
+                        </div>
+                    </div>
+                    </div>
+                </div>
+                <div class="slide-footer">
+                    <div class="slide-hint">Najciszej mówiony slajd. Wideo ma wykonać robotę.</div>
+                </div>
+            </section>
+
+            <section
+                class="slide"
+                id="wniosek"
+                data-notes="Zakończenie ma być proste i mocne. Nie twierdzę, że każdy produkt powinien stać się agentem. Twierdzę, że wiele aplikacji może dostać warstwę intencji, która skraca drogę do celu. Duże modele nie są jedyną drogą. Małe modele są często wystarczające, jeśli akcje są znane, a produkt zachowuje kontrolę nad logiką krytyczną."
+            >
+                <div class="slide-header">
+                    <div class="eyebrow">Wniosek</div>
+                    <div class="slide-counter">06 / 06</div>
+                </div>
+                <div class="slide-content closing-grid">
+                    <div class="frost-card">
+                        <h2 class="closing-quote">
+                            Aplikacje mogą stać się mądrzejsze bez zamiany w gigantycznych agentów chmurowych.
+                        </h2>
+                        <div class="support-lines">
+                            <div class="line">Zacznij od ograniczonych, zatwierdzonych akcji.</div>
+                            <div class="line">Zostaw logikę krytyczną po stronie aplikacji.</div>
+                            <div class="line">Użyj małego modelu jako warstwy intencji.</div>
+                        </div>
+                        <div class="quote-card" style="margin-top: 28px;">
+                            Przyszłość nie musi oznaczać „chat zastępuje UI”.<br />
+                            Przyszłość może oznaczać: <span class="good">UI rozumie intencję</span>.
+                        </div>
+                    </div>
+                    <div class="image-frame contain-frame">
+                        <img
+                            src="../ui_future_infographic.png"
+                            alt="Infografika o przejściu od kliknięć do intencji"
+                        />
+                    </div>
+                </div>
+                <div class="slide-footer">
+                    <div class="slide-hint">Zakończ tezą produktową, nie szczegółem modelu.</div>
+                </div>
+            </section>
+        </main>
+
+        <div class="notes-panel" aria-live="polite">
+            <div class="notes-panel-header">
+                <div class="notes-label">Notatki prelegenta</div>
+                <button class="notes-close" type="button" id="notes-close-btn">Zamknij</button>
+            </div>
+            <div class="notes-text" id="notes-text"></div>
+        </div>
+
+        <div class="controls">
+            <button class="notes-toggle" type="button" id="notes-toggle-btn">Notatki</button>
+            <button class="control-btn" type="button" id="prev-btn">←</button>
+            <button class="control-btn" type="button" id="next-btn">→</button>
+        </div>
+
+        <script>
+            const slides = Array.from(document.querySelectorAll(".slide"));
+            const notesText = document.getElementById("notes-text");
+            const prevBtn = document.getElementById("prev-btn");
+            const nextBtn = document.getElementById("next-btn");
+            const notesButtons = document.querySelectorAll(".notes-toggle");
+            const notesCloseBtn = document.getElementById("notes-close-btn");
+            const slideHashes = slides.map((_, index) => String(index + 1));
+            let current = 0;
+
+            function renderSlide(index, options = {}) {
+                const { updateHash = true } = options;
+                current = Math.max(0, Math.min(index, slides.length - 1));
+                slides.forEach((slide, slideIndex) => {
+                    slide.classList.toggle("active", slideIndex === current);
+                });
+                notesText.textContent = slides[current].dataset.notes || "";
+                if (updateHash) {
+                    const nextHash = `#${slideHashes[current]}`;
+                    if (window.location.hash !== nextHash) {
+                        window.history.replaceState(null, "", nextHash);
+                    }
+                }
+                if (window.innerWidth <= 900) {
+                    window.scrollTo(0, 0);
+                }
+            }
+
+            function nextSlide() {
+                renderSlide(current + 1);
+            }
+
+            function prevSlide() {
+                renderSlide(current - 1);
+            }
+
+            function toggleNotes() {
+                document.body.classList.toggle("notes-open");
+            }
+
+            function closeNotes() {
+                document.body.classList.remove("notes-open");
+            }
+
+            function renderFromHash() {
+                const hash = window.location.hash.replace("#", "");
+                const slideIndex = slideHashes.indexOf(hash);
+                if (slideIndex >= 0) {
+                    renderSlide(slideIndex, { updateHash: false });
+                    return;
+                }
+                renderSlide(0);
+            }
+
+            prevBtn.addEventListener("click", prevSlide);
+            nextBtn.addEventListener("click", nextSlide);
+            notesButtons.forEach((button) => button.addEventListener("click", toggleNotes));
+            notesCloseBtn.addEventListener("click", closeNotes);
+            window.addEventListener("hashchange", renderFromHash);
+
+            document.addEventListener("keydown", (event) => {
+                if (["ArrowRight", "PageDown", " "].includes(event.key)) {
+                    event.preventDefault();
+                    nextSlide();
+                }
+                if (["ArrowLeft", "PageUp"].includes(event.key)) {
+                    event.preventDefault();
+                    prevSlide();
+                }
+                if (event.key.toLowerCase() === "n") {
+                    event.preventDefault();
+                    toggleNotes();
+                }
+                if (event.key === "Escape") {
+                    closeNotes();
+                }
+                if (event.key === "Home") {
+                    event.preventDefault();
+                    renderSlide(0);
+                }
+                if (event.key === "End") {
+                    event.preventDefault();
+                    renderSlide(slides.length - 1);
+                }
+            });
+
+            renderFromHash();
+        </script>
+    </body>
+</html>
