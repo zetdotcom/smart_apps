@@ -80,6 +80,7 @@
 
             .slide-content {
                 min-height: 0;
+                overflow-y: auto;
             }
 
             .slide-header {
@@ -358,7 +359,6 @@
             .path-step {
                 display: flex;
                 align-items: center;
-                justify-content: space-between;
                 gap: 18px;
                 padding: 18px 20px;
                 border-radius: 22px;
@@ -866,12 +866,13 @@
                     position: relative;
                     inset: auto;
                     min-height: 100dvh;
+                    height: auto;
                     padding: 28px 20px 108px;
                     display: none;
                     opacity: 1;
                     transform: none;
                     transition: none;
-                    overflow: visible;
+                    overflow-y: auto;
                 }
 
                 .slide.active {
@@ -1070,32 +1071,28 @@
                 </div>
                 <div class="slide-content split-grid">
                     <div class="frost-card">
-                        <div class="comparison-title bad">Tradycyjny interfejs</div>
+                        <div class="comparison-title bad">Typowa ścieżka w aplikacji</div>
+                        <p style="font-size: 0.85rem; opacity: 0.7; margin: 0 0 16px;">5 kroków, żeby zrobić jedną rzecz</p>
                         <div class="path-steps">
                             <div class="path-step">
                                 <span class="index">1</span>
                                 <span>Otwórz menu</span>
-                                <span class="bad">tarcie</span>
                             </div>
                             <div class="path-step">
-                                <span class="index">2</span>
-                                <span>Znajdź sekcję</span>
-                                <span class="bad">czas</span>
+                                <span class="index">↓</span>
+                                <span>Znajdź właściwą sekcję</span>
                             </div>
                             <div class="path-step">
-                                <span class="index">3</span>
-                                <span>Odszukaj funkcję</span>
-                                <span class="bad">frustracja</span>
+                                <span class="index">↓</span>
+                                <span>Odszukaj konkretną funkcję</span>
                             </div>
                             <div class="path-step">
-                                <span class="index">4</span>
+                                <span class="index">↓</span>
                                 <span>Wypełnij formularz</span>
-                                <span class="bad">błędy</span>
                             </div>
                             <div class="path-step">
                                 <span class="index">5</span>
-                                <span>Potwierdź wynik</span>
-                                <span class="bad">koszt</span>
+                                <span>Potwierdź i czekaj na wynik</span>
                             </div>
                         </div>
                     </div>
